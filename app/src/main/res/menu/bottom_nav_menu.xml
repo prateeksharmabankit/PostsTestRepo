@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Created by Efendi Hariyadi on 12/06/22, 11:09 AM
+  ~ Copyright (c) 2022 . All rights reserved.
+  ~ Last modified 12/06/22, 11:09 AM
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/firstFragment"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="First" />
+    <item
+        android:id="@+id/secondFragment"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Second" />
+</menu>

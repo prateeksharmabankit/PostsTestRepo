@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#fafafa"
     android:orientation="vertical"
-    tools:context=".HomeActivity">
+    tools:context=".ui.home.HomeActivity">
 
     <ProgressBar
         android:id="@+id/progressBar"
