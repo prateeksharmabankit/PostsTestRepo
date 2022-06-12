@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.numesa.android.simpeldesa">
+    package="com.prateek.nearwe">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:name=".application.MainApp"
@@ -15,26 +17,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".HomeActivity"
-            android:exported="true"
-            android:screenOrientation="sensorPortrait"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".ui.login.LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".ui.comments.CommentsActivity"
-           android:screenOrientation="sensorPortrait"
+            android:name=".HomeActivity"
+            android:exported="true"
             android:label="@string/title_activity_home"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-
+        <activity
+            android:name=".ui.comments.CommentsActivity"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
