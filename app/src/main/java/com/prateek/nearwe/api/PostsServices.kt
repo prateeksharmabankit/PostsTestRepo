@@ -15,14 +15,14 @@ package com.prateek.nearwe.api
 import com.prateek.nearwe.api.models.Comments.CommentsModel
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
-import com.prateek.nearwe.api.models.posts.PostModel
+import com.prateek.nearwe.api.models.posts.PostResponse
 import retrofit2.Response
 import retrofit2.http.*
 
 interface PostsServices {
     @Headers("Accept: application/json")
-    @GET("posts")
-    suspend fun listUsers():Response< List<PostModel>>
+    @GET("Posts/GetAllPosts/{UserId}/{Latitude}/{Longitude}")
+    suspend fun GetAllPosts(@Path("UserId") UserId: Int?,@Path("Latitude") Latitude: String,@Path("Longitude") Longitude: String):Response<PostResponse>
 
 
     @GET("posts/{id}/comments")

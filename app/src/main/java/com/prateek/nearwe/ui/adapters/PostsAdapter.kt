@@ -10,17 +10,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.prateek.nearwe.R
 
 import com.prateek.nearwe.api.models.posts.PostModel
+import com.prateek.nearwe.api.models.posts.Result
 
 
 class PostsAdapter(
     private val onCheckboxClickListener: OnClickListener,
     private val onItemClickListener: OnItemClickListener,
-    private val mList: List<PostModel>
+    private val mList: List<Result>
 ) :
     RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
 
@@ -32,24 +35,34 @@ class PostsAdapter(
         return ViewHolder(view)
     }
 
-    class OnClickListener(val clickListener: (meme: PostModel) -> Unit) {
-        fun onClick(meme: PostModel) = clickListener(meme)
+    class OnClickListener(val clickListener: (meme: Result) -> Unit) {
+        fun onClick(meme: Result) = clickListener(meme)
     }
-    class OnItemClickListener(val clickListener: (meme: PostModel) -> Unit) {
-        fun onClick(meme: PostModel) = clickListener(meme)
+    class OnItemClickListener(val clickListener: (meme: Result) -> Unit) {
+        fun onClick(meme: Result) = clickListener(meme)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val post = mList[position]
-        holder.txtTitle.text = post.title
-        holder.txtBody.text = post.body
-        holder.star.isChecked = post.isFavourite
-        holder.star.setOnCheckedChangeListener { _, isChecked ->
-            post.isFavourite = isChecked
+        holder.txtTitle.text = post.Title
+        holder.txtDateTime.text=post.Ago
+        holder.txtName.text=post.Name
+        /*when (post.PostType) {
+            1 -> holder.imgpostType.setColorFilter(ContextCompat.getColor(co, R.color.COLOR_YOUR_COLOR), android.graphics.PorterDuff.Mode.MULTIPLY)ti
+            2 -> print("x == 2")
+            1 -> print("x == 2")
+            else -> { // Note the block
+                print("x is neither 1 nor 2")
+            }
+        }*/
 
-            onCheckboxClickListener.onClick(post)
+        for (categoryDetails in post.postSubCategoryDetailsDtos) {
+            holder.txtCategory.text=categoryDetails.CategoryName
+            holder.txtSubCategory.text=holder.txtSubCategory.text.toString()+" "+categoryDetails.SubCategoryName
         }
+
+
         holder.itemView.setOnClickListener {
 
             onItemClickListener.onClick(post)
@@ -64,9 +77,13 @@ class PostsAdapter(
     }
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+        val imgpostType: ImageView = itemView.findViewById(R.id.imgpostType)
+        val txtName: TextView = itemView.findViewById(R.id.txtName)
+        val txtDateTime: TextView = itemView.findViewById(R.id.txtDateTime)
         val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
-        val txtBody: TextView = itemView.findViewById(R.id.txtBody)
-        val star: CheckBox = itemView.findViewById(R.id.star)
+        val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
+        val txtSubCategory: TextView = itemView.findViewById(R.id.txtSubCategory)
+
 
     }
 }

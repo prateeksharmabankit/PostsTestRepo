@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.databinding.ActivityCommentsBinding
 
 import com.prateek.nearwe.ui.adapters.CommentsAdapter
@@ -28,7 +29,7 @@ class CommentsActivity : AppCompatActivity() {
 
         binding = ActivityCommentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val Result = intent.extras!!.get("post") as Result
         linearLayoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = linearLayoutManager
 

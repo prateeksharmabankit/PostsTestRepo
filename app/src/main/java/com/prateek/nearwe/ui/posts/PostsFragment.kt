@@ -6,60 +6,89 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.birjuvachhani.locus.Locus
 import com.prateek.nearwe.R
 
 import com.prateek.nearwe.ui.adapters.PostsAdapter
 import com.prateek.nearwe.ui.comments.CommentsActivity
+import com.prateek.nearwe.ui.login.LoginViewModel
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.Serializable
 
 class PostsFragment : Fragment() {
     private val postsViewModel: PostsViewModel by sharedViewModel()
+    private val userViewModel: LoginViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var txtHeader: TextView
 
+    var latitude: String = ""
+    var longitude: String = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        val root = inflater.inflate(R.layout.fragment_posts, container, false)
         recyclerView = root.findViewById(R.id.recyclerView)
+
         progressBar = root.findViewById(R.id.progressBar)
         linearLayoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = linearLayoutManager
+        txtHeader = root.findViewById(R.id.txtHeader)
+        initObserver()
+        Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
+            result.location?.let {
 
-       // initObserver()
+                latitude = it.latitude.toString()
+                longitude = it.longitude.toString()
+                userViewModel.getAddressHeader(activity?.applicationContext,latitude, longitude)
+                userViewModel.getLoggedInUser()
+
+            }
+            result.error?.let {
+
+                Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
+                    result.location?.let {
+                        latitude = it.latitude.toString()
+                        longitude = it.longitude.toString()
+                        userViewModel.getAddressHeader(activity?.applicationContext,latitude, longitude)
+                        userViewModel.getLoggedInUser()
+                    }
+                    result.error?.let { /* Received error! */ }
+                }
+            }
+        }
+
         return root
 
     }
 
 
-
-    private fun initObserver() {
+    fun initObserver() {
         postsViewModel.userList.observe(viewLifecycleOwner) {
-            recyclerView.setItemViewCacheSize(it.size);
+
             val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
-                postsViewModel.updateFavourite(post)
-                if (post.isFavourite) {
-                    Toast.makeText(activity, "Added to Favourite", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(activity, "Removed from Favourite", Toast.LENGTH_SHORT).show()
-                }
+
 
             }, PostsAdapter.OnItemClickListener { post ->
                 val intent = Intent(activity, CommentsActivity::class.java)
-                intent.putExtra("id", post.id)
+                intent.putExtra("post", post as Serializable)
 
                 startActivity(intent)
 
-            }, it)
+            }, it.Result)
 
             recyclerView.adapter = adapter
 
@@ -76,29 +105,17 @@ class PostsFragment : Fragment() {
                 progressBar.visibility = View.GONE
             }
         })
-        postsViewModel.getAllComments()
+
+
+        userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
+            postsViewModel.getAllPosts(it.UserId, latitude, longitude)
+        })
+
+        userViewModel.addressDetails.observe(viewLifecycleOwner, Observer {
+            txtHeader.text = it
+        })
 
     }
 
 
-    companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        @JvmStatic
-        fun newInstance(sectionNumber: Int): PostsFragment {
-            return PostsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
-        }
-    }
 }

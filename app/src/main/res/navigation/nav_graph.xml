@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@+id/postFragament">
+    app:startDestination="@id/firstFragment">
 
     <fragment
-        android:id="@+id/postFragament"
+        android:id="@+id/firstFragment"
         android:name="com.prateek.nearwe.ui.posts.PostsFragment"
-        android:label="fragment_first"
-        tools:layout="@layout/fragment_home" />
+        android:label="NearWe"
+        tools:layout="@layout/fragment_posts" />
     <fragment
         android:id="@+id/secondFragment"
         android:name="com.prateek.nearwe.ui.favourites.FavouritesFragment"
-        android:label="fragment_second"
+        android:label="NearWe"
         tools:layout="@layout/fragment_favourite" />
 
 </navigation>

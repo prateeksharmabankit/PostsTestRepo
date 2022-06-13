@@ -3,6 +3,7 @@ package com.prateek.nearwe.ui.posts
 
 import androidx.lifecycle.*
 import com.prateek.nearwe.api.models.posts.PostModel
+import com.prateek.nearwe.api.models.posts.PostResponse
 
 import com.prateek.nearwe.repository.PostsRoomRepository
 import com.prateek.nearwe.repository.PostsServerRepository
@@ -19,41 +20,40 @@ class PostsViewModel(
 
     val errorMessage = MutableLiveData<String>()
 
-    val userList = MutableLiveData<List<PostModel>>()
+    val userList = MutableLiveData<PostResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("Exception handled: ${throwable.localizedMessage}")
     }
     val loading = MutableLiveData<Boolean>()
 
-    fun getAllComments() {
+    fun getAllPosts(userId:Int?,latitude:String,longitude:String) {
+        loading.postValue(true)
         job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
-            var response = postsPersistanceRepositoru.getPosts();
+
             withContext(Dispatchers.Main) {
-                if (response!!.isEmpty()) {
-                    try {
-                        val result = usersRepository.repoGetListUsers()
-                        addPosts(result.body())
-                        userList.postValue(result.body())
-                    } catch (throwable: Throwable) {
-                        when (throwable) {
-                            is IOException -> {
-                                onError("Network Error")
-                            }
-                            is HttpException -> {
-                                val codeError = throwable.code()
-                                val errorMessageResponse = throwable.message()
-                                onError("Error $errorMessageResponse : $codeError")
-                            }
-                            else -> {
-                                onError("UnKnown error")
-                            }
+                try {
+                    loading.postValue(false)
+                    val result = usersRepository.GetAllPosts(userId,latitude,longitude)
+
+                    userList.postValue(result.body())
+                } catch (throwable: Throwable) {
+                    loading.postValue(false)
+                    when (throwable) {
+                        is IOException -> {
+                            onError("Network Error")
+                        }
+                        is HttpException -> {
+                            val codeError = throwable.code()
+                            val errorMessageResponse = throwable.message()
+                            onError("Error $errorMessageResponse : $codeError")
+                        }
+                        else -> {
+                            onError("UnKnown error")
                         }
                     }
-                    loading.value = false
-                } else {
-                    userList.postValue(response)
                 }
+                loading.value = false
             }
         }
 

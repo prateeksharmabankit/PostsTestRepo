@@ -30,14 +30,14 @@
             android:exported="true"
             android:label="@string/title_activity_home"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar">
+           >
 
         </activity>
         <activity
             android:name=".ui.comments.CommentsActivity"
             android:label="@string/title_activity_home"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+       ></activity>
     </application>
 
 </manifest>

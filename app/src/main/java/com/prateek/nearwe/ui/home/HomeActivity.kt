@@ -19,36 +19,96 @@
 package com.prateek.nearwe.ui.home
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.*
+
 import androidx.navigation.ui.NavigationUI.setupWithNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.prateek.nearwe.databinding.ActivityHomeBinding
-import com.prateek.nearwe.ui.adapters.PostsViewPagerAdapter
+
 import com.prateek.nearwe.workmanager.FavouritesScheduler
 import java.util.concurrent.TimeUnit
 import com.prateek.nearwe.R;
+import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
 
     //private lateinit var binding: ActivityHomeBinding
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
+    private  lateinit var   appBarConfiguration:AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_home)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
 
 
+
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar, R.string.drawer_open,
+            R.string.drawer_close)
+
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+
+
+
+
+
+
+        val navView: NavigationView = findViewById(R.id.nav_view)
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_to_home, R.id.nav_to_home, R.id.nav_to_home
+            ), drawerLayout
+        )
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+
+
+
+
+
+
+
+
+
+
+
         setupWithNavController(bottomNavigationView, navController)
+
+
+
+
+
+
+
+
+
+
+
 
         /* val sectionsPagerAdapter = PostsViewPagerAdapter(this, supportFragmentManager)
          val viewPager: ViewPager = binding.viewPager
@@ -79,5 +139,22 @@ class HomeActivity : AppCompatActivity() {
             ExistingPeriodicWorkPolicy.KEEP,
             request
         )
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 }
