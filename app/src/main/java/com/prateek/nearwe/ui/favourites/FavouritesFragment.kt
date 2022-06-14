@@ -16,7 +16,7 @@ import com.prateek.nearwe.ui.posts.PostsViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FavouritesFragment : Fragment() {
-    private val favouritesViewModel: PostsViewModel by sharedViewModel()
+
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var txtNoPost: TextView
@@ -37,7 +37,7 @@ class FavouritesFragment : Fragment() {
     }
 
     private fun initObserver() {
-        favouritesViewModel.userFavourites.observe(viewLifecycleOwner, Observer { listUser ->
+       /* favouritesViewModel.AddPostViews().observe(viewLifecycleOwner, Observer { listUser ->
             recyclerView.setItemViewCacheSize(listUser.size);
             if (listUser.isEmpty()) {
                 txtNoPost.visibility = View.VISIBLE
@@ -47,7 +47,7 @@ class FavouritesFragment : Fragment() {
             val adapter = FavouritesAdapter(listUser)
 
             recyclerView.adapter = adapter
-        })
+        })*/
     }
 
 

@@ -2,6 +2,9 @@
 package com.prateek.nearwe.ui.posts
 
 import androidx.lifecycle.*
+import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
+import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
+import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.PostModel
 import com.prateek.nearwe.api.models.posts.PostResponse
 
@@ -16,9 +19,10 @@ class PostsViewModel(
     private val postsPersistanceRepositoru: PostsRoomRepository
 
 ) : ViewModel() {
-
-
     val errorMessage = MutableLiveData<String>()
+
+    val addPostViewResponse = MutableLiveData<AddPostViewsResponse>()
+    val addPostLikesResponse = MutableLiveData<AddPostLikesResponse>()
 
     val userList = MutableLiveData<PostResponse>()
     var job: Job? = null
@@ -69,41 +73,77 @@ class PostsViewModel(
         job?.cancel()
     }
 
-    val userFavourites = MutableLiveData<List<PostModel>>()
-    fun addPosts(birdsEntity: List<PostModel>?) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                postsPersistanceRepositoru.AddPosts(birdsEntity)
+
+    fun AddPostViews(PostId:Int) {
+        loading.postValue(true)
+        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
+
+            withContext(Dispatchers.Main) {
+                try {
+                    loading.postValue(false)
+                  var  addPostResponse=    usersRepository.AddPostViews(PostId)
+                    addPostViewResponse.postValue(addPostResponse.body())
+
+
+                } catch (throwable: Throwable) {
+                    loading.postValue(false)
+                    when (throwable) {
+                        is IOException -> {
+                            onError("Network Error")
+                        }
+                        is HttpException -> {
+                            val codeError = throwable.code()
+                            val errorMessageResponse = throwable.message()
+                            onError("Error $errorMessageResponse : $codeError")
+                        }
+                        else -> {
+                            onError("UnKnown error")
+                        }
+                    }
+                }
+                loading.value = false
             }
         }
+
     }
+    fun LikeUnlikePost(request: PostLikesRequest) {
+        loading.postValue(true)
+        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
+
+            withContext(Dispatchers.Main) {
+                try {
+                    loading.postValue(false)
+                    var  addPostResponse=    usersRepository.AddPostLikesUnLike(request)
+                    addPostLikesResponse.postValue(addPostResponse.body())
 
 
-    init {
-       // getFavourites()
-    }
-
-    fun updateFavourite(usersResponse: PostModel) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                postsPersistanceRepositoru.setFavouriteStatus(usersResponse)
-                getFavourites()
+                } catch (throwable: Throwable) {
+                    loading.postValue(false)
+                    when (throwable) {
+                        is IOException -> {
+                            onError("Network Error")
+                        }
+                        is HttpException -> {
+                            val codeError = throwable.code()
+                            val errorMessageResponse = throwable.message()
+                            onError("Error $errorMessageResponse : $codeError")
+                        }
+                        else -> {
+                            onError("UnKnown error")
+                        }
+                    }
+                }
+                loading.value = false
             }
         }
-    }
-
-    fun getFavourites() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-
-                var usersResponse = postsPersistanceRepositoru.getFavouritePosts(true);
-                userFavourites.postValue(usersResponse)
-
-
-            }
-        }
 
     }
+
+
+
+
+
+
 
 
 }

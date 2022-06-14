@@ -2,6 +2,7 @@ package com.prateek.nearwe.ui.posts
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.birjuvachhani.locus.Locus
 import com.prateek.nearwe.R
+import com.prateek.nearwe.api.models.User.UserModel
+import com.prateek.nearwe.databinding.FragmentPostsBinding
 
 import com.prateek.nearwe.ui.adapters.PostsAdapter
 import com.prateek.nearwe.ui.comments.CommentsActivity
@@ -25,12 +28,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
 class PostsFragment : Fragment() {
-    private val postsViewModel: PostsViewModel by sharedViewModel()
+    private val postsViewModel: PostsViewModel by viewModel()
     private val userViewModel: LoginViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var txtHeader: TextView
+    private lateinit var user: UserModel
 
     var latitude: String = ""
     var longitude: String = ""
@@ -41,6 +45,7 @@ class PostsFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_posts, container, false)
+
         recyclerView = root.findViewById(R.id.recyclerView)
 
         progressBar = root.findViewById(R.id.progressBar)
@@ -53,7 +58,7 @@ class PostsFragment : Fragment() {
 
                 latitude = it.latitude.toString()
                 longitude = it.longitude.toString()
-                userViewModel.getAddressHeader(activity?.applicationContext,latitude, longitude)
+                userViewModel.getAddressHeader(activity?.applicationContext, latitude, longitude)
                 userViewModel.getLoggedInUser()
 
             }
@@ -63,7 +68,11 @@ class PostsFragment : Fragment() {
                     result.location?.let {
                         latitude = it.latitude.toString()
                         longitude = it.longitude.toString()
-                        userViewModel.getAddressHeader(activity?.applicationContext,latitude, longitude)
+                        userViewModel.getAddressHeader(
+                            activity?.applicationContext,
+                            latitude,
+                            longitude
+                        )
                         userViewModel.getLoggedInUser()
                     }
                     result.error?.let { /* Received error! */ }
@@ -78,14 +87,14 @@ class PostsFragment : Fragment() {
 
     fun initObserver() {
         postsViewModel.userList.observe(viewLifecycleOwner) {
-
+            Log.e("error",it.Result.get(0).IsLiked.toString())
             val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
 
 
             }, PostsAdapter.OnItemClickListener { post ->
                 val intent = Intent(activity, CommentsActivity::class.java)
                 intent.putExtra("post", post as Serializable)
-
+                intent.putExtra("addressDetails", txtHeader.text)
                 startActivity(intent)
 
             }, it.Result)
@@ -108,11 +117,16 @@ class PostsFragment : Fragment() {
 
 
         userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
+            user=it
             postsViewModel.getAllPosts(it.UserId, latitude, longitude)
         })
 
+
         userViewModel.addressDetails.observe(viewLifecycleOwner, Observer {
             txtHeader.text = it
+        })
+        postsViewModel.addPostViewResponse.observe(viewLifecycleOwner, Observer {
+            postsViewModel.getAllPosts(user.UserId, latitude, longitude)
         })
 
     }

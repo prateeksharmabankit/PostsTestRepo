@@ -20,4 +20,6 @@
     <string name="email_address">Email Address</string>
     <string name="comment">Comment</string>
     <string name="title">Title</string>
+    <string name="post_by">Post By @</string>
+    <string name="direct_message">Direct Message</string>
 </resources>
