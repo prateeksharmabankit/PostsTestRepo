@@ -26,7 +26,8 @@ class MainApp : Application() {
                 viewModelModule,
                 apiModule,
                 repositoryModule,
-                RetrofitModule
+                RetrofitModule,
+                FirestoreModule
             ))
 
         }

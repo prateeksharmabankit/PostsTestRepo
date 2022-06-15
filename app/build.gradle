@@ -54,6 +54,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
+
 
     //def koin_version = "2.1.5"
     def retrofit_version = '2.6.1'
@@ -118,6 +120,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:20.0.0"
     implementation 'com.github.BirjuVachhani:locus-android:3.0.1'
     implementation 'info.androidhive:fontawesome:0.0.5'
+
 
 
 }

@@ -13,7 +13,6 @@
 package com.prateek.nearwe.api
 
 import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
-import com.prateek.nearwe.api.models.Comments.CommentsModel
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse

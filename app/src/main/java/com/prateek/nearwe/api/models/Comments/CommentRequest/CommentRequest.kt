@@ -10,8 +10,11 @@ import com.google.gson.annotations.SerializedName
 
 
 data class CommentRequest(
-    @SerializedName("PostId") var PostId: Int? = null,
-    @SerializedName("UserId") var UserId: Int? = null,
-    @SerializedName("CommentContent") var CommentContent: String? = null,
-
+    @SerializedName("id") var Id: Int? = null,
+    @SerializedName("postId") var PostId: Int? = null,
+    @SerializedName("userId") var UserId: Int? = null,
+    @SerializedName("commentContent") var CommentContent: String? = null,
+    @SerializedName("userName") var UserName: String? = null,
+    @SerializedName("dateTime") var DateTime: String? = null,
     )
+

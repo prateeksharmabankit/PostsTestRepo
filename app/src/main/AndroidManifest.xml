@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.MainApp"
@@ -16,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
@@ -29,15 +32,11 @@
             android:name=".ui.home.HomeActivity"
             android:exported="true"
             android:label="@string/title_activity_home"
-            android:screenOrientation="sensorPortrait"
-           >
-
-        </activity>
+            android:screenOrientation="sensorPortrait"></activity>
         <activity
             android:name=".ui.comments.CommentsActivity"
             android:label="@string/title_activity_home"
-            android:screenOrientation="sensorPortrait"
-       ></activity>
+            android:screenOrientation="sensorPortrait" />
     </application>
 
 </manifest>

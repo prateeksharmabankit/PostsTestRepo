@@ -8,25 +8,27 @@
 package com.prateek.nearwe.ui.comments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.birjuvachhani.locus.Locus
+import com.google.type.DateTime
 import com.prateek.nearwe.R
+import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.databinding.ActivityCommentsBinding
 
-import com.prateek.nearwe.ui.adapters.CommentsAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
-import org.koin.androidx.viewmodel.compat.SharedViewModelCompat.sharedViewModel
 
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
 
 class CommentsActivity : AppCompatActivity() {
 
@@ -39,12 +41,14 @@ class CommentsActivity : AppCompatActivity() {
     private lateinit var post: Result
     var latitude: String = ""
     var longitude: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityCommentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         post = intent.extras!!.get("post") as Result
+
         val addressDetails = intent.extras!!.get("addressDetails")
         binding.txtName.text = post.Name
         binding.txtTitle.text = post.Title
@@ -52,18 +56,17 @@ class CommentsActivity : AppCompatActivity() {
         binding.txtViews.text = post.PostViews.toString()
         binding.txtLocation.text = addressDetails.toString()
         binding.txtLike.setOnClickListener(View.OnClickListener {
-
             var LikeUnlikeRequest = PostLikesRequest()
             LikeUnlikeRequest.UserId = user.UserId
             LikeUnlikeRequest.PostId = post.PostId
             postsViewModel.LikeUnlikePost(LikeUnlikeRequest)
             if (post.IsLiked == 0) {
-                binding.txtLike.setTextColor(resources.getColor( R.color.Red))
-                post.IsLiked=1;
+                binding.txtLike.setTextColor(resources.getColor(R.color.Red))
+                post.IsLiked = 1;
 
             } else {
                 binding.txtLike.setTextColor(resources.getColor(R.color.Gray))
-                post.IsLiked=0;
+                post.IsLiked = 0;
             }
         })
         if (post.IsLiked == 0) {
@@ -74,7 +77,23 @@ class CommentsActivity : AppCompatActivity() {
         }
         linearLayoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = linearLayoutManager
+        binding.txtSendMessage.setOnClickListener(View.OnClickListener {
+            if(binding.etMessage.text.isNullOrBlank())
+            {
+                return@OnClickListener
+            }
+            else
+            {
+                var commentRequest=CommentRequest()
+                commentRequest.CommentContent= binding.etMessage.text!!.trim().toString()
+                commentRequest.UserId=user.UserId
+                commentRequest.PostId=post.PostId
+                commentRequest.UserName=user.Name;
+                commentsViewModel.addPostGroup(commentRequest)
 
+            }
+
+        })
         initObserver()
         // commentsViewModel.getAllComments(id)
         setSupportActionBar(binding.toolbar)
@@ -127,12 +146,14 @@ class CommentsActivity : AppCompatActivity() {
         postsViewModel.addPostLikesResponse.observe(this, Observer {
 
 
-            postsViewModel.getAllPosts(user.UserId,latitude, longitude)
+            postsViewModel.getAllPosts(user.UserId, latitude, longitude)
         })
 
+        commentsViewModel.commentRequest.observe(this, Observer {
 
-
-
+            Log.e("comment list", it.size.toString())
+        })
+        commentsViewModel.getSavedAddresses(post.PostId)
 
 
     }
