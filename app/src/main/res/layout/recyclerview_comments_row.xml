@@ -28,7 +28,7 @@
             android:textSize="@dimen/_15sdp" />
         <TextView
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="@string/email_address"
+            android:text="Comment"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:textSize="@dimen/_10sdp" />
         <TextView
            android:layout_marginTop="@dimen/_10sdp"
-            android:text="@string/comment"
+            android:text="PostId"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

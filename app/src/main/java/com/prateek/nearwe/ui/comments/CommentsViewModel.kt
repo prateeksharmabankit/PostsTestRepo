@@ -16,7 +16,7 @@ class CommentsViewModel(
 ) : ViewModel() {
     val TAG = "FIRESTORE_VIEW_MODEL"
     val errorMessage = MutableLiveData<String>()
-    var commentRequest: MutableLiveData<List<CommentRequest>> = MutableLiveData()
+    var commentsModelList: MutableLiveData<List<CommentRequest>> = MutableLiveData()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("Exception handled: ${throwable.localizedMessage}")
@@ -26,62 +26,40 @@ class CommentsViewModel(
 
     fun getSavedAddresses(PostId: Int) {
 
+var commentList=ArrayList<CommentRequest>()
+        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
 
-        firestoreRepository.firestoreDB.collection(PostId.toString())
+            withContext(Dispatchers.Main) {
 
-            .addSnapshotListener { snapshots, e ->
-                if (e != null) {
-                    Log.w(TAG, "listen:error", e)
-                    return@addSnapshotListener
+
+                firestoreRepository.firestoreDB.collection(PostId.toString())
+
+                    .addSnapshotListener { snapshots, e ->
+                        commentList.clear()
+                        if (e != null) {
+
+                            return@addSnapshotListener
+                        }
+
+
+                        for (dc in snapshots!!) {
+                            var gson = Gson()
+                            val json = Gson().toJson(dc.data)
+                            var data = gson?.fromJson(json, CommentRequest::class.java)
+                            commentList.add(data)
+
+
+                        }
+                        commentsModelList.postValue(commentList)
+
+
+
                 }
-
-                for (dc in snapshots!!)
-                {
-                    var gson = Gson()
-                    val json = Gson().toJson(dc.data)
-                    var data = gson?.fromJson(json, CommentRequest::class.java)
-
-                    Log.e(TAG,data.CommentContent.toString())
-                }
-
-                for (dc in snapshots!!.documentChanges) {
-                    if (dc.type == DocumentChange.Type.ADDED) {
-                        Log.d(TAG, "New city: ${dc.document.data}")
-                    }
-                    if (dc.type == DocumentChange.Type.MODIFIED) {
-                        Log.d(TAG, "MODIFIED city: ${dc.document.data}")
-                    }
-                    if (dc.type == DocumentChange.Type.REMOVED) {
-                        Log.d(TAG, "REMOVED city: ${dc.document.data}")
-                    }
-                }
-
-                if (!snapshots.metadata.isFromCache) {
-                    Log.d(TAG, "Got initial state.")
-                }
-
 
 
             }
+        }
 
-
-
-
-
-
-
-       /* var collection = firestoreRepository.firestoreDB.collection("PostComments").document(PostId.toString())
-            .get()
-            .addOnSuccessListener { result ->
-
-                for (document in result) {
-                    val users = document.toObject(CommentRequest::class.java)
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
-            }*/
 
     }
 

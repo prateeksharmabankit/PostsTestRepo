@@ -21,6 +21,7 @@ import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.databinding.ActivityCommentsBinding
+import com.prateek.nearwe.ui.adapters.CommentsAdapter
 
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
@@ -41,6 +42,7 @@ class CommentsActivity : AppCompatActivity() {
     private lateinit var post: Result
     var latitude: String = ""
     var longitude: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +96,8 @@ class CommentsActivity : AppCompatActivity() {
             }
 
         })
+
+
         initObserver()
         // commentsViewModel.getAllComments(id)
         setSupportActionBar(binding.toolbar)
@@ -149,9 +153,10 @@ class CommentsActivity : AppCompatActivity() {
             postsViewModel.getAllPosts(user.UserId, latitude, longitude)
         })
 
-        commentsViewModel.commentRequest.observe(this, Observer {
+        commentsViewModel.commentsModelList.observe(this, Observer {
 
-            Log.e("comment list", it.size.toString())
+            val adapter = CommentsAdapter(it)
+            binding.recyclerView.adapter = adapter
         })
         commentsViewModel.getSavedAddresses(post.PostId)
 
