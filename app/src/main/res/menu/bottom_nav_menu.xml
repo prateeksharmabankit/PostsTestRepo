@@ -8,10 +8,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/firstFragment"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:title="First" />
+        android:icon="@drawable/ic_baseline_settings_neame_24"
+        android:title="Near Me" />
+
     <item
         android:id="@+id/secondFragment"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:title="Second" />
+        android:icon="@drawable/ic_baseline_trending_24"
+        android:title="Trending" />
+    <item
+        android:id="@+id/WhatISFragment"
+        android:icon="@drawable/ic_baseline_whtat_is_24"
+        android:title="What is" />
 </menu>

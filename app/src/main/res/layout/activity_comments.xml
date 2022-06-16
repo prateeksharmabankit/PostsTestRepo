@@ -187,9 +187,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/lvMain"
+        android:layout_above="@+id/lvBottim"
         android:scrollbars="vertical" />
 
     <LinearLayout
+        android:id="@+id/lvBottim"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:orientation="horizontal"

@@ -8,12 +8,27 @@
     <fragment
         android:id="@+id/firstFragment"
         android:name="com.prateek.nearwe.ui.posts.PostsFragment"
-        android:label="NearWe"
-        tools:layout="@layout/fragment_posts" />
+        android:label="Near Me"
+        tools:layout="@layout/fragment_posts" >
+        <action
+            android:id="@+id/action_firstFragment_pop"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/firstFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/secondFragment"
         android:name="com.prateek.nearwe.ui.favourites.FavouritesFragment"
-        android:label="NearWe"
+        android:label="Trending"
         tools:layout="@layout/fragment_favourite" />
+
+    <fragment
+        android:id="@+id/WhatISFragment"
+        android:name="com.prateek.nearwe.ui.favourites.FavouritesFragment"
+        android:label="What is This Thing?"
+        tools:layout="@layout/fragment_favourite" />
+
+
 
 </navigation>

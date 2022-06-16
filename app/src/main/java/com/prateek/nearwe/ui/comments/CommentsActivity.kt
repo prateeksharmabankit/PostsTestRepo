@@ -7,14 +7,16 @@
 
 package com.prateek.nearwe.ui.comments
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.birjuvachhani.locus.Locus
-import com.google.type.DateTime
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.api.models.User.UserModel
@@ -22,14 +24,13 @@ import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.databinding.ActivityCommentsBinding
 import com.prateek.nearwe.ui.adapters.CommentsAdapter
-
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
-
+import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.hideKeyboard
+import kotlinx.android.synthetic.main.activity_comments.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
+
 
 class CommentsActivity : AppCompatActivity() {
 
@@ -80,18 +81,45 @@ class CommentsActivity : AppCompatActivity() {
         linearLayoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = linearLayoutManager
         binding.txtSendMessage.setOnClickListener(View.OnClickListener {
-            if(binding.etMessage.text.isNullOrBlank())
-            {
+            if (binding.etMessage.text.isNullOrBlank()) {
                 return@OnClickListener
-            }
-            else
-            {
-                var commentRequest=CommentRequest()
-                commentRequest.CommentContent= binding.etMessage.text!!.trim().toString()
-                commentRequest.UserId=user.UserId
-                commentRequest.PostId=post.PostId
-                commentRequest.UserName=user.Name;
-                commentsViewModel.addPostGroup(commentRequest)
+            } else {
+
+                val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                    txtSendMessage,
+                    PropertyValuesHolder.ofFloat("scaleX", 0.5f),
+                    PropertyValuesHolder.ofFloat("scaleY", 0.5f)
+                )
+                scaleDown.duration = 200
+                scaleDown.repeatMode = ValueAnimator.REVERSE
+                scaleDown.repeatCount = 1
+                scaleDown.start()
+                scaleDown.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animator: Animator) {}
+                    override fun onAnimationEnd(animator: Animator) {
+
+                        hideKeyboard(etMessage, context = applicationContext)
+                        var commentRequest = CommentRequest()
+                        commentRequest.CommentContent = binding.etMessage.text!!.trim().toString()
+                        commentRequest.UserId = user.UserId
+                        commentRequest.PostId = post.PostId
+                        commentRequest.UserName = user.Name;
+                        commentRequest.DateTime = System.currentTimeMillis()
+                        if (post.UserId == user.UserId.toString()) {
+                            commentRequest.IsOwner = 1
+                        } else {
+                            commentRequest.IsOwner = 1
+                        }
+
+                        commentsViewModel.addPostGroup(commentRequest)
+                        etMessage.text!!.clear()
+
+                    }
+
+                    override fun onAnimationCancel(animator: Animator) {}
+                    override fun onAnimationRepeat(animator: Animator) {}
+                })
+
 
             }
 
