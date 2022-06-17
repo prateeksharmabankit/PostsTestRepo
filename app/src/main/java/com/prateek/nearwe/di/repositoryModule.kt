@@ -3,6 +3,7 @@
 package com.prateek.nearwe.di
 
 import com.prateek.nearwe.repository.*
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -11,4 +12,5 @@ val repositoryModule = module {
     single { PostsRoomRepository(birdsDAO = get(), userDAO = get()) }
     single { LoginServerRepository(get()) }
     single { FirestoreRepository(get(),get()) }
+    single { SubCategoryRepository(postsServices =  get()) }
 }

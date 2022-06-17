@@ -21,6 +21,7 @@ data class Result(
     val UserId: String,
     val Name: String,
     val EmailAddress: String,
+    val ImageUrl: String,
     var IsLiked:Int,
     val postSubCategoryDetailsDtos: List<PostSubCategoryDetailsDto>
 ): Serializable

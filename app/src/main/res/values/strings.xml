@@ -22,4 +22,8 @@
     <string name="title">Title</string>
     <string name="post_by">Post By @</string>
     <string name="direct_message">Direct Message</string>
+    <string name="green_general_queried_in_your_area">Green-General Queried in Your Area</string>
+    <string name="favours_like_finding_a_lost_pet_buy_or_sell_something">Favours like finding a lost pet, Buy or Sell something</string>
+    <string name="alert_people_in_a_location_traffic_updates_or_heavy_rain">Alert People in a location, Traffic updates, or Heavy Rain</string>
+    <string name="post_anonymously">Post Anonymously</string>
 </resources>

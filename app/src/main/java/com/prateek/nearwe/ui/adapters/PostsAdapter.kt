@@ -14,10 +14,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.prateek.nearwe.R
 
 import com.prateek.nearwe.api.models.posts.PostModel
 import com.prateek.nearwe.api.models.posts.Result
+import com.prateek.nearwe.application.MainApp
 
 
 class PostsAdapter(
@@ -68,6 +70,14 @@ class PostsAdapter(
             onItemClickListener.onClick(post)
         }
 
+        post.ImageUrl?.let {
+            Glide.with(MainApp.instance)
+                .load(post.ImageUrl)
+                .into(holder.imgPost)
+        }
+
+
+
 
     }
 
@@ -83,6 +93,8 @@ class PostsAdapter(
         val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
         val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
         val txtSubCategory: TextView = itemView.findViewById(R.id.txtSubCategory)
+        val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
+
 
 
     }

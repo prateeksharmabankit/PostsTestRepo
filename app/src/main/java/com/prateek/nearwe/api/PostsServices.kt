@@ -13,6 +13,7 @@
 package com.prateek.nearwe.api
 
 import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
+import com.prateek.nearwe.api.models.SubCategory.SubCategoryResponse
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
@@ -27,6 +28,14 @@ interface PostsServices {
     @GET("Posts/GetAllPosts/{UserId}/{Latitude}/{Longitude}")
     suspend fun GetAllPosts(@Path("UserId") UserId: Int?,@Path("Latitude") Latitude: String,@Path("Longitude") Longitude: String):Response<PostResponse>
 
+    @GET("Posts/GetAllTrendingPosts/{UserId}/{Latitude}/{Longitude}")
+    suspend fun GetAllTrendingPosts(@Path("UserId") UserId: Int?,@Path("Latitude") Latitude: String,@Path("Longitude") Longitude: String):Response<PostResponse>
+
+    @GET("Posts/GetAllWhatisPosts/{UserId}/{Latitude}/{Longitude}")
+    suspend fun GetAllWhatisPosts(@Path("UserId") UserId: Int?,@Path("Latitude") Latitude: String,@Path("Longitude") Longitude: String):Response<PostResponse>
+
+
+
 
     @Headers("Accept: application/json")
     @POST("Register")
@@ -38,9 +47,9 @@ interface PostsServices {
 
     @POST("/PostLikesMapping/Add")
     suspend fun AddPostLikesUnLike(@Body postLikesRequest: PostLikesRequest):Response<AddPostLikesResponse>
-    @POST("//NearWeComments/Add")
-    suspend fun AddCommentToPost(@Body commentRequest: CommentRequest):Response<AddPostLikesResponse>
 
+    @GET("NearWeSubCategory/GetKeyPairValues/{CategoryId}")
+    suspend fun getSubcategoriesByCategoryId(@Path("CategoryId") CategoryId:Int):Response<SubCategoryResponse>
 
 
 }

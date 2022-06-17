@@ -10,24 +10,19 @@
         android:name="com.prateek.nearwe.ui.posts.PostsFragment"
         android:label="Near Me"
         tools:layout="@layout/fragment_posts" >
-        <action
-            android:id="@+id/action_firstFragment_pop"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popUpTo="@id/firstFragment"
-            app:popUpToInclusive="true" />
+
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
-        android:name="com.prateek.nearwe.ui.favourites.FavouritesFragment"
+        android:name="com.prateek.nearwe.ui.trending.TrendingFragment"
         android:label="Trending"
-        tools:layout="@layout/fragment_favourite" />
+        tools:layout="@layout/fragment_trending" />
 
     <fragment
         android:id="@+id/WhatISFragment"
-        android:name="com.prateek.nearwe.ui.favourites.FavouritesFragment"
+        android:name="com.prateek.nearwe.ui.whatis.WhatIsFragment"
         android:label="What is This Thing?"
-        tools:layout="@layout/fragment_favourite" />
+        tools:layout="@layout/fragment_whatis" />
 
 
 

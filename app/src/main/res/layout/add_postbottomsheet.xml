@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    app:cardCornerRadius="@dimen/_18sdp"
+    app:cardElevation="@dimen/_10sdp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/White"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_15sdp"
+            android:textColor="@color/Black"
+            android:textSize="@dimen/_15sdp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            android:hint="Add Post Description Here" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:id="@+id/recylerSubCategories"
+            android:layout_height="@dimen/_200sdp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip1"
+                style="@style/TagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+
+                android:text="Games"
+                android:textColor="@color/White" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip2"
+
+                style="@style/TagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movies"
+                android:textColor="@color/White" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip3"
+                style="@style/TagChip"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:text="Travel"
+                android:textColor="@color/White" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            android:background="#024CAF50">
+
+            <RadioButton
+                android:id="@+id/postRadioOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:buttonTint="@color/Green"
+                android:paddingLeft="@dimen/_10sdp"
+                android:text="@string/green_general_queried_in_your_area"
+                android:textSize="@dimen/_12sdp" />
+
+            <RadioButton
+                android:id="@+id/postRadioTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:buttonTint="@color/Orange"
+                android:paddingLeft="@dimen/_10sdp"
+
+                android:text="@string/favours_like_finding_a_lost_pet_buy_or_sell_something"
+                android:textSize="@dimen/_12sdp" />
+
+            <RadioButton
+                android:id="@+id/postRadioThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/Red"
+                android:paddingLeft="@dimen/_10sdp"
+
+                android:text="@string/alert_people_in_a_location_traffic_updates_or_heavy_rain"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </RadioGroup>
+
+        <CheckBox
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:text="@string/post_anonymously"
+            android:textColor="@color/Red"
+            android:textSize="@dimen/_12sdp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:background="@color/colorPrimary"
+            android:elevation="@dimen/_3sdp"
+            android:text="Post Now"
+            android:textColor="@color/White"
+
+
+            />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

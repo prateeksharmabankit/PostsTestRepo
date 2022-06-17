@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Created by Efendi Hariyadi on 17/06/22, 7:51 PM
+  ~ Copyright (c) 2022 . All rights reserved.
+  ~ Last modified 17/06/22, 7:51 PM
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.google.android.material.chip.Chip
+    android:id="@+id/chip1"
+    app:singleLine="true"
+    style="@style/TagChip"
+
+    android:layout_margin="@dimen/_4sdp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+
+
+    android:textColor="@color/White" /></LinearLayout>
