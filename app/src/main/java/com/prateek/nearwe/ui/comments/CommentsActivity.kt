@@ -164,13 +164,14 @@ class CommentsActivity : AppCompatActivity() {
              Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
          }
 
-         commentsViewModel.loading.observe(this, Observer {
-             if (it) {
-                 binding.progressBar.visibility = View.VISIBLE
-             } else {
-                 binding.progressBar.visibility = View.GONE
-             }
-         })*/
+         */
+        commentsViewModel.loading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
         userViewModel.userDetails.observe(this, Observer {
             user = it
             postsViewModel.AddPostViews(post.PostId)
