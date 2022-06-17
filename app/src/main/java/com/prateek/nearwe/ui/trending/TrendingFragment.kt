@@ -18,6 +18,7 @@ import com.birjuvachhani.locus.Locus
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.databinding.FragmentPostsBinding
+import com.prateek.nearwe.databinding.FragmentTrendingBinding
 
 import com.prateek.nearwe.ui.adapters.PostsAdapter
 import com.prateek.nearwe.ui.comments.CommentsActivity
@@ -29,12 +30,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
 class TrendingFragment : Fragment() {
+    private lateinit var binding: FragmentTrendingBinding
     private val trendingViewModel: TrendingViewModel by viewModel()
     private val userViewModel: LoginViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var txtHeader: TextView
+
     private lateinit var user: UserModel
 
     var latitude: String = ""
@@ -44,15 +44,13 @@ class TrendingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentTrendingBinding.inflate(inflater, container, false)
 
-        val root = inflater.inflate(R.layout.fragment_trending, container, false)
 
-        recyclerView = root.findViewById(R.id.recyclerView)
 
-        progressBar = root.findViewById(R.id.progressBar)
         linearLayoutManager = LinearLayoutManager(activity)
-        recyclerView.layoutManager = linearLayoutManager
-        txtHeader = root.findViewById(R.id.txtHeader)
+        binding.recyclerView.layoutManager = linearLayoutManager
+
         initObserver()
         Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
             result.location?.let {
@@ -81,26 +79,26 @@ class TrendingFragment : Fragment() {
             }
         }
 
-        return root
+        return binding.root
 
     }
 
 
     fun initObserver() {
         trendingViewModel.userList.observe(viewLifecycleOwner) {
-            Log.e("error",it.Result.get(0).IsLiked.toString())
+            Log.e("error", it.Result.get(0).IsLiked.toString())
             val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
 
 
             }, PostsAdapter.OnItemClickListener { post ->
                 val intent = Intent(activity, CommentsActivity::class.java)
                 intent.putExtra("post", post as Serializable)
-                intent.putExtra("addressDetails", txtHeader.text)
+                intent.putExtra("addressDetails", binding.txtHeader.text)
                 startActivity(intent)
 
             }, it.Result)
 
-            recyclerView.adapter = adapter
+            binding.recyclerView.adapter = adapter
 
         }
 
@@ -110,21 +108,21 @@ class TrendingFragment : Fragment() {
 
         trendingViewModel.loading.observe(viewLifecycleOwner, Observer {
             if (it) {
-                progressBar.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.VISIBLE
             } else {
-                progressBar.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
             }
         })
 
 
         userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
-            user=it
+            user = it
             trendingViewModel.getAllTrendingPosts(it.UserId, latitude, longitude)
         })
 
 
         userViewModel.addressDetails.observe(viewLifecycleOwner, Observer {
-            txtHeader.text = it
+            binding.txtHeader.text = it
         })
         trendingViewModel.addPostViewResponse.observe(viewLifecycleOwner, Observer {
             trendingViewModel.getAllTrendingPosts(user.UserId, latitude, longitude)

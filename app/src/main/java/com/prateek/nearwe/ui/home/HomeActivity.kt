@@ -49,6 +49,7 @@ import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.SubCategory.Result
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
+import com.prateek.nearwe.databinding.ActivityHomeBinding
 import com.prateek.nearwe.ui.adapters.SubCategoryAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
@@ -58,9 +59,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeActivity : AppCompatActivity() {
 
-    //private lateinit var binding: ActivityHomeBinding
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var navController: NavController
-    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val homeViewModel: HomeViewModel by viewModel()
     private val postsViewModel: PostsViewModel by viewModel()
@@ -73,25 +73,24 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_home)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+
         navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
 
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.drawer_open,
+            this, binding.drawerLayout, toolbar, R.string.drawer_open,
             R.string.drawer_close
         )
 
-        drawerLayout.addDrawerListener(toggle)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
 
-        val navView: NavigationView = findViewById(R.id.nav_view)
+
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -100,7 +99,7 @@ class HomeActivity : AppCompatActivity() {
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
 
 
         initObserver()
@@ -125,7 +124,7 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        setupWithNavController(bottomNavigationView, navController)
+        setupWithNavController(binding.bottomNavigationView, navController)
 
 
     }
@@ -143,8 +142,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -156,6 +155,7 @@ class HomeActivity : AppCompatActivity() {
         bottomSheetDialog.setContentView(R.layout.add_postbottomsheet)
         val tvTitle = bottomSheetDialog.findViewById<TextView>(R.id.tvTitle)
         val PostNow = bottomSheetDialog.findViewById<AppCompatButton>(R.id.PostNow)
+        val etTitle = bottomSheetDialog.findViewById<EditText>(R.id.etTitle)
 
         val checkPostAnonymous = bottomSheetDialog.findViewById<CheckBox>(R.id.checkPostAnonymous)
         val recylerSubCategories =
@@ -173,9 +173,9 @@ class HomeActivity : AppCompatActivity() {
         val adapter = SubCategoryAdapter(subCategoryList)
         recylerSubCategories?.adapter = adapter
         when (postCategoryId) {
-            1 -> tvTitle?.text = "Create NearBy Post"
-            2 -> tvTitle?.text = "Create Interest and Hobby Based Post"
-            3 -> tvTitle?.text = "Ask for the identification of mysterious objects"
+            1 -> tvTitle?.text = getString(R.string.fabtextone)
+            2 -> tvTitle?.text = getString(R.string.fabtexttwo)
+            3 -> tvTitle?.text = getString(R.string.fabtextthree)
             else -> println("I don't know anything about it")
         }
 
@@ -190,7 +190,7 @@ class HomeActivity : AppCompatActivity() {
             }
             postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
             postModel.UserId = user.UserId
-            postModel.Title = tvTitle?.text.toString().trim()
+            postModel.Title = etTitle?.text.toString().trim()
             val selectedEngineers: List<Result> = subCategoryList
                 .filterIndexed { index, engineer ->
                     engineer.isCHecked
@@ -199,11 +199,13 @@ class HomeActivity : AppCompatActivity() {
                 }
 
 
-            postModel.PostSubCategories=selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1).dropLast(1)
+            postModel.PostSubCategories =
+                selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
+                    .dropLast(1)
 
 
 
-              postsViewModel.AddPost(postModel)
+            postsViewModel.AddPost(postModel)
             bottomSheetDialog.dismiss()
         })
 
@@ -239,8 +241,17 @@ class HomeActivity : AppCompatActivity() {
 
         })
         postsViewModel.addPostResponse.observe(this, Observer {
-            Toast.makeText(applicationContext,"Post Added Successfully",Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Post Added Successfully", Toast.LENGTH_SHORT).show()
 
         })
+
+        postsViewModel.loading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+
     }
 }

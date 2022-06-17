@@ -83,7 +83,7 @@ class WhatIsFragment : Fragment() {
 
     fun initObserver() {
         whatIsViewModel.userList.observe(viewLifecycleOwner) {
-            Log.e("error",it.Result.get(0).IsLiked.toString())
+
             val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
 
 

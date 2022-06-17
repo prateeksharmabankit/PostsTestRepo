@@ -18,7 +18,7 @@
         android:layout_marginRight="@dimen/_16sdp"
 
         android:textColor="@android:color/black"
-        android:textSize="@dimen/_16sdp"></TextView>
+        android:textSize="@dimen/_16sdp"/>
 
     <TextView
 android:id="@+id/txtPostNear"
@@ -41,7 +41,7 @@ android:id="@+id/txtPostNear"
         android:scrollbars="vertical" />
 
     <ProgressBar
-
+android:visibility="gone"
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
