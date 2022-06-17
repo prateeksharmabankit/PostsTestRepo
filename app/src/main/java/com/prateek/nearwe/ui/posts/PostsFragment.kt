@@ -87,10 +87,7 @@ class PostsFragment : Fragment() {
 
     fun initObserver() {
         postsViewModel.userList.observe(viewLifecycleOwner) {
-            Log.e("error",it.Result.get(0).IsLiked.toString())
             val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
-
-
             }, PostsAdapter.OnItemClickListener { post ->
                 val intent = Intent(activity, CommentsActivity::class.java)
                 intent.putExtra("post", post as Serializable)
@@ -117,7 +114,7 @@ class PostsFragment : Fragment() {
 
 
         userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
-            user=it
+            user = it
             postsViewModel.getAllPosts(it.UserId, latitude, longitude)
         })
 

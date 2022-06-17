@@ -8,5 +8,6 @@ package com.prateek.nearwe.api.models.SubCategory
 
 data class Result(
     val Key: String,
-    val Value: String
+    val Value: String,
+    var isCHecked:Boolean=false
 )

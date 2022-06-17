@@ -6,17 +6,13 @@
 
 package com.prateek.nearwe.ui.adapters
 
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.prateek.nearwe.R
-import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.api.models.SubCategory.Result
-import com.prateek.nearwe.utils.Utils
 
 
 class SubCategoryAdapter(
@@ -32,6 +28,16 @@ class SubCategoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chip = commentsModelList[position]
         holder.chip1.text = chip.Value
+        holder.chip1.tag = position
+
+        holder.chip1.setOnClickListener(View.OnClickListener {
+            try {
+                val pos = holder.chip1.tag as Int
+                commentsModelList[pos].isCHecked = !commentsModelList[pos].isCHecked
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        })
     }
 
 

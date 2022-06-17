@@ -16,6 +16,8 @@ import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.api.models.SubCategory.SubCategoryResponse
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
+import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
+import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
@@ -50,6 +52,10 @@ interface PostsServices {
 
     @GET("NearWeSubCategory/GetKeyPairValues/{CategoryId}")
     suspend fun getSubcategoriesByCategoryId(@Path("CategoryId") CategoryId:Int):Response<SubCategoryResponse>
+
+
+    @POST("/Posts/Add")
+    suspend fun AddPost(@Body postModel: AddPostRequest):Response<AddPostResponse>
 
 
 }

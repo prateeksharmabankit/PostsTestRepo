@@ -30,8 +30,8 @@
             android:hint="Add Post Description Here" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
             android:id="@+id/recylerSubCategories"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/_200sdp" />
 
         <com.google.android.material.chip.ChipGroup
@@ -79,6 +79,7 @@
             android:background="#024CAF50">
 
             <RadioButton
+                android:checked="true"
                 android:id="@+id/postRadioOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,7 +115,7 @@
         </RadioGroup>
 
         <CheckBox
-
+            android:id="@+id/checkPostAnonymous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -124,6 +125,7 @@
             android:textSize="@dimen/_12sdp" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/PostNow"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -2,6 +2,8 @@
 package com.prateek.nearwe.ui.posts
 
 import androidx.lifecycle.*
+import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
+import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
@@ -23,7 +25,7 @@ class PostsViewModel(
 
     val addPostViewResponse = MutableLiveData<AddPostViewsResponse>()
     val addPostLikesResponse = MutableLiveData<AddPostLikesResponse>()
-
+    val addPostResponse = MutableLiveData<AddPostResponse>()
     val userList = MutableLiveData<PostResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -138,6 +140,36 @@ class PostsViewModel(
         }
 
     }
+    fun AddPost(postRequest: AddPostRequest) {
+        loading.postValue(true)
+        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
 
+            withContext(Dispatchers.Main) {
+                try {
+                    loading.postValue(false)
+                    val result = usersRepository.AddPost(postRequest)
+
+                    addPostResponse.postValue(result.body())
+                } catch (throwable: Throwable) {
+                    loading.postValue(false)
+                    when (throwable) {
+                        is IOException -> {
+                            onError("Network Error")
+                        }
+                        is HttpException -> {
+                            val codeError = throwable.code()
+                            val errorMessageResponse = throwable.message()
+                            onError("Error $errorMessageResponse : $codeError")
+                        }
+                        else -> {
+                            onError("UnKnown error")
+                        }
+                    }
+                }
+                loading.value = false
+            }
+        }
+
+    }
 
 }

@@ -53,7 +53,7 @@ private fun Scope.retrofitHttpClient(): OkHttpClient {
         addInterceptor(get())
         addInterceptor(HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.HEADERS
+                HttpLoggingInterceptor.Level.BODY
             }
             else {
                 HttpLoggingInterceptor.Level.NONE
