@@ -195,6 +195,8 @@ class HomeActivity : AppCompatActivity() {
         recylerSubCategories?.layoutManager = staggeredGridLayoutManager
         val adapter = SubCategoryAdapter(subCategoryList)
         recylerSubCategories?.adapter = adapter
+        var postModel = AddPostRequest()
+        postModel.PostType=1
         when (postCategoryId) {
             1 -> tvTitle?.text = getString(R.string.fabtextone)
             2 -> tvTitle?.text = getString(R.string.fabtexttwo)
@@ -204,19 +206,27 @@ class HomeActivity : AppCompatActivity() {
             }
             else -> println("I don't know anything about it")
         }
+        radioGroup1?.setOnCheckedChangeListener { _, checkedId ->
+            val radioButton = bottomSheetDialog.findViewById<RadioButton>(checkedId)
+            if (radioButton != null) {
+                when (radioButton.id) {
+                    R.id.postRadioOne -> postModel.PostType = 1
+                    R.id.postRadioTwo -> postModel.PostType = 2
+                    R.id.postRadioThree -> postModel.PostType = 3
+                }
+            }
+        }
 
         PostNow?.setOnClickListener(View.OnClickListener {
 
             when (postCategoryId) {
                 4 -> {
-                    var postModel = AddPostRequest()
+
                     postModel.Latitude = latitude
                     postModel.Longitude = longitude
-                    when (radioSelected) {
-                        R.id.postRadioOne -> postModel.PostType = 1
-                        R.id.postRadioTwo -> postModel.PostType = 2
-                        R.id.postRadioThree -> postModel.PostType = 3
-                    }
+
+
+
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
                     postModel.Title = etTitle?.text.toString().trim()
@@ -266,11 +276,7 @@ class HomeActivity : AppCompatActivity() {
                     var postModel = AddPostRequest()
                     postModel.Latitude = latitude
                     postModel.Longitude = longitude
-                    when (radioSelected) {
-                        R.id.postRadioOne -> postModel.PostType = 1
-                        R.id.postRadioTwo -> postModel.PostType = 2
-                        R.id.postRadioThree -> postModel.PostType = 3
-                    }
+
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
                     postModel.Title = etTitle?.text.toString().trim()
@@ -279,12 +285,6 @@ class HomeActivity : AppCompatActivity() {
                     postModel.PostSubCategories =
                         selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
                             .dropLast(1)
-
-
-
-
-
-
                     if (postModel.PostSubCategories!!.isEmpty()) {
 
                         Toast.makeText(applicationContext, "Please Select Tags", Toast.LENGTH_SHORT)

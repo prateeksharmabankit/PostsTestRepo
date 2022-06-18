@@ -22,6 +22,7 @@ import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.Result
+import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.databinding.ActivityCommentsBinding
 import com.prateek.nearwe.ui.adapters.CommentsAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
@@ -54,9 +55,12 @@ class CommentsActivity : AppCompatActivity() {
         val addressDetails = intent.extras!!.get("addressDetails")
         UserId = intent.extras!!.getInt("UserId")
         Name = intent.extras!!.getString("Name")!!
+        when (post.IsAnonymous) {
+            0 -> binding.txtName.text = post.Name
+            1 -> binding.txtName.text = resources.getString(R.string.anonymous)
+        }
         latitude = intent.extras!!.getString("latitude")!!
         longitude = intent.extras!!.getString("longitude")!!
-        binding.txtName.text = post.Name
         binding.txtTitle.text = post.Title
         binding.txtDateTime.text = post.Ago
         binding.txtViews.text = post.PostViews.toString()
@@ -129,11 +133,11 @@ class CommentsActivity : AppCompatActivity() {
         })
 
 
-
+        initObserver()
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
-        initObserver()
+
 
     }
 
@@ -147,7 +151,7 @@ class CommentsActivity : AppCompatActivity() {
         })
         postsViewModel.AddPostViews(post.PostId)
         postsViewModel.addPostLikesResponse.observe(this, Observer {
-            postsViewModel.getAllPosts(UserId, latitude, longitude)
+          //  postsViewModel.getAllPosts(UserId, latitude, longitude)
         })
 
         commentsViewModel.commentsModelList.observe(this, Observer {

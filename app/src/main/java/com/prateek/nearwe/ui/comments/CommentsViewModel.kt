@@ -14,7 +14,6 @@ import java.util.*
 class CommentsViewModel(
     private val firestoreRepository: FirestoreRepository
 ) : ViewModel() {
-    val TAG = "FIRESTORE_VIEW_MODEL"
     val errorMessage = MutableLiveData<String>()
     var commentsModelList: MutableLiveData<List<CommentRequest>> = MutableLiveData()
     var job: Job? = null
@@ -25,7 +24,7 @@ class CommentsViewModel(
 
 
     fun getSavedAddresses(PostId: Int) {
-        loading.postValue(true)
+
 var commentList=ArrayList<CommentRequest>()
         job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
 
@@ -37,7 +36,7 @@ var commentList=ArrayList<CommentRequest>()
                     .addSnapshotListener { snapshots, e ->
                         commentList.clear()
                         if (e != null) {
-                            loading.postValue(false)
+
                             return@addSnapshotListener
                         }
 
@@ -51,7 +50,7 @@ var commentList=ArrayList<CommentRequest>()
 
                         }
                         commentsModelList.postValue(commentList)
-                        loading.postValue(false)
+
 
 
                 }

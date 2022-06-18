@@ -42,6 +42,7 @@ class PostsAdapter(
     class OnClickListener(val clickListener: (meme: Result) -> Unit) {
         fun onClick(meme: Result) = clickListener(meme)
     }
+
     class OnItemClickListener(val clickListener: (meme: Result) -> Unit) {
         fun onClick(meme: Result) = clickListener(meme)
     }
@@ -50,30 +51,52 @@ class PostsAdapter(
 
         val post = mList[position]
         holder.txtTitle.text = post.Title
-        holder.txtDateTime.text=post.Ago
-        holder.txtName.text=post.Name
+        holder.txtDateTime.text = post.Ago
+
         when (post.PostType) {
-            1 -> holder.imgpostType.setColorFilter(ContextCompat.getColor(MainApp.instance, R.color.Green), android.graphics.PorterDuff.Mode.MULTIPLY)
-            2 ->  holder.imgpostType.setColorFilter(ContextCompat.getColor(MainApp.instance, R.color.Orange), android.graphics.PorterDuff.Mode.MULTIPLY)
-            1 ->  holder.imgpostType.setColorFilter(ContextCompat.getColor(MainApp.instance, R.color.Red), android.graphics.PorterDuff.Mode.MULTIPLY)
-            else -> { // Note the block
-                print("x is neither 1 nor 2")
-            }
+            1 -> holder.imgpostType.setColorFilter(
+                ContextCompat.getColor(
+                    MainApp.instance,
+                    R.color.Green
+                ), android.graphics.PorterDuff.Mode.SRC_ATOP
+            )
+            2 -> holder.imgpostType.setColorFilter(
+                ContextCompat.getColor(
+                    MainApp.instance,
+                    R.color.Orange
+                ), android.graphics.PorterDuff.Mode.SRC_ATOP
+            )
+            3 -> holder.imgpostType.setColorFilter(
+                ContextCompat.getColor(
+                    MainApp.instance,
+                    R.color.Red
+                ), android.graphics.PorterDuff.Mode.SRC_ATOP
+            )
+
+        }
+
+        when (post.IsAnonymous) {
+            0 -> holder.txtName.text = post.Name
+
+            1 -> holder.txtName.text = MainApp.instance.getString(R.string.anonymous)
+
+
         }
 
         post.ImageUrl.ifNull {
 
-            holder.imgPost.visibility=View.GONE
+            holder.imgPost.visibility = View.GONE
         }
-        post.ImageUrl.ifNonNull{
+        post.ImageUrl.ifNonNull {
             Glide.with(MainApp.instance)
                 .load(post.ImageUrl)
                 .into(holder.imgPost)
-            holder.imgPost.visibility=View.VISIBLE
+            holder.imgPost.visibility = View.VISIBLE
         }
         for (categoryDetails in post.postSubCategoryDetailsDtos) {
-            holder.txtCategory.text=categoryDetails.CategoryName
-            holder.txtSubCategory.text=holder.txtSubCategory.text.toString()+" "+categoryDetails.SubCategoryName
+            holder.txtCategory.text = categoryDetails.CategoryName
+            holder.txtSubCategory.text =
+                holder.txtSubCategory.text.toString() + " " + categoryDetails.SubCategoryName
         }
 
 
@@ -81,9 +104,6 @@ class PostsAdapter(
 
             onItemClickListener.onClick(post)
         }
-
-
-
 
 
     }
@@ -101,7 +121,6 @@ class PostsAdapter(
         val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
         val txtSubCategory: TextView = itemView.findViewById(R.id.txtSubCategory)
         val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
-
 
 
     }
