@@ -20,6 +20,8 @@ import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.posts.PostModel
 import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.application.MainApp
+import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNonNull
+import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
 
 
 class PostsAdapter(
@@ -50,15 +52,25 @@ class PostsAdapter(
         holder.txtTitle.text = post.Title
         holder.txtDateTime.text=post.Ago
         holder.txtName.text=post.Name
-        /*when (post.PostType) {
-            1 -> holder.imgpostType.setColorFilter(ContextCompat.getColor(co, R.color.COLOR_YOUR_COLOR), android.graphics.PorterDuff.Mode.MULTIPLY)ti
-            2 -> print("x == 2")
-            1 -> print("x == 2")
+        when (post.PostType) {
+            1 -> holder.imgpostType.setColorFilter(ContextCompat.getColor(MainApp.instance, R.color.Green), android.graphics.PorterDuff.Mode.MULTIPLY)
+            2 ->  holder.imgpostType.setColorFilter(ContextCompat.getColor(MainApp.instance, R.color.Orange), android.graphics.PorterDuff.Mode.MULTIPLY)
+            1 ->  holder.imgpostType.setColorFilter(ContextCompat.getColor(MainApp.instance, R.color.Red), android.graphics.PorterDuff.Mode.MULTIPLY)
             else -> { // Note the block
                 print("x is neither 1 nor 2")
             }
-        }*/
+        }
 
+        post.ImageUrl.ifNull {
+
+            holder.imgPost.visibility=View.GONE
+        }
+        post.ImageUrl.ifNonNull{
+            Glide.with(MainApp.instance)
+                .load(post.ImageUrl)
+                .into(holder.imgPost)
+            holder.imgPost.visibility=View.VISIBLE
+        }
         for (categoryDetails in post.postSubCategoryDetailsDtos) {
             holder.txtCategory.text=categoryDetails.CategoryName
             holder.txtSubCategory.text=holder.txtSubCategory.text.toString()+" "+categoryDetails.SubCategoryName
@@ -70,11 +82,6 @@ class PostsAdapter(
             onItemClickListener.onClick(post)
         }
 
-        post.ImageUrl?.let {
-            Glide.with(MainApp.instance)
-                .load(post.ImageUrl)
-                .into(holder.imgPost)
-        }
 
 
 

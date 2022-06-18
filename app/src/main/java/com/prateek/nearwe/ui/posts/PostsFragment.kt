@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,7 @@ class PostsFragment : Fragment() {
     private lateinit var user: UserModel
     var latitude: String = ""
     var longitude: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -81,10 +83,19 @@ class PostsFragment : Fragment() {
         postsViewModel.userList.observe(viewLifecycleOwner) {
             val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
             }, PostsAdapter.OnItemClickListener { post ->
-                val intent = Intent(activity, CommentsActivity::class.java)
-                intent.putExtra("post", post as Serializable)
-                intent.putExtra("addressDetails", binding.txtHeader.text)
-                startActivity(intent)
+                 val intent = Intent(activity, CommentsActivity::class.java)
+                 intent.putExtra("post", post as Serializable)
+                 intent.putExtra("addressDetails", binding.txtHeader.text)
+                intent.putExtra("UserId", user.UserId)
+                intent.putExtra("Name", user.Name)
+
+                intent.putExtra("latitude", latitude)
+                intent.putExtra("longitude", longitude)
+
+                 startActivity(intent)
+
+
+
 
             }, it.Result)
 

@@ -14,12 +14,14 @@ import android.text.format.DateFormat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-public  class Utils {
+public class Utils {
 
     class CompanionClass {
 
@@ -39,28 +41,51 @@ public  class Utils {
                 }
                 return ""
             }
-            fun hideKeyboard(view: View,context: Context?) {
-                val inputMethodManager = context!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            fun hideKeyboard(view: View, context: Context?) {
+                val inputMethodManager =
+                    context!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
-            fun getAddressFromLatLng(context: Context?, latitude:String, longitude:String): String {
+
+            fun getAddressFromLatLng(
+                context: Context?,
+                latitude: String,
+                longitude: String
+            ): String {
                 val geocoder: Geocoder
                 val addresses: List<Address>
                 geocoder = Geocoder(context, Locale.getDefault())
                 return try {
-                    addresses = geocoder.getFromLocation(latitude.toDouble(), longitude.toDouble(), 1)
+                    addresses =
+                        geocoder.getFromLocation(latitude.toDouble(), longitude.toDouble(), 1)
                     addresses[0].getAddressLine(0)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     ""
                 }
             }
-            fun getRandomString(length: Int) : String {
+
+            fun getRandomString(length: Int): String {
                 val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
                 return (1..length)
                     .map { allowedChars.random() }
                     .joinToString("")
             }
+
+            inline fun <T> T?.ifNull(block: () -> Unit): T? {
+                if (this == null) block()
+                return this@ifNull
+            }
+
+            inline fun <T> T?.ifNonNull(block: (T) -> Unit): T? {
+                this?.let(block)
+                return this@ifNonNull
+            }
+
+
+
+
         }
     }
 }

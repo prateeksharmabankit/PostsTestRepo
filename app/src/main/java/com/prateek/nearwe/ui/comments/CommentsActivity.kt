@@ -38,11 +38,11 @@ class CommentsActivity : AppCompatActivity() {
     private val commentsViewModel: CommentsViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val postsViewModel: PostsViewModel by viewModel()
-    private val userViewModel: LoginViewModel by viewModel()
-    private lateinit var user: UserModel
     private lateinit var post: Result
     var latitude: String = ""
     var longitude: String = ""
+    var UserId: Int = 0
+    var Name: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,8 +51,11 @@ class CommentsActivity : AppCompatActivity() {
         binding = ActivityCommentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         post = intent.extras!!.get("post") as Result
-
         val addressDetails = intent.extras!!.get("addressDetails")
+        UserId = intent.extras!!.getInt("UserId")
+        Name = intent.extras!!.getString("Name")!!
+        latitude = intent.extras!!.getString("latitude")!!
+        longitude = intent.extras!!.getString("longitude")!!
         binding.txtName.text = post.Name
         binding.txtTitle.text = post.Title
         binding.txtDateTime.text = post.Ago
@@ -60,16 +63,16 @@ class CommentsActivity : AppCompatActivity() {
         binding.txtLocation.text = addressDetails.toString()
         binding.txtLike.setOnClickListener(View.OnClickListener {
             var LikeUnlikeRequest = PostLikesRequest()
-            LikeUnlikeRequest.UserId = user.UserId
+            LikeUnlikeRequest.UserId = UserId
             LikeUnlikeRequest.PostId = post.PostId
             postsViewModel.LikeUnlikePost(LikeUnlikeRequest)
             if (post.IsLiked == 0) {
                 binding.txtLike.setTextColor(resources.getColor(R.color.Red))
-                post.IsLiked = 1;
+                post.IsLiked = 1
 
             } else {
                 binding.txtLike.setTextColor(resources.getColor(R.color.Gray))
-                post.IsLiked = 0;
+                post.IsLiked = 0
             }
         })
         if (post.IsLiked == 0) {
@@ -98,21 +101,21 @@ class CommentsActivity : AppCompatActivity() {
                     override fun onAnimationStart(animator: Animator) {}
                     override fun onAnimationEnd(animator: Animator) {
 
-                        hideKeyboard(etMessage, context = applicationContext)
+                        hideKeyboard(binding.etMessage, context = applicationContext)
                         var commentRequest = CommentRequest()
                         commentRequest.CommentContent = binding.etMessage.text!!.trim().toString()
-                        commentRequest.UserId = user.UserId
+                        commentRequest.UserId = UserId
                         commentRequest.PostId = post.PostId
-                        commentRequest.UserName = user.Name;
+                        commentRequest.UserName = Name
                         commentRequest.DateTime = System.currentTimeMillis()
-                        if (post.UserId == user.UserId.toString()) {
+                        if (post.UserId == UserId.toString()) {
                             commentRequest.IsOwner = 1
                         } else {
                             commentRequest.IsOwner = 1
                         }
 
                         commentsViewModel.addPostGroup(commentRequest)
-                        etMessage.text!!.clear()
+                        binding.etMessage.text!!.clear()
 
                     }
 
@@ -126,45 +129,15 @@ class CommentsActivity : AppCompatActivity() {
         })
 
 
-        initObserver()
-        // commentsViewModel.getAllComments(id)
+
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
-        Locus.getCurrentLocation(applicationContext) { result ->
-            result.location?.let {
+        initObserver()
 
-                latitude = it.latitude.toString()
-                longitude = it.longitude.toString()
-
-
-            }
-            result.error?.let {
-
-                Locus.getCurrentLocation(applicationContext) { result ->
-                    result.location?.let {
-                        latitude = it.latitude.toString()
-                        longitude = it.longitude.toString()
-
-                    }
-                    result.error?.let { /* Received error! */ }
-                }
-            }
-        }
     }
 
     fun initObserver() {
-        userViewModel.getLoggedInUser()
-        /*commentsViewModel.commentsList.observe(this) {
-            val adapter = CommentsAdapter(it)
-            binding.recyclerView.adapter = adapter
-        }*/
-
-        /* commentsViewModel.errorMessage.observe(this) {
-             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-         }
-
-         */
         commentsViewModel.loading.observe(this, Observer {
             if (it) {
                 binding.progressBar.visibility = View.VISIBLE
@@ -172,23 +145,15 @@ class CommentsActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
             }
         })
-        userViewModel.userDetails.observe(this, Observer {
-            user = it
-            postsViewModel.AddPostViews(post.PostId)
-        })
+        postsViewModel.AddPostViews(post.PostId)
         postsViewModel.addPostLikesResponse.observe(this, Observer {
-
-
-            postsViewModel.getAllPosts(user.UserId, latitude, longitude)
+            postsViewModel.getAllPosts(UserId, latitude, longitude)
         })
 
         commentsViewModel.commentsModelList.observe(this, Observer {
-
             val adapter = CommentsAdapter(it)
             binding.recyclerView.adapter = adapter
         })
         commentsViewModel.getSavedAddresses(post.PostId)
-
-
     }
 }

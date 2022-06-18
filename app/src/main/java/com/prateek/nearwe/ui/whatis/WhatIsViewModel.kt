@@ -29,12 +29,12 @@ class WhatIsViewModel(
 
     fun getWhatIsPosts(userId:Int?,latitude:String,longitude:String) {
         loading.postValue(true)
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
-
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val result = postsServerRepository.GetAllWhatisPosts(userId,latitude,longitude)
             withContext(Dispatchers.Main) {
                 try {
                     loading.postValue(false)
-                    val result = postsServerRepository.GetAllWhatisPosts(userId,latitude,longitude)
+
 
                     userList.postValue(result.body())
                 } catch (throwable: Throwable) {
@@ -58,38 +58,7 @@ class WhatIsViewModel(
         }
 
     }
-    fun AddPostViews(PostId:Int) {
-        loading.postValue(true)
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
 
-            withContext(Dispatchers.Main) {
-                try {
-                    loading.postValue(false)
-                    var  addPostResponse=    postsServerRepository.AddPostViews(PostId)
-                    addPostViewResponse.postValue(addPostResponse.body())
-
-
-                } catch (throwable: Throwable) {
-                    loading.postValue(false)
-                    when (throwable) {
-                        is IOException -> {
-                            onError("Network Error")
-                        }
-                        is HttpException -> {
-                            val codeError = throwable.code()
-                            val errorMessageResponse = throwable.message()
-                            onError("Error $errorMessageResponse : $codeError")
-                        }
-                        else -> {
-                            onError("UnKnown error")
-                        }
-                    }
-                }
-                loading.value = false
-            }
-        }
-
-    }
     private fun onError(message: String) {
         errorMessage.value = message
         loading.value = false
@@ -102,38 +71,7 @@ class WhatIsViewModel(
 
 
 
-    fun LikeUnlikePost(request: PostLikesRequest) {
-        loading.postValue(true)
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
 
-            withContext(Dispatchers.Main) {
-                try {
-                    loading.postValue(false)
-                    var  addPostResponse=    postsServerRepository.AddPostLikesUnLike(request)
-                    addPostLikesResponse.postValue(addPostResponse.body())
-
-
-                } catch (throwable: Throwable) {
-                    loading.postValue(false)
-                    when (throwable) {
-                        is IOException -> {
-                            onError("Network Error")
-                        }
-                        is HttpException -> {
-                            val codeError = throwable.code()
-                            val errorMessageResponse = throwable.message()
-                            onError("Error $errorMessageResponse : $codeError")
-                        }
-                        else -> {
-                            onError("UnKnown error")
-                        }
-                    }
-                }
-                loading.value = false
-            }
-        }
-
-    }
 
 
 }

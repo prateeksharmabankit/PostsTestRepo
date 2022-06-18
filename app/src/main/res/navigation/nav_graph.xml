@@ -9,7 +9,9 @@
         android:id="@+id/firstFragment"
         android:name="com.prateek.nearwe.ui.posts.PostsFragment"
         android:label="Near Me"
-        tools:layout="@layout/fragment_posts" >
+        tools:layout="@layout/fragment_posts">
+
+
 
     </fragment>
     <fragment

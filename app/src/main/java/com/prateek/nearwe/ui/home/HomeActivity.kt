@@ -19,17 +19,16 @@
 package com.prateek.nearwe.ui.home
 
 
+import android.Manifest
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toFile
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -42,9 +41,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.birjuvachhani.locus.Locus
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.navigation.NavigationView
+import com.google.android.material.button.MaterialButton
+import com.innfinity.permissionflow.lib.requestPermissions
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.SubCategory.Result
 import com.prateek.nearwe.api.models.User.UserModel
@@ -53,8 +52,13 @@ import com.prateek.nearwe.databinding.ActivityHomeBinding
 import com.prateek.nearwe.ui.adapters.SubCategoryAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
+import gun0912.tedbottompicker.TedBottomPicker
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 
 class HomeActivity : AppCompatActivity() {
@@ -65,11 +69,13 @@ class HomeActivity : AppCompatActivity() {
     private val homeViewModel: HomeViewModel by viewModel()
     private val postsViewModel: PostsViewModel by viewModel()
     private val userViewModel: LoginViewModel by viewModel()
+    private lateinit var file: File
 
     private var postCategoryId: Int = 0
     private lateinit var user: UserModel
     var latitude: String = ""
     var longitude: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -100,7 +106,25 @@ class HomeActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
+        CoroutineScope(Dispatchers.Main).launch {
+            // just call requestPermission and pass in all required permissions
+            requestPermissions(
+                Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            )
+                .collect { permissions ->
+                    // here you get the result of the requests, permissions holds a list of Permission requests and you can check if all of them have been granted:
+                    val allGranted = permissions.find { !it.isGranted } == null
+                    // or iterate over the permissions and check them one by one
+                    permissions.forEach {
+                        val granted = it.isGranted
+                        // ...
+                    }
+                }
 
+        }
 
         initObserver()
         Locus.getCurrentLocation(applicationContext) { result ->
@@ -116,14 +140,6 @@ class HomeActivity : AppCompatActivity() {
 
             }
         }
-
-
-
-
-
-
-
-
         setupWithNavController(binding.bottomNavigationView, navController)
 
 
@@ -151,6 +167,7 @@ class HomeActivity : AppCompatActivity() {
 
 
     fun openAddBottomSheet(subCategoryList: List<Result>) {
+
         val bottomSheetDialog = BottomSheetDialog(this, R.style.TransparentDialog)
         bottomSheetDialog.setContentView(R.layout.add_postbottomsheet)
         val tvTitle = bottomSheetDialog.findViewById<TextView>(R.id.tvTitle)
@@ -164,10 +181,16 @@ class HomeActivity : AppCompatActivity() {
         val radioGroup1 =
             bottomSheetDialog.findViewById<RadioGroup>(R.id.radioGroup1)
 
-
         val radioSelected = radioGroup1?.checkedRadioButtonId
 
+        val imgUploadButton = bottomSheetDialog.findViewById<MaterialButton>(R.id.imgUploadButton)
+        imgUploadButton?.setOnClickListener(View.OnClickListener {
 
+            TedBottomPicker.with(this@HomeActivity)
+                .show {
+                    file = it.toFile()
+                }
+        })
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
         recylerSubCategories?.layoutManager = staggeredGridLayoutManager
         val adapter = SubCategoryAdapter(subCategoryList)
@@ -175,38 +198,71 @@ class HomeActivity : AppCompatActivity() {
         when (postCategoryId) {
             1 -> tvTitle?.text = getString(R.string.fabtextone)
             2 -> tvTitle?.text = getString(R.string.fabtexttwo)
-            3 -> tvTitle?.text = getString(R.string.fabtextthree)
+            4 -> {
+                tvTitle?.text = getString(R.string.fabtextthree)
+                imgUploadButton?.visibility = View.VISIBLE
+            }
             else -> println("I don't know anything about it")
         }
 
         PostNow?.setOnClickListener(View.OnClickListener {
-            var postModel = AddPostRequest()
-            postModel.Latitude = latitude
-            postModel.Longitude = longitude
-            when (radioSelected) {
-                R.id.postRadioOne -> postModel.PostType = 1
-                R.id.postRadioTwo -> postModel.PostType = 2
-                R.id.postRadioThree -> postModel.PostType = 3
-            }
-            postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
-            postModel.UserId = user.UserId
-            postModel.Title = etTitle?.text.toString().trim()
-            val selectedEngineers: List<Result> = subCategoryList
-                .filterIndexed { index, engineer ->
-                    engineer.isCHecked
 
+            when (postCategoryId) {
+                4 -> {
+                    var postModel = AddPostRequest()
+                    postModel.Latitude = latitude
+                    postModel.Longitude = longitude
+                    when (radioSelected) {
+                        R.id.postRadioOne -> postModel.PostType = 1
+                        R.id.postRadioTwo -> postModel.PostType = 2
+                        R.id.postRadioThree -> postModel.PostType = 3
+                    }
+                    postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
+                    postModel.UserId = user.UserId
+                    postModel.Title = etTitle?.text.toString().trim()
+                    val selectedEngineers: List<Result> = subCategoryList
+                        .filterIndexed { index, engineer ->
+                            engineer.isCHecked
+
+
+                        }
+
+
+                    postModel.PostSubCategories =
+                        selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
+                            .dropLast(1)
+
+
+
+                    postsViewModel.AddWhatsIsPost(file, postModel)
+                    bottomSheetDialog.dismiss()
 
                 }
+                else -> {
+
+                    var postModel = AddPostRequest()
+                    postModel.Latitude = latitude
+                    postModel.Longitude = longitude
+                    when (radioSelected) {
+                        R.id.postRadioOne -> postModel.PostType = 1
+                        R.id.postRadioTwo -> postModel.PostType = 2
+                        R.id.postRadioThree -> postModel.PostType = 3
+                    }
+                    postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
+                    postModel.UserId = user.UserId
+                    postModel.Title = etTitle?.text.toString().trim()
+                    val selectedEngineers: List<Result> = subCategoryList
+                        .filterIndexed { index, engineer -> engineer.isCHecked }
+                    postModel.PostSubCategories =
+                        selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
+                            .dropLast(1)
+                    postsViewModel.AddPost(postModel)
+                    bottomSheetDialog.dismiss()
+                }
+
+            }
 
 
-            postModel.PostSubCategories =
-                selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
-                    .dropLast(1)
-
-
-
-            postsViewModel.AddPost(postModel)
-            bottomSheetDialog.dismiss()
         })
 
 
@@ -243,6 +299,7 @@ class HomeActivity : AppCompatActivity() {
         postsViewModel.addPostResponse.observe(this, Observer {
             Toast.makeText(applicationContext, "Post Added Successfully", Toast.LENGTH_SHORT).show()
 
+
         })
 
         postsViewModel.loading.observe(this, Observer {
@@ -254,4 +311,5 @@ class HomeActivity : AppCompatActivity() {
         })
 
     }
+
 }

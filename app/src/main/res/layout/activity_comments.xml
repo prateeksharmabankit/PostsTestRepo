@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/White"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeActivity">
+    tools:context=".ui.comments.CommentsActivity">
 
 
 

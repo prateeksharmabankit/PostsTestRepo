@@ -34,7 +34,7 @@ class LoginViewModel(
 
     val userDetails = MutableLiveData<UserModel>()
     fun checkLoginStatus() {
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             var response = postsPersistanceRepositoru.checkisUserLoggedIn();
             withContext(Dispatchers.Main) {
                 if (response.isNotEmpty()) {
@@ -67,7 +67,7 @@ class LoginViewModel(
     }
 
     fun getLoggedInUser() {
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             var response = postsPersistanceRepositoru.checkisUserLoggedIn();
             withContext(Dispatchers.Main) {
                 try {
@@ -95,22 +95,20 @@ class LoginViewModel(
     }
 
     fun saveUser(userModel: UserModel) {
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             postsPersistanceRepositoru.AddUser(userModel);
         }
 
     }
 
 
-
-
     fun loginUser(userModel: UserModel) {
         loading.value = true
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
-
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val result = loginServerRepository.loginUser(userModel)
             withContext(Dispatchers.Main) {
                 try {
-                    val result = loginServerRepository.loginUser(userModel)
+
                     loginResponse.postValue(result.body())
                     loading.value = false
                 } catch (throwable: Throwable) {
@@ -150,12 +148,12 @@ class LoginViewModel(
     }
 
 
-    fun getAddressHeader(context: Context?, latitude:String, longitude:String) {
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
-
+    fun getAddressHeader(context: Context?, latitude: String, longitude: String) {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val result = Utils.CompanionClass.getAddressFromLatLng(context, latitude, longitude)
             withContext(Dispatchers.Main) {
                 try {
-                    val result = Utils.CompanionClass.getAddressFromLatLng(context,latitude,longitude)
+
                     addressDetails.postValue(result)
                     loading.value = false
                 } catch (throwable: Throwable) {

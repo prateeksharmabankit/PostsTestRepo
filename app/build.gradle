@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'koin'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 android {
     compileSdkVersion 32
     buildToolsVersion "29.0.3"
@@ -125,5 +126,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.nambimobile.widgets:expandable-fab:1.2.1'
+    implementation 'gun0912.ted:tedbottompicker:2.0.1'
+    implementation("com.robertlevonyan.components:PermissionsFlow:1.2.5")
 
 }

@@ -34,12 +34,12 @@ class HomeViewModel(
 
     fun getSubcategoriesByCategoryId(categoryId:Int) {
         loading.postValue(true)
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
-
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val result = subCategoryRepository.getSubcategoriesByCategoryId(categoryId)
             withContext(Dispatchers.Main) {
                 try {
                     loading.postValue(false)
-                    val result = subCategoryRepository.getSubcategoriesByCategoryId(categoryId)
+
 
                     userList.postValue(result.body())
                 } catch (throwable: Throwable) {

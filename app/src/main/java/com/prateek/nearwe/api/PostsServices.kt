@@ -12,7 +12,6 @@
 
 package com.prateek.nearwe.api
 
-import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.api.models.SubCategory.SubCategoryResponse
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
@@ -22,40 +21,72 @@ import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResp
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.PostResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
+
 
 interface PostsServices {
     @Headers("Accept: application/json")
     @GET("Posts/GetAllPosts/{UserId}/{Latitude}/{Longitude}")
-    suspend fun GetAllPosts(@Path("UserId") UserId: Int?,@Path("Latitude") Latitude: String,@Path("Longitude") Longitude: String):Response<PostResponse>
+    suspend fun GetAllPosts(
+        @Path("UserId") UserId: Int?,
+        @Path("Latitude") Latitude: String,
+        @Path("Longitude") Longitude: String
+    ): Response<PostResponse>
 
     @GET("Posts/GetAllTrendingPosts/{UserId}/{Latitude}/{Longitude}")
-    suspend fun GetAllTrendingPosts(@Path("UserId") UserId: Int?,@Path("Latitude") Latitude: String,@Path("Longitude") Longitude: String):Response<PostResponse>
+    suspend fun GetAllTrendingPosts(
+        @Path("UserId") UserId: Int?,
+        @Path("Latitude") Latitude: String,
+        @Path("Longitude") Longitude: String
+    ): Response<PostResponse>
 
     @GET("Posts/GetAllWhatisPosts/{UserId}/{Latitude}/{Longitude}")
-    suspend fun GetAllWhatisPosts(@Path("UserId") UserId: Int?,@Path("Latitude") Latitude: String,@Path("Longitude") Longitude: String):Response<PostResponse>
-
-
+    suspend fun GetAllWhatisPosts(
+        @Path("UserId") UserId: Int?,
+        @Path("Latitude") Latitude: String,
+        @Path("Longitude") Longitude: String
+    ): Response<PostResponse>
 
 
     @Headers("Accept: application/json")
     @POST("Register")
-    suspend fun LoginUser(@Body userModel: UserModel):Response<LoginResponse>
+    suspend fun LoginUser(@Body userModel: UserModel): Response<LoginResponse>
 
     @GET("/Posts/AddPostView/{PostId}")
-    suspend fun AddPostViews(@Path("PostId") PostId: Int):Response<AddPostViewsResponse>
+    suspend fun AddPostViews(@Path("PostId") PostId: Int): Response<AddPostViewsResponse>
 
 
     @POST("/PostLikesMapping/Add")
-    suspend fun AddPostLikesUnLike(@Body postLikesRequest: PostLikesRequest):Response<AddPostLikesResponse>
+    suspend fun AddPostLikesUnLike(@Body postLikesRequest: PostLikesRequest): Response<AddPostLikesResponse>
 
     @GET("NearWeSubCategory/GetKeyPairValues/{CategoryId}")
-    suspend fun getSubcategoriesByCategoryId(@Path("CategoryId") CategoryId:Int):Response<SubCategoryResponse>
+    suspend fun getSubcategoriesByCategoryId(@Path("CategoryId") CategoryId: Int): Response<SubCategoryResponse>
 
 
     @POST("/Posts/Add")
-    suspend fun AddPost(@Body postModel: AddPostRequest):Response<AddPostResponse>
+    suspend fun AddPost(@Body postModel: AddPostRequest): Response<AddPostResponse>
+
+    @Multipart
+    @POST("/Posts/AddWhatIsPost")
+    suspend fun AddWhatIsPost(
+
+        @Part formFile: MultipartBody.Part ,
+        @Part("Title") Title: RequestBody?,
+        @Part("IsAnonymous") IsAnonymous: RequestBody?,
+
+        @Part("UserId") UserId: RequestBody?,
+        @Part("Latitude") Latitude: RequestBody?,
+
+        @Part("Longitude") Longitude: RequestBody?,
+        @Part("PostType") PostType: RequestBody?,
+        @Part("ImageUrl") ImageUrl: RequestBody?,
+
+        @Part("PostSubCategories") PostSubCategories: RequestBody?
+    ): Response<AddPostResponse>
 
 
 }
