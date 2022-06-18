@@ -94,6 +94,12 @@ class TrendingFragment : Fragment() {
                 val intent = Intent(activity, CommentsActivity::class.java)
                 intent.putExtra("post", post as Serializable)
                 intent.putExtra("addressDetails", binding.txtHeader.text)
+                intent.putExtra("UserId", user.UserId)
+                intent.putExtra("Name", user.Name)
+
+                intent.putExtra("latitude", latitude)
+                intent.putExtra("longitude", longitude)
+
                 startActivity(intent)
 
             }, it.Result)

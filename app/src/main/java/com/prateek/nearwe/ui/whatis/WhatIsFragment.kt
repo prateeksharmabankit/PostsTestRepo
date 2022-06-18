@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.birjuvachhani.locus.Locus
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.User.UserModel
+import com.prateek.nearwe.databinding.FragmentTrendingBinding
+import com.prateek.nearwe.databinding.FragmentWhatisBinding
 
 import com.prateek.nearwe.ui.adapters.PostsAdapter
 import com.prateek.nearwe.ui.comments.CommentsActivity
@@ -27,9 +29,9 @@ class WhatIsFragment : Fragment() {
     private val whatIsViewModel: WhatIsViewModel by viewModel()
     private val userViewModel: LoginViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var txtHeader: TextView
+    private lateinit var binding: FragmentWhatisBinding
+
+
     private lateinit var user: UserModel
 
     var latitude: String = ""
@@ -39,15 +41,9 @@ class WhatIsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val root = inflater.inflate(R.layout.fragment_whatis, container, false)
-
-        recyclerView = root.findViewById(R.id.recyclerView)
-
-        progressBar = root.findViewById(R.id.progressBar)
+        binding = FragmentWhatisBinding.inflate(inflater, container, false)
         linearLayoutManager = LinearLayoutManager(activity)
-        recyclerView.layoutManager = linearLayoutManager
-        txtHeader = root.findViewById(R.id.txtHeader)
+        binding.recyclerView.layoutManager = linearLayoutManager
         initObserver()
         Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
             result.location?.let {
@@ -60,23 +56,11 @@ class WhatIsFragment : Fragment() {
             }
             result.error?.let {
 
-                Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
-                    result.location?.let {
-                        latitude = it.latitude.toString()
-                        longitude = it.longitude.toString()
-                        userViewModel.getAddressHeader(
-                            activity?.applicationContext,
-                            latitude,
-                            longitude
-                        )
-                        userViewModel.getLoggedInUser()
-                    }
-                    result.error?.let { /* Received error! */ }
-                }
+
             }
         }
 
-        return root
+        return binding.root
 
     }
 
@@ -90,12 +74,18 @@ class WhatIsFragment : Fragment() {
             }, PostsAdapter.OnItemClickListener { post ->
                 val intent = Intent(activity, CommentsActivity::class.java)
                 intent.putExtra("post", post as Serializable)
-                intent.putExtra("addressDetails", txtHeader.text)
+                intent.putExtra("addressDetails", binding.txtHeader.text)
+                intent.putExtra("UserId", user.UserId)
+                intent.putExtra("Name", user.Name)
+
+                intent.putExtra("latitude", latitude)
+                intent.putExtra("longitude", longitude)
+
                 startActivity(intent)
 
             }, it.Result)
 
-            recyclerView.adapter = adapter
+            binding.recyclerView.adapter = adapter
 
         }
 
@@ -105,21 +95,21 @@ class WhatIsFragment : Fragment() {
 
         whatIsViewModel.loading.observe(viewLifecycleOwner, Observer {
             if (it) {
-                progressBar.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.VISIBLE
             } else {
-                progressBar.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
             }
         })
 
 
         userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
-            user=it
+            user = it
             whatIsViewModel.getWhatIsPosts(it.UserId, latitude, longitude)
         })
 
 
         userViewModel.addressDetails.observe(viewLifecycleOwner, Observer {
-            txtHeader.text = it
+            binding.txtHeader.text = it
         })
         whatIsViewModel.addPostViewResponse.observe(viewLifecycleOwner, Observer {
             whatIsViewModel.getWhatIsPosts(user.UserId, latitude, longitude)

@@ -232,10 +232,33 @@ class HomeActivity : AppCompatActivity() {
                         selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
                             .dropLast(1)
 
+                    if (postModel.PostSubCategories!!.isEmpty()) {
+
+                        Toast.makeText(applicationContext, "Please Select Tags", Toast.LENGTH_SHORT)
+                            .show()
+                    } else if (etTitle != null) {
+                        if (etTitle.text.isEmpty()) {
+                            Toast.makeText(
+                                applicationContext,
+                                "Please Add Post Description",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        } else if (file == null) {
+                            Toast.makeText(
+                                applicationContext,
+                                "Please Upload Image",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        } else {
+                            postsViewModel.AddWhatsIsPost(file, postModel)
+                            bottomSheetDialog.dismiss()
+                        }
 
 
-                    postsViewModel.AddWhatsIsPost(file, postModel)
-                    bottomSheetDialog.dismiss()
+                    }
+
 
                 }
                 else -> {
@@ -256,8 +279,32 @@ class HomeActivity : AppCompatActivity() {
                     postModel.PostSubCategories =
                         selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
                             .dropLast(1)
-                    postsViewModel.AddPost(postModel)
-                    bottomSheetDialog.dismiss()
+
+
+
+
+
+
+                    if (postModel.PostSubCategories!!.isEmpty()) {
+
+                        Toast.makeText(applicationContext, "Please Select Tags", Toast.LENGTH_SHORT)
+                            .show()
+                    } else if (etTitle != null) {
+                        if (etTitle.text.isEmpty()) {
+                            Toast.makeText(
+                                applicationContext,
+                                "Please Add Post Description",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        } else {
+                            postsViewModel.AddPost(postModel)
+                            bottomSheetDialog.dismiss()
+                        }
+
+
+                    }
+
                 }
 
             }
