@@ -22,6 +22,7 @@ package com.prateek.nearwe.ui.home
 import android.Manifest
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -32,11 +33,9 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.ui.*
 import androidx.navigation.ui.NavigationUI.setupWithNavController
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -84,6 +83,7 @@ class HomeActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
+
         navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
 
 
@@ -98,11 +98,16 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        appBarConfiguration = AppBarConfiguration(
+       /* appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_to_home, R.id.nav_to_home, R.id.nav_to_home
             ), drawerLayout
-        )
+        )*/
+
+         appBarConfiguration = AppBarConfiguration(navController.graph,
+         binding.drawerLayout)
+
+
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
@@ -152,10 +157,12 @@ class HomeActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onSupportNavigateUp(): Boolean {
 
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
+    override fun onOptionsItemSelected(item: MenuItem)= item.onNavDestinationSelected(navController)
+            || super.onOptionsItemSelected(item)
+
+
+    override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration)
 
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -181,7 +188,7 @@ class HomeActivity : AppCompatActivity() {
         val radioGroup1 =
             bottomSheetDialog.findViewById<RadioGroup>(R.id.radioGroup1)
 
-        val radioSelected = radioGroup1?.checkedRadioButtonId
+
 
         val imgUploadButton = bottomSheetDialog.findViewById<MaterialButton>(R.id.imgUploadButton)
         imgUploadButton?.setOnClickListener(View.OnClickListener {
