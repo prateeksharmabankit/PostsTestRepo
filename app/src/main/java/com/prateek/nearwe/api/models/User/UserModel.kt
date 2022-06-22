@@ -20,11 +20,11 @@ import com.google.gson.annotations.SerializedName
 data class UserModel(
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id") var Id: Int? = null,
-    @SerializedName("UserId") var UserId: Int? = null,
-    @SerializedName("EmailAddress") var EmailAddress: String? = null,
-    @SerializedName("Name") var Name: String? = null,
-    @SerializedName("Latitude") var Latitude: String? = null,
-    @SerializedName("Longitude") var Longitude: String? = null,
+    @SerializedName("userId") var UserId: Int? = null,
+    @SerializedName("emailAddress") var EmailAddress: String? = null,
+    @SerializedName("name") var Name: String? = null,
+    @SerializedName("latitude") var Latitude: String? = null,
+    @SerializedName("longitude") var Longitude: String? = null
 
 
     )

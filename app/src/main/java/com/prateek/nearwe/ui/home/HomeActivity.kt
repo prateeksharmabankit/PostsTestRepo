@@ -33,18 +33,19 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.ui.*
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.birjuvachhani.locus.Locus
+
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.innfinity.permissionflow.lib.requestPermissions
 import com.prateek.nearwe.R
-import com.prateek.nearwe.api.models.SubCategory.Result
+import com.prateek.nearwe.api.models.SubCategory.ResultList
+import com.prateek.nearwe.api.models.SubCategory.SubCategoriesResponse
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.databinding.ActivityHomeBinding
@@ -117,19 +118,13 @@ class HomeActivity : AppCompatActivity() {
                 Manifest.permission.CAMERA,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
-                .collect { permissions ->
-                    // here you get the result of the requests, permissions holds a list of Permission requests and you can check if all of them have been granted:
-                    val allGranted = permissions.find { !it.isGranted } == null
-                    // or iterate over the permissions and check them one by one
-                    permissions.forEach {
-                        val granted = it.isGranted
-                        // ...
-                    }
-                }
+
 
         }
+
+
 
         initObserver()
         Locus.getCurrentLocation(applicationContext) { result ->
@@ -173,7 +168,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    fun openAddBottomSheet(subCategoryList: List<Result>) {
+    fun openAddBottomSheet(subCategoryList: List<ResultList>) {
 
         val bottomSheetDialog = BottomSheetDialog(this, R.style.TransparentDialog)
         bottomSheetDialog.setContentView(R.layout.add_postbottomsheet)
@@ -193,10 +188,13 @@ class HomeActivity : AppCompatActivity() {
         val imgUploadButton = bottomSheetDialog.findViewById<MaterialButton>(R.id.imgUploadButton)
         imgUploadButton?.setOnClickListener(View.OnClickListener {
 
-            TedBottomPicker.with(this@HomeActivity)
+           TedBottomPicker.with(this@HomeActivity)
                 .show {
                     file = it.toFile()
+
                 }
+
+
         })
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
         recylerSubCategories?.layoutManager = staggeredGridLayoutManager
@@ -205,9 +203,9 @@ class HomeActivity : AppCompatActivity() {
         var postModel = AddPostRequest()
         postModel.PostType=1
         when (postCategoryId) {
-            1 -> tvTitle?.text = getString(R.string.fabtextone)
-            2 -> tvTitle?.text = getString(R.string.fabtexttwo)
-            4 -> {
+            941590   -> tvTitle?.text = getString(R.string.fabtextone)
+            487951 -> tvTitle?.text = getString(R.string.fabtexttwo)
+            123251 -> {
                 tvTitle?.text = getString(R.string.fabtextthree)
                 imgUploadButton?.visibility = View.VISIBLE
             }
@@ -227,7 +225,7 @@ class HomeActivity : AppCompatActivity() {
         PostNow?.setOnClickListener(View.OnClickListener {
 
             when (postCategoryId) {
-                4 -> {
+                123251 -> {
 
                     postModel.Latitude = latitude
                     postModel.Longitude = longitude
@@ -237,7 +235,7 @@ class HomeActivity : AppCompatActivity() {
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
                     postModel.Title = etTitle?.text.toString().trim()
-                    val selectedEngineers: List<Result> = subCategoryList
+                    val selectedEngineers: List<ResultList> = subCategoryList
                         .filterIndexed { index, engineer ->
                             engineer.isCHecked
 
@@ -246,7 +244,7 @@ class HomeActivity : AppCompatActivity() {
 
 
                     postModel.PostSubCategories =
-                        selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
+                        selectedEngineers.joinToString { it.subCategoryId.toString()!! }.split(",").toString().drop(1)
                             .dropLast(1)
 
                     if (postModel.PostSubCategories!!.isEmpty()) {
@@ -287,10 +285,10 @@ class HomeActivity : AppCompatActivity() {
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
                     postModel.Title = etTitle?.text.toString().trim()
-                    val selectedEngineers: List<Result> = subCategoryList
+                    val selectedEngineers: List<ResultList> = subCategoryList
                         .filterIndexed { index, engineer -> engineer.isCHecked }
                     postModel.PostSubCategories =
-                        selectedEngineers.joinToString { it.Key!! }.split(",").toString().drop(1)
+                        selectedEngineers.joinToString { it.subCategoryId.toString()!! }.split(",").toString().drop(1)
                             .dropLast(1)
                     if (postModel.PostSubCategories!!.isEmpty()) {
 
@@ -325,25 +323,25 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun add_Interest_Hobiles_post_click(view: View) {
-        postCategoryId = 2
+        postCategoryId = 487951
         homeViewModel.getSubcategoriesByCategoryId(postCategoryId)
 
     }
 
     fun add_whats_new_click(view: View) {
-        postCategoryId = 4
+        postCategoryId = 123251
         homeViewModel.getSubcategoriesByCategoryId(postCategoryId)
 
     }
 
     fun add_new_post_click(view: View) {
-        postCategoryId = 1
+        postCategoryId = 941590
         homeViewModel.getSubcategoriesByCategoryId(postCategoryId)
     }
 
     fun initObserver() {
         homeViewModel.userList.observe(this, Observer {
-            openAddBottomSheet(it.Result)
+            openAddBottomSheet(it.result)
         })
 
         userViewModel.userDetails.observe(this, Observer {
@@ -365,5 +363,8 @@ class HomeActivity : AppCompatActivity() {
         })
 
     }
+
+
+
 
 }

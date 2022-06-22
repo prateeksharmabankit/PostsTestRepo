@@ -6,12 +6,11 @@
 
 package com.prateek.nearwe.api.models.posts
 
-import androidx.room.Entity
+import java.io.Serializable
 
-@Entity
-data class PostResponse(
-    val errorMessage: String,
-    val isError: Boolean,
-    val message: String,
-    val result: List<Result>
-)
+data class User(
+    val emailAddress: String,
+    val isAnonymous: Int,
+    val name: String,
+   val  userId: String
+):Serializable

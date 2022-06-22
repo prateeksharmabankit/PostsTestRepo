@@ -2,30 +2,20 @@ package com.prateek.nearwe.ui.trending
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.birjuvachhani.locus.Locus
-import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.User.UserModel
-import com.prateek.nearwe.databinding.FragmentPostsBinding
 import com.prateek.nearwe.databinding.FragmentTrendingBinding
-
 import com.prateek.nearwe.ui.adapters.PostsAdapter
 import com.prateek.nearwe.ui.comments.CommentsActivity
 import com.prateek.nearwe.ui.login.LoginViewModel
-import com.prateek.nearwe.ui.posts.PostsViewModel
-import kotlinx.android.synthetic.main.nav_header_main.view.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
@@ -86,7 +76,7 @@ class TrendingFragment : Fragment() {
 
     fun initObserver() {
         trendingViewModel.userList.observe(viewLifecycleOwner) {
-            Log.e("error", it.Result.get(0).IsLiked.toString())
+
             val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
 
 
@@ -102,7 +92,7 @@ class TrendingFragment : Fragment() {
 
                 startActivity(intent)
 
-            }, it.Result)
+            }, it.result)
 
             binding.recyclerView.adapter = adapter
 

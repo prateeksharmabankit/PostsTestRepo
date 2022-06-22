@@ -1,8 +1,6 @@
 package com.prateek.nearwe.ui.login
 
 import android.content.Context
-import android.location.Address
-import android.location.Geocoder
 import androidx.lifecycle.*
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
@@ -27,7 +25,7 @@ class LoginViewModel(
     val loginStatus = MutableLiveData<Boolean>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
+      //  onError("Exception handled: ${throwable.localizedMessage}")
     }
 
     val loginResponse = MutableLiveData<LoginResponse>()

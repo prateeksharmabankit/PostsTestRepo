@@ -12,7 +12,7 @@
 
 package com.prateek.nearwe.api
 
-import com.prateek.nearwe.api.models.SubCategory.SubCategoryResponse
+import com.prateek.nearwe.api.models.SubCategory.SubCategoriesResponse
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
@@ -23,7 +23,6 @@ import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.PostResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -64,7 +63,7 @@ interface PostsServices {
     suspend fun AddPostLikesUnLike(@Body postLikesRequest: PostLikesRequest): Response<AddPostLikesResponse>
 
     @GET("NearWeSubCategory/GetKeyPairValues/{CategoryId}")
-    suspend fun getSubcategoriesByCategoryId(@Path("CategoryId") CategoryId: Int): Response<SubCategoryResponse>
+    suspend fun getSubcategoriesByCategoryId(@Path("CategoryId") CategoryId: Int): Response<SubCategoriesResponse>
 
 
     @POST("/Posts/Add")

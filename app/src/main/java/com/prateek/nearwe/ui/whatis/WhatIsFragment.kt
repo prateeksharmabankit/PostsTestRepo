@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.birjuvachhani.locus.Locus
@@ -83,7 +84,7 @@ class WhatIsFragment : Fragment() {
 
                 startActivity(intent)
 
-            }, it.Result)
+            }, it.result)
 
             binding.recyclerView.adapter = adapter
 

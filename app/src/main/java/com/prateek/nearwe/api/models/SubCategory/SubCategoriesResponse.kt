@@ -1,17 +1,14 @@
 /*************************************************
- * Created by Efendi Hariyadi on 22/06/22, 1:42 PM
+ * Created by Efendi Hariyadi on 22/06/22, 3:10 PM
  * Copyright (c) 2022 . All rights reserved.
- * Last modified 22/06/22, 1:42 PM
+ * Last modified 22/06/22, 3:10 PM
  ************************************************/
 
-package com.prateek.nearwe.api.models.posts
+package com.prateek.nearwe.api.models.SubCategory
 
-import androidx.room.Entity
-
-@Entity
-data class PostResponse(
+data class SubCategoriesResponse(
     val errorMessage: String,
     val isError: Boolean,
     val message: String,
-    val result: List<Result>
+    val result: List<ResultList>
 )

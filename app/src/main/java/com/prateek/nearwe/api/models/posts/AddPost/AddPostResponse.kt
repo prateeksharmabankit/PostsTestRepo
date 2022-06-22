@@ -6,7 +6,6 @@
 
 package com.prateek.nearwe.api.models.posts.AddPost
 
-import com.prateek.nearwe.api.models.posts.PostSubCategoryDetailsDto
 import java.io.Serializable
 
 

@@ -9,7 +9,6 @@ package com.prateek.nearwe.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.prateek.nearwe.R
 
-import com.prateek.nearwe.api.models.posts.PostModel
 import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNonNull
@@ -50,10 +48,10 @@ class PostsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val post = mList[position]
-        holder.txtTitle.text = post.Title
-        holder.txtDateTime.text = post.Ago
+        holder.txtTitle.text = post.title
+        holder.txtDateTime.text = post.ago
 
-        when (post.PostType) {
+        when (post.postType) {
             1 -> holder.imgpostType.setColorFilter(
                 ContextCompat.getColor(
                     MainApp.instance,
@@ -75,28 +73,28 @@ class PostsAdapter(
 
         }
 
-        when (post.IsAnonymous) {
-            0 -> holder.txtName.text = post.Name
+        when (post.isAnonymous) {
+            0 -> holder.txtName.text = post.user.name
 
             1 -> holder.txtName.text = MainApp.instance.getString(R.string.anonymous)
 
 
         }
 
-        post.ImageUrl.ifNull {
+        post.imageUrl.ifNull {
 
             holder.imgPost.visibility = View.GONE
         }
-        post.ImageUrl.ifNonNull {
+        post.imageUrl.ifNonNull {
             Glide.with(MainApp.instance)
-                .load(post.ImageUrl)
+                .load(post.imageUrl)
                 .into(holder.imgPost)
             holder.imgPost.visibility = View.VISIBLE
         }
         for (categoryDetails in post.postSubCategoryDetailsDtos) {
-            holder.txtCategory.text = categoryDetails.CategoryName
+           // holder.txtCategory.text = categoryDetails.CategoryName
             holder.txtSubCategory.text =
-                holder.txtSubCategory.text.toString() + " " + categoryDetails.SubCategoryName
+                holder.txtSubCategory.text.toString() + " " + categoryDetails.subCategoryName
         }
 
 

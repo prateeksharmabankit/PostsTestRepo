@@ -10,7 +10,7 @@ import org.koin.dsl.module
 val postDatabaseModule = module {
 
     single { Room.databaseBuilder(androidApplication(), PostsDatabase::class.java, "Posts").build() }
-    single { get<PostsDatabase>().postsDAO() }
+    /*single { get<PostsDatabase>().postsDAO() }*/
     single { get<PostsDatabase>().userDAO() }
 }
 

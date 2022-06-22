@@ -32,7 +32,7 @@ class PostsViewModel(
     val userList = MutableLiveData<PostResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
+      //  onError("Exception handled: ${throwable.localizedMessage}")
     }
     val loading = MutableLiveData<Boolean>()
 
@@ -69,6 +69,7 @@ class PostsViewModel(
     }
 
     private fun onError(message: String) {
+
         errorMessage.value = message
         loading.value = false
     }

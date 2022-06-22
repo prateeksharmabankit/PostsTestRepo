@@ -2,22 +2,15 @@
 package com.prateek.nearwe.ui.home
 
 import androidx.lifecycle.*
-import com.prateek.nearwe.api.models.SubCategory.SubCategoryResponse
-import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
-import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
-import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
-import com.prateek.nearwe.api.models.posts.PostModel
-import com.prateek.nearwe.api.models.posts.PostResponse
+import com.prateek.nearwe.api.models.SubCategory.SubCategoriesResponse
 
-import com.prateek.nearwe.repository.PostsRoomRepository
-import com.prateek.nearwe.repository.PostsServerRepository
 import com.prateek.nearwe.repository.SubCategoryRepository
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.io.IOException
 
 class HomeViewModel(
-    private val subCategoryRepository: SubCategoryRepository,
+    private val subCategoryRepository: SubCategoryRepository
 
 
 ) : ViewModel() {
@@ -25,10 +18,10 @@ class HomeViewModel(
 
 
 
-    val userList = MutableLiveData<SubCategoryResponse>()
+    val userList = MutableLiveData<SubCategoriesResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
+       // onError("Exception handled: ${throwable.localizedMessage}")
     }
     val loading = MutableLiveData<Boolean>()
 

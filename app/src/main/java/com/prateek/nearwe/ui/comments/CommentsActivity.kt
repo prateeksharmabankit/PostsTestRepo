@@ -55,31 +55,31 @@ class CommentsActivity : AppCompatActivity() {
         val addressDetails = intent.extras!!.get("addressDetails")
         UserId = intent.extras!!.getInt("UserId")
         Name = intent.extras!!.getString("Name")!!
-        when (post.IsAnonymous) {
-            0 -> binding.txtName.text = post.Name
+        when (post.isAnonymous) {
+            0 -> binding.txtName.text = post.user.name
             1 -> binding.txtName.text = resources.getString(R.string.anonymous)
         }
         latitude = intent.extras!!.getString("latitude")!!
         longitude = intent.extras!!.getString("longitude")!!
-        binding.txtTitle.text = post.Title
-        binding.txtDateTime.text = post.Ago
-        binding.txtViews.text = post.PostViews.toString()
+        binding.txtTitle.text = post.title
+        binding.txtDateTime.text = post.ago
+        binding.txtViews.text = post.postViews.toString()
         binding.txtLocation.text = addressDetails.toString()
         binding.txtLike.setOnClickListener(View.OnClickListener {
             var LikeUnlikeRequest = PostLikesRequest()
             LikeUnlikeRequest.UserId = UserId
-            LikeUnlikeRequest.PostId = post.PostId
+            LikeUnlikeRequest.PostId = post.postId
             postsViewModel.LikeUnlikePost(LikeUnlikeRequest)
-            if (post.IsLiked == 0) {
+            if (post.isLiked == 0) {
                 binding.txtLike.setTextColor(resources.getColor(R.color.Red))
-                post.IsLiked = 1
+                post.isLiked = 1
 
             } else {
                 binding.txtLike.setTextColor(resources.getColor(R.color.Gray))
-                post.IsLiked = 0
+                post.isLiked = 0
             }
         })
-        if (post.IsLiked == 0) {
+        if (post.isLiked == 0) {
             binding.txtLike.setTextColor(resources.getColor(R.color.Gray))
 
         } else {
@@ -109,10 +109,10 @@ class CommentsActivity : AppCompatActivity() {
                         var commentRequest = CommentRequest()
                         commentRequest.CommentContent = binding.etMessage.text!!.trim().toString()
                         commentRequest.UserId = UserId
-                        commentRequest.PostId = post.PostId
+                        commentRequest.PostId = post.postId
                         commentRequest.UserName = Name
                         commentRequest.DateTime = System.currentTimeMillis()
-                        if (post.UserId == UserId.toString()) {
+                        if (post.user.userId == UserId.toString()) {
                             commentRequest.IsOwner = 1
                         } else {
                             commentRequest.IsOwner = 1
@@ -149,7 +149,7 @@ class CommentsActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
             }
         })
-        postsViewModel.AddPostViews(post.PostId)
+        postsViewModel.AddPostViews(post.postId)
         postsViewModel.addPostLikesResponse.observe(this, Observer {
           //  postsViewModel.getAllPosts(UserId, latitude, longitude)
         })
@@ -158,6 +158,6 @@ class CommentsActivity : AppCompatActivity() {
             val adapter = CommentsAdapter(it)
             binding.recyclerView.adapter = adapter
         })
-        commentsViewModel.getSavedAddresses(post.PostId)
+        commentsViewModel.getSavedAddresses(post.postId)
     }
 }

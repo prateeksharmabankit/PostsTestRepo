@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.birjuvachhani.locus.Locus
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -165,10 +166,10 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResponse.observe(this) {
             binding.progressBar.visibility = View.GONE
 
-            it.Result?.let { it1 ->
-                it1.User.Latitude=latitude
-                it1.User.Longitude=longitude
-                loginViewModel.saveUser(it1.User)
+            it.result?.let { it1 ->
+                it1.Latitude=latitude
+                it1.Longitude=longitude
+                loginViewModel.saveUser(it.result)
                 startActivity(
                     Intent(
                         this, HomeActivity

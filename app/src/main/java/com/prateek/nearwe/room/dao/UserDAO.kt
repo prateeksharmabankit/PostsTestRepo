@@ -6,7 +6,6 @@ import androidx.room.Insert
 
 import androidx.room.Query
 import com.prateek.nearwe.api.models.User.UserModel
-import com.prateek.nearwe.api.models.posts.PostModel
 
 @Dao
 interface UserDAO {

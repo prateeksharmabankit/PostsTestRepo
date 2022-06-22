@@ -4,11 +4,8 @@ package com.prateek.nearwe.ui.whatis
 import androidx.lifecycle.*
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
-import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
-import com.prateek.nearwe.api.models.posts.PostModel
 import com.prateek.nearwe.api.models.posts.PostResponse
 
-import com.prateek.nearwe.repository.PostsRoomRepository
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.*
 import retrofit2.HttpException
@@ -23,7 +20,7 @@ class WhatIsViewModel(
     val userList = MutableLiveData<PostResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
+        //onError("Exception handled: ${throwable.localizedMessage}")
     }
     val loading = MutableLiveData<Boolean>()
 
