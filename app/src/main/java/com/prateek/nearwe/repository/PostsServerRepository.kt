@@ -4,6 +4,12 @@ import com.prateek.nearwe.api.PostsServices
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
+import com.prateek.nearwe.api.models.posts.PostResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -29,14 +35,14 @@ class PostsServerRepository(private val postsServices: PostsServices) {
     suspend fun AddPost(postModel: AddPostRequest) = postsServices.AddPost(postModel)
 
     suspend fun AddWhatIsPost(
-        formFile:  MultipartBody.Part,
+        formFile: MultipartBody.Part,
         Title: RequestBody,
         IsAnonymous: RequestBody,
         UserId: RequestBody,
         Latitude: RequestBody,
         Longitude: RequestBody,
         PostType: RequestBody,
-        ImageUrl:RequestBody,
+        ImageUrl: RequestBody,
         PostSubCategories: RequestBody
     ) = postsServices.AddWhatIsPost(
         formFile,
@@ -49,6 +55,19 @@ class PostsServerRepository(private val postsServices: PostsServices) {
         ImageUrl,
         PostSubCategories
     )
+
+
+    fun getFoo(UserId: Int?, Latitude: String, Longitude: String): Flow<PostResponse> {
+
+        val latestNews: Flow<PostResponse> = flow {
+            while (true) {
+                val latestNews = postsServices.GetAllWhatisPost(UserId, Latitude, Longitude)
+                emit(latestNews) // Emits the result of the request to the flow
+                delay(1000) // Suspends the coroutine for some time
+            }
+        }
+        return latestNews
+    }
 
 
 }

@@ -25,6 +25,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
+import java.util.concurrent.Flow
 
 
 interface PostsServices {
@@ -59,7 +60,7 @@ interface PostsServices {
     suspend fun AddPostViews(@Path("PostId") PostId: Int): Response<AddPostViewsResponse>
 
 
-    @POST("/PostLikesMapping/Add")
+    @POST("/PostLikesMapping/LikeUnlikePost")
     suspend fun AddPostLikesUnLike(@Body postLikesRequest: PostLikesRequest): Response<AddPostLikesResponse>
 
     @GET("NearWeSubCategory/GetKeyPairValues/{CategoryId}")
@@ -87,5 +88,10 @@ interface PostsServices {
         @Part("PostSubCategories") PostSubCategories: RequestBody?
     ): Response<AddPostResponse>
 
-
+    @GET("Posts/GetAllWhatisPosts/{UserId}/{Latitude}/{Longitude}")
+    suspend fun GetAllWhatisPost(
+        @Path("UserId") UserId: Int?,
+        @Path("Latitude") Latitude: String,
+        @Path("Longitude") Longitude: String
+    ):PostResponse
 }

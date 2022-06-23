@@ -25,7 +25,7 @@ class LoginViewModel(
     val loginStatus = MutableLiveData<Boolean>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-      //  onError("Exception handled: ${throwable.localizedMessage}")
+        onError("Exception handled: ${throwable.localizedMessage}")
     }
 
     val loginResponse = MutableLiveData<LoginResponse>()

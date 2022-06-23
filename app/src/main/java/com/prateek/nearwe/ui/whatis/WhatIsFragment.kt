@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.birjuvachhani.locus.Locus
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.User.UserModel
+import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.databinding.FragmentTrendingBinding
 import com.prateek.nearwe.databinding.FragmentWhatisBinding
 
@@ -31,20 +32,19 @@ class WhatIsFragment : Fragment() {
     private val userViewModel: LoginViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var binding: FragmentWhatisBinding
-
-
     private lateinit var user: UserModel
-
     var latitude: String = ""
     var longitude: String = ""
+    private val postList = ArrayList<Result>()
+    private lateinit var postAdapter: PostsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWhatisBinding.inflate(inflater, container, false)
-        linearLayoutManager = LinearLayoutManager(activity)
-        binding.recyclerView.layoutManager = linearLayoutManager
+        initUI()
         initObserver()
         Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
             result.location?.let {
@@ -65,33 +65,51 @@ class WhatIsFragment : Fragment() {
 
     }
 
+    private fun initUI() {
+        linearLayoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.layoutManager = linearLayoutManager
+        postAdapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
+
+
+        }, PostsAdapter.OnItemClickListener { post ->
+            val intent = Intent(activity, CommentsActivity::class.java)
+            intent.putExtra("post", post as Serializable)
+            intent.putExtra("addressDetails", binding.txtHeader.text)
+            intent.putExtra("UserId", user.UserId)
+            intent.putExtra("Name", user.Name)
+
+            intent.putExtra("latitude", latitude)
+            intent.putExtra("longitude", longitude)
+
+            startActivity(intent)
+
+        }, postList)
+
+        binding.recyclerView.adapter = postAdapter
+    }
+
 
     fun initObserver() {
-        whatIsViewModel.userList.observe(viewLifecycleOwner) {
+        whatIsViewModel.postList.observe(viewLifecycleOwner) {
+            it?.let { list ->
+                binding.progressBar.visibility=View.GONE
+                postAdapter.updateEmployeeListItems(list.result.toMutableList())
+            }
 
-            val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
-
-
-            }, PostsAdapter.OnItemClickListener { post ->
-                val intent = Intent(activity, CommentsActivity::class.java)
-                intent.putExtra("post", post as Serializable)
-                intent.putExtra("addressDetails", binding.txtHeader.text)
-                intent.putExtra("UserId", user.UserId)
-                intent.putExtra("Name", user.Name)
-
-                intent.putExtra("latitude", latitude)
-                intent.putExtra("longitude", longitude)
-
-                startActivity(intent)
-
-            }, it.result)
-
-            binding.recyclerView.adapter = adapter
 
         }
 
+
+
+
+
+
+
+
+
         whatIsViewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+            binding.progressBar.visibility=View.GONE
         }
 
         whatIsViewModel.loading.observe(viewLifecycleOwner, Observer {
@@ -105,7 +123,7 @@ class WhatIsFragment : Fragment() {
 
         userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
             user = it
-            whatIsViewModel.getWhatIsPosts(it.UserId, latitude, longitude)
+            whatIsViewModel.loadFoo(it.UserId, latitude, longitude)
         })
 
 
@@ -113,7 +131,7 @@ class WhatIsFragment : Fragment() {
             binding.txtHeader.text = it
         })
         whatIsViewModel.addPostViewResponse.observe(viewLifecycleOwner, Observer {
-            whatIsViewModel.getWhatIsPosts(user.UserId, latitude, longitude)
+            whatIsViewModel.loadFoo(user.UserId, latitude, longitude)
         })
 
     }

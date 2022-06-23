@@ -98,7 +98,7 @@ class PostsFragment : Fragment() {
 
 
 
-            }, it.result)
+            }, it.result.toMutableList())
 
             binding.recyclerView.adapter = adapter
 

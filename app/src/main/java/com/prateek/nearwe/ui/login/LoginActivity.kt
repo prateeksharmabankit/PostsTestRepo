@@ -166,7 +166,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResponse.observe(this) {
             binding.progressBar.visibility = View.GONE
 
-            it.result?.let { it1 ->
+            it.result.let { it1 ->
                 it1.Latitude=latitude
                 it1.Longitude=longitude
                 loginViewModel.saveUser(it.result)

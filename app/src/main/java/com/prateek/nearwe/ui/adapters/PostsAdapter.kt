@@ -12,12 +12,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.prateek.nearwe.R
-
 import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.application.MainApp
+import com.prateek.nearwe.utils.EmployeeDiffCallback
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNonNull
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
 
@@ -25,9 +26,12 @@ import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
 class PostsAdapter(
     private val onCheckboxClickListener: OnClickListener,
     private val onItemClickListener: OnItemClickListener,
-    private val mList: List<Result>
+    private val mList: MutableList<Result>
+
+
 ) :
     RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -92,7 +96,7 @@ class PostsAdapter(
             holder.imgPost.visibility = View.VISIBLE
         }
         for (categoryDetails in post.postSubCategoryDetailsDtos) {
-           // holder.txtCategory.text = categoryDetails.CategoryName
+            // holder.txtCategory.text = categoryDetails.CategoryName
             holder.txtSubCategory.text =
                 holder.txtSubCategory.text.toString() + " " + categoryDetails.subCategoryName
         }
@@ -121,5 +125,13 @@ class PostsAdapter(
         val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
 
 
+    }
+
+    fun updateEmployeeListItems(employees: MutableList<Result>) {
+        val diffCallback = EmployeeDiffCallback(this.mList, employees!!)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        mList.clear()
+        mList.addAll(employees)
+        diffResult.dispatchUpdatesTo(this)
     }
 }

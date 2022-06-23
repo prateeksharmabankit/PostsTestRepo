@@ -92,7 +92,7 @@ class TrendingFragment : Fragment() {
 
                 startActivity(intent)
 
-            }, it.result)
+            }, it.result.toMutableList())
 
             binding.recyclerView.adapter = adapter
 
