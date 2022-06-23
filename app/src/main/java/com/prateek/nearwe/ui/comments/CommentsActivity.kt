@@ -41,8 +41,6 @@ class CommentsActivity : AppCompatActivity() {
     private val postsViewModel: PostsViewModel by viewModel()
     private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var post: Result
-    var latitude: String = ""
-    var longitude: String = ""
     var UserId: Int = 0
     var Name: String = ""
 
@@ -54,15 +52,14 @@ class CommentsActivity : AppCompatActivity() {
         setContentView(binding.root)
         loginViewModel.getAddressHeader(this)
         post = intent.extras!!.get("post") as Result
-        val addressDetails = intent.extras!!.get("addressDetails")
+
         UserId = intent.extras!!.getInt("UserId")
         Name = intent.extras!!.getString("Name")!!
         when (post.isAnonymous) {
             0 -> binding.txtName.text = post.user.name
             1 -> binding.txtName.text = resources.getString(R.string.anonymous)
         }
-        latitude = intent.extras!!.getString("latitude")!!
-        longitude = intent.extras!!.getString("longitude")!!
+
         binding.txtTitle.text = post.title
         binding.txtDateTime.text = post.ago
         binding.txtViews.text = post.postViews.toString()

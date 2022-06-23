@@ -33,8 +33,7 @@ class WhatIsFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var binding: FragmentWhatisBinding
     private lateinit var user: UserModel
-    var latitude: String = ""
-    var longitude: String = ""
+
     private val postList = ArrayList<Result>()
     private lateinit var postAdapter: PostsAdapter
 
@@ -64,10 +63,6 @@ class WhatIsFragment : Fragment() {
             intent.putExtra("post", post as Serializable)
             intent.putExtra("UserId", user.UserId)
             intent.putExtra("Name", user.Name)
-
-            intent.putExtra("latitude", latitude)
-            intent.putExtra("longitude", longitude)
-
             startActivity(intent)
 
         }, postList)

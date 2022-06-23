@@ -35,7 +35,7 @@ interface PostsServices {
         @Path("UserId") UserId: Int?,
         @Path("Latitude") Latitude: String,
         @Path("Longitude") Longitude: String
-    ): Response<PostResponse>
+    ): PostResponse
 
     @GET("Posts/GetAllTrendingPosts/{UserId}/{Latitude}/{Longitude}")
     suspend fun GetAllTrendingPosts(

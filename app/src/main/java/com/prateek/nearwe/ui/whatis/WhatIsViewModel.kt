@@ -29,37 +29,7 @@ class WhatIsViewModel(
     val loading = MutableLiveData<Boolean>()
 
 
-    /*  fun getWhatIsPosts(userId:Int?,latitude:String,longitude:String) {
-          loading.postValue(true)
-          job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-              val result = postsServerRepository.GetAllWhatisPosts(userId,latitude,longitude)
-              withContext(Dispatchers.Main) {
-                  try {
-                      loading.postValue(false)
 
-
-                      postList.postValue(result.body())
-                  } catch (throwable: Throwable) {
-                      loading.postValue(false)
-                      when (throwable) {
-                          is IOException -> {
-                              onError("Network Error")
-                          }
-                          is HttpException -> {
-                              val codeError = throwable.code()
-                              val errorMessageResponse = throwable.message()
-                              onError("Error $errorMessageResponse : $codeError")
-                          }
-                          else -> {
-                              onError("UnKnown error")
-                          }
-                      }
-                  }
-                  loading.value = false
-              }
-          }
-
-      }*/
 
     private fun onError(message: String) {
         errorMessage.value = message

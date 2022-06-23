@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prateek.nearwe.api.models.User.UserModel
+import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.databinding.FragmentPostsBinding
 import com.prateek.nearwe.ui.adapters.PostsAdapter
 import com.prateek.nearwe.ui.comments.CommentsActivity
@@ -24,8 +25,8 @@ class PostsFragment : Fragment() {
     private val userViewModel: LoginViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var user: UserModel
-    var latitude: String = ""
-    var longitude: String = ""
+    private val postList = ArrayList<Result>()
+    private lateinit var postAdapter: PostsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,37 +35,35 @@ class PostsFragment : Fragment() {
     ): View? {
 
         binding = FragmentPostsBinding.inflate(inflater, container, false)
-        linearLayoutManager = LinearLayoutManager(activity)
-        binding.recyclerView.layoutManager = linearLayoutManager
-
         initObserver()
+        initUI()
+
         userViewModel.getLoggedInUser()
-
-
         return binding.root
 
     }
+    private fun initUI() {
+        linearLayoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.layoutManager = linearLayoutManager
+        postAdapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
+        }, PostsAdapter.OnItemClickListener { post ->
+            val intent = Intent(activity, CommentsActivity::class.java)
+            intent.putExtra("post", post as Serializable)
+            intent.putExtra("UserId", user.UserId)
+            intent.putExtra("Name", user.Name)
+            startActivity(intent)
 
+        }, postList)
+        binding.recyclerView.adapter = postAdapter
+    }
 
     fun initObserver() {
-        postsViewModel.userList.observe(viewLifecycleOwner) {
-            val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
-            }, PostsAdapter.OnItemClickListener { post ->
-                val intent = Intent(activity, CommentsActivity::class.java)
-                intent.putExtra("post", post as Serializable)
-                intent.putExtra("UserId", user.UserId)
-                intent.putExtra("Name", user.Name)
-                intent.putExtra("latitude", latitude)
-                intent.putExtra("longitude", longitude)
-                startActivity(intent)
-
-
-            }, it.result.toMutableList())
-
-            binding.recyclerView.adapter = adapter
-
+        postsViewModel.postList.observe(viewLifecycleOwner) {
+            it?.let { list ->
+                binding.progressBar.visibility = View.GONE
+                postAdapter.updateEmployeeListItems(list.result.toMutableList())
+            }
         }
-
         postsViewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
         }
@@ -76,7 +75,6 @@ class PostsFragment : Fragment() {
                 binding.progressBar.visibility = View.GONE
             }
         })
-
 
         userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
             user = it

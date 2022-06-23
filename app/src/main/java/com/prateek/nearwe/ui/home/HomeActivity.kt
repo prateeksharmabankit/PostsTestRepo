@@ -69,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val homeViewModel: HomeViewModel by viewModel()
     private val postsViewModel: PostsViewModel by viewModel()
-    private val userViewModel: LoginViewModel by viewModel()
+    private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var file: File
 
     private var postCategoryId: Int = 0
@@ -78,17 +78,12 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
+        binding.loginViewModel = loginViewModel
+        binding.lifecycleOwner=this
         setSupportActionBar(binding.toolbar)
-
-
         navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
-
-
         val toggle = ActionBarDrawerToggle(
             this, binding.drawerLayout, toolbar, R.string.drawer_open,
             R.string.drawer_close
@@ -96,14 +91,10 @@ class HomeActivity : AppCompatActivity() {
 
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
-
-
-         appBarConfiguration = AppBarConfiguration(navController.graph,
-         binding.drawerLayout)
-
-
-
+        appBarConfiguration = AppBarConfiguration(
+            navController.graph,
+            binding.drawerLayout
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
         CoroutineScope(Dispatchers.Main).launch {
@@ -124,7 +115,7 @@ class HomeActivity : AppCompatActivity() {
 
         setupWithNavController(binding.bottomNavigationView, navController)
 
-        userViewModel.getAddressHeader(this)
+        loginViewModel.getAddressHeader(this)
     }
 
 
@@ -135,8 +126,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem)= item.onNavDestinationSelected(navController)
-            || super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem) =
+        item.onNavDestinationSelected(navController)
+                || super.onOptionsItemSelected(item)
 
 
     override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration)
@@ -166,11 +158,10 @@ class HomeActivity : AppCompatActivity() {
             bottomSheetDialog.findViewById<RadioGroup>(R.id.radioGroup1)
 
 
-
         val imgUploadButton = bottomSheetDialog.findViewById<MaterialButton>(R.id.imgUploadButton)
         imgUploadButton?.setOnClickListener(View.OnClickListener {
 
-           TedBottomPicker.with(this@HomeActivity)
+            TedBottomPicker.with(this@HomeActivity)
                 .show {
                     file = it.toFile()
 
@@ -183,9 +174,9 @@ class HomeActivity : AppCompatActivity() {
         val adapter = SubCategoryAdapter(subCategoryList)
         recylerSubCategories?.adapter = adapter
         var postModel = AddPostRequest()
-        postModel.PostType=1
+        postModel.PostType = 1
         when (postCategoryId) {
-            941590   -> tvTitle?.text = getString(R.string.fabtextone)
+            941590 -> tvTitle?.text = getString(R.string.fabtextone)
             487951 -> tvTitle?.text = getString(R.string.fabtexttwo)
             123251 -> {
                 tvTitle?.text = getString(R.string.fabtextthree)
@@ -226,7 +217,8 @@ class HomeActivity : AppCompatActivity() {
 
 
                     postModel.PostSubCategories =
-                        selectedEngineers.joinToString { it.subCategoryId.toString()!! }.split(",").toString().drop(1)
+                        selectedEngineers.joinToString { it.subCategoryId.toString()!! }.split(",")
+                            .toString().drop(1)
                             .dropLast(1)
 
                     if (postModel.PostSubCategories!!.isEmpty()) {
@@ -270,7 +262,8 @@ class HomeActivity : AppCompatActivity() {
                     val selectedEngineers: List<ResultList> = subCategoryList
                         .filterIndexed { index, engineer -> engineer.isCHecked }
                     postModel.PostSubCategories =
-                        selectedEngineers.joinToString { it.subCategoryId.toString()!! }.split(",").toString().drop(1)
+                        selectedEngineers.joinToString { it.subCategoryId.toString()!! }.split(",")
+                            .toString().drop(1)
                             .dropLast(1)
                     if (postModel.PostSubCategories!!.isEmpty()) {
 
@@ -326,7 +319,7 @@ class HomeActivity : AppCompatActivity() {
             openAddBottomSheet(it.result)
         })
 
-        userViewModel.userDetails.observe(this, Observer {
+        loginViewModel.userDetails.observe(this, Observer {
             user = it
 
         })
@@ -343,13 +336,7 @@ class HomeActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
             }
         })
-        userViewModel.addressDetails.observe(this, Observer {
-            binding.txtHeader.text = it
-        })
-
     }
-
-
 
 
 }

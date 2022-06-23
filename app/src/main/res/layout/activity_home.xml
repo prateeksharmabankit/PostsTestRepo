@@ -1,170 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    tools:openDrawer="end">
+    <data>
 
-    <RelativeLayout
+        <variable
+            name="loginViewModel"
+            type="com.prateek.nearwe.ui.login.LoginViewModel" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
-                app:title="@string/featured_posts"
-
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="0dp" />
-
-
-        </com.google.android.material.appbar.AppBarLayout>
-        <TextView
-            android:id="@+id/txtHeader"
-            android:layout_below="@+id/appBar"
-            android:layout_width="wrap_content"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginRight="@dimen/_16sdp"
-
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/_16sdp"/>
-        <fragment
-            android:id="@+id/activity_main_nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/bottomNavigationView"
-            android:layout_below="@+id/txtHeader"
-            android:layout_weight="1"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBar"
-            app:navGraph="@navigation/nav_graph" />
-        <ProgressBar
-
-            android:visibility="gone"
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-
-            app:menu="@menu/bottom_nav_menu" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:contentDescription="test"
-            android:visibility="gone"
-            app:backgroundTint="@color/colorPrimaryDark"
-
-            app:srcCompat="@drawable/ic_baseline_add_24"
-            app:tint="@android:color/white" />
-
-        <com.nambimobile.widgets.efab.ExpandableFabLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/_50sdp">
-
-            <!-- The next 3 Views will only display in portrait orientation -->
-            <com.nambimobile.widgets.efab.Overlay
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:overlay_color="#cc000000"
-                app:overlay_orientation="portrait" />
-
-            <com.nambimobile.widgets.efab.ExpandableFab
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-
-                android:layout_marginBottom="@dimen/_10sdp"
-                app:efab_color="@color/colorPrimary"
-                app:efab_icon="@drawable/ic_baseline_add_24"
-                app:efab_iconAnimationRotationDeg="0"
-                app:efab_orientation="portrait" />
-
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="add_whats_new_click"
-                app:fab_color="@color/colorPrimary"
-                app:fab_icon="@drawable/ic_baseline_whtat_is_24"
-                app:fab_orientation="portrait"
-                app:label_text="Ask a Question" />
-
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:onClick="add_new_post_click"
-                app:fab_color="@color/colorPrimary"
-                app:fab_icon="@drawable/ic_baseline_settings_neame_24"
-                app:fab_orientation="portrait"
-                app:label_text="NearBy Post" />
-
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:onClick="add_Interest_Hobiles_post_click"
-                app:fab_color="@color/colorPrimary"
-                app:fab_icon="@drawable/ic_baseline_trending_24"
-                app:fab_orientation="portrait"
-                app:label_text="Interest and Hobbies" />
-
-
-        </com.nambimobile.widgets.efab.ExpandableFabLayout>
-
-    </RelativeLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/white"
         android:fitsSystemWindows="true"
 
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        tools:openDrawer="end">
 
-</androidx.drawerlayout.widget.DrawerLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="?attr/actionBarTheme"
+                    app:title="@string/featured_posts"
+
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <TextView
+                android:id="@+id/txtHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appBar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{ loginViewModel.addressDetails }"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_16sdp" />
+
+            <fragment
+                android:id="@+id/activity_main_nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottomNavigationView"
+                android:layout_below="@+id/txtHeader"
+                android:layout_weight="1"
+                app:defaultNavHost="true"
+                app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBar"
+                app:navGraph="@navigation/nav_graph" />
+
+            <ProgressBar
+
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+
+                app:menu="@menu/bottom_nav_menu" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:contentDescription="test"
+                android:visibility="gone"
+                app:backgroundTint="@color/colorPrimaryDark"
+
+                app:srcCompat="@drawable/ic_baseline_add_24"
+                app:tint="@android:color/white" />
+
+            <com.nambimobile.widgets.efab.ExpandableFabLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/_50sdp">
+
+                <!-- The next 3 Views will only display in portrait orientation -->
+                <com.nambimobile.widgets.efab.Overlay
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:overlay_color="#cc000000"
+                    app:overlay_orientation="portrait" />
+
+                <com.nambimobile.widgets.efab.ExpandableFab
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    app:efab_color="@color/colorPrimary"
+                    app:efab_icon="@drawable/ic_baseline_add_24"
+                    app:efab_iconAnimationRotationDeg="0"
+                    app:efab_orientation="portrait" />
+
+                <com.nambimobile.widgets.efab.FabOption
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="add_whats_new_click"
+                    app:fab_color="@color/colorPrimary"
+                    app:fab_icon="@drawable/ic_baseline_whtat_is_24"
+                    app:fab_orientation="portrait"
+                    app:label_text="Ask a Question" />
+
+                <com.nambimobile.widgets.efab.FabOption
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:onClick="add_new_post_click"
+                    app:fab_color="@color/colorPrimary"
+                    app:fab_icon="@drawable/ic_baseline_settings_neame_24"
+                    app:fab_orientation="portrait"
+                    app:label_text="NearBy Post" />
+
+                <com.nambimobile.widgets.efab.FabOption
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:onClick="add_Interest_Hobiles_post_click"
+                    app:fab_color="@color/colorPrimary"
+                    app:fab_icon="@drawable/ic_baseline_trending_24"
+                    app:fab_orientation="portrait"
+                    app:label_text="Interest and Hobbies" />
+
+
+            </com.nambimobile.widgets.efab.ExpandableFabLayout>
+
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/white"
+            android:fitsSystemWindows="true"
+
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/activity_main_drawer" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>

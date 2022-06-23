@@ -2,6 +2,7 @@ package com.prateek.nearwe.ui.posts
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
@@ -12,6 +13,8 @@ import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.PostsRoomRepository
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -30,44 +33,25 @@ class PostsViewModel(
     val addPostViewResponse = MutableLiveData<AddPostViewsResponse>()
     val addPostLikesResponse = MutableLiveData<AddPostLikesResponse>()
     val addPostResponse = MutableLiveData<AddPostResponse>()
-    val userList = MutableLiveData<PostResponse>()
+    val postList = MutableLiveData<PostResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-      //  onError("Exception handled: ${throwable.localizedMessage}")
+        //  onError("Exception handled: ${throwable.localizedMessage}")
     }
     val loading = MutableLiveData<Boolean>()
 
-    fun getAllPosts(userId: Int?) {
-        loading.postValue(true)
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val result = usersRepository.GetAllPosts(userId, MainApp.instance.Latitude, MainApp.instance.Longitude)
-            withContext(Dispatchers.Main) {
-                try {
-                    loading.postValue(false)
-
-
-                    userList.postValue(result.body())
-                } catch (throwable: Throwable) {
-                    loading.postValue(false)
-                    when (throwable) {
-                        is IOException -> {
-                            onError("Network Error")
-                        }
-                        is HttpException -> {
-                            val codeError = throwable.code()
-                            val errorMessageResponse = throwable.message()
-                            onError("Error $errorMessageResponse : $codeError")
-                        }
-                        else -> {
-                            onError("UnKnown error")
-                        }
-                    }
-                }
-                loading.value = false
-            }
+    fun getAllPosts(UserId: Int?) {
+        viewModelScope.launch {
+            usersRepository.GetAllPosts(
+                UserId,
+                MainApp.instance.Latitude,
+                MainApp.instance.Longitude
+            ).onEach {
+                postList.postValue(it)
+            }.collect()
         }
-
     }
+
 
     private fun onError(message: String) {
 
@@ -190,48 +174,53 @@ class PostsViewModel(
             )
 
 
-
-
-            var title= RequestBody.create(
-               MediaType.parse("text/plain"),
-               postRequest.Title
-           );
-            var IsAnonymous= RequestBody.create(
+            var title = RequestBody.create(
+                MediaType.parse("text/plain"),
+                postRequest.Title
+            );
+            var IsAnonymous = RequestBody.create(
                 MediaType.parse("text/plain"),
                 postRequest.IsAnonymous.toString()
             );
-            var UserId= RequestBody.create(
+            var UserId = RequestBody.create(
                 MediaType.parse("text/plain"),
                 postRequest.UserId.toString()
             );
 
 
-
-
-
-            var Latitude= RequestBody.create(
+            var Latitude = RequestBody.create(
                 MediaType.parse("text/plain"),
                 postRequest.Latitude.toString()
             );
-            var Longitude= RequestBody.create(
+            var Longitude = RequestBody.create(
                 MediaType.parse("text/plain"),
                 postRequest.Longitude.toString()
             );
-            var PostType= RequestBody.create(
+            var PostType = RequestBody.create(
                 MediaType.parse("text/plain"),
                 postRequest.PostType.toString()
             );
 
-            var PostSubCategories= RequestBody.create(
+            var PostSubCategories = RequestBody.create(
                 MediaType.parse("text/plain"),
                 postRequest.PostSubCategories.toString()
             );
-            var image= RequestBody.create(
+            var image = RequestBody.create(
                 MediaType.parse("text/plain"),
                 ""
             );
 
-            val result = usersRepository.AddWhatIsPost(body,title,IsAnonymous, UserId, Latitude, Longitude, PostType,image, PostSubCategories)
+            val result = usersRepository.AddWhatIsPost(
+                body,
+                title,
+                IsAnonymous,
+                UserId,
+                Latitude,
+                Longitude,
+                PostType,
+                image,
+                PostSubCategories
+            )
             withContext(Dispatchers.Main) {
                 try {
                     loading.postValue(false)

@@ -17,10 +17,17 @@ import retrofit2.http.Body
 import java.io.File
 
 class PostsServerRepository(private val postsServices: PostsServices) {
-    suspend fun GetAllPosts(UserId: Int?, Latitude: String, Longitude: String) =
-        postsServices.GetAllPosts(UserId, Latitude, Longitude)
+    fun GetAllPosts(UserId: Int?, Latitude: String, Longitude: String): Flow<PostResponse> {
 
-
+        val latestNews: Flow<PostResponse> = flow {
+            while (true) {
+                val latestNews = postsServices.GetAllPosts(UserId, Latitude, Longitude)
+                emit(latestNews) // Emits the result of the request to the flow
+                delay(5000) // Suspends the coroutine for some time
+            }
+        }
+        return latestNews
+    }
     suspend fun GetAllTrendingPosts(UserId: Int?, Latitude: String, Longitude: String) =
         postsServices.GetAllTrendingPosts(UserId, Latitude, Longitude)
 
@@ -63,7 +70,7 @@ class PostsServerRepository(private val postsServices: PostsServices) {
             while (true) {
                 val latestNews = postsServices.GetAllWhatisPost(UserId, Latitude, Longitude)
                 emit(latestNews) // Emits the result of the request to the flow
-                delay(1000) // Suspends the coroutine for some time
+                delay(5000) // Suspends the coroutine for some time
             }
         }
         return latestNews
