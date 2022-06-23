@@ -13,6 +13,7 @@ import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.PostsRoomRepository
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import okhttp3.MediaType
@@ -41,13 +42,18 @@ class PostsViewModel(
     val loading = MutableLiveData<Boolean>()
 
     fun getAllPosts(UserId: Int?) {
+        loading.postValue(true)
         viewModelScope.launch {
             usersRepository.GetAllPosts(
                 UserId,
                 MainApp.instance.Latitude,
                 MainApp.instance.Longitude
-            ).onEach {
+            ).catch { e ->
+                onError(e.message.toString())
+
+            }.onEach {
                 postList.postValue(it)
+                loading.postValue(false)
             }.collect()
         }
     }

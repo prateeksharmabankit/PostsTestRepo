@@ -95,11 +95,7 @@ class PostsAdapter(
                 .into(holder.imgPost)
             holder.imgPost.visibility = View.VISIBLE
         }
-        for (categoryDetails in post.postSubCategoryDetailsDtos) {
-            //
-            holder.txtSubCategory.text =
-                holder.txtSubCategory.text.toString() + " " + categoryDetails.subCategoryName
-        }
+
         holder.txtCategory.text = post.nearWeCategory.categoryName
 
         holder.itemView.setOnClickListener {

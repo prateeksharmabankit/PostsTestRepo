@@ -80,8 +80,18 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initUI()
+        initObserver()
+
+        setupWithNavController(binding.bottomNavigationView, navController)
+
+        loginViewModel.getAddressHeader(this)
+        loginViewModel.getLoggedInUser();
+    }
+
+    fun initUI() {
         binding.loginViewModel = loginViewModel
-        binding.lifecycleOwner=this
+        binding.lifecycleOwner = this
         setSupportActionBar(binding.toolbar)
         navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
         val toggle = ActionBarDrawerToggle(
@@ -110,14 +120,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
-
-        initObserver()
-
-        setupWithNavController(binding.bottomNavigationView, navController)
-
-        loginViewModel.getAddressHeader(this)
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

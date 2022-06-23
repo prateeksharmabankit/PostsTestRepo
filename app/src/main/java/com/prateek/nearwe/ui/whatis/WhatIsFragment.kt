@@ -68,6 +68,7 @@ class WhatIsFragment : Fragment() {
         }, postList)
 
         binding.recyclerView.adapter = postAdapter
+        binding.recyclerView.itemAnimator = null;
     }
 
 

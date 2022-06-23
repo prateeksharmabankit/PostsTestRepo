@@ -11,6 +11,7 @@ import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -43,10 +44,15 @@ class WhatIsViewModel(
 
 
     fun loadWhatIsPosts(UserId: Int?) {
+        loading.postValue(true)
         viewModelScope.launch {
             // Trigger the flow and consume its elements using collect
-            postsServerRepository.getFoo(UserId, MainApp.instance.Latitude, MainApp.instance.Longitude).onEach {
+            postsServerRepository.getFoo(UserId, MainApp.instance.Latitude, MainApp.instance.Longitude).catch { e ->
+                onError(e.message.toString())
+
+            }.onEach {
                 postList.postValue(it)
+                loading.postValue(false)
             }.collect()
 
 

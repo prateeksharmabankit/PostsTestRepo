@@ -35,9 +35,9 @@ class PostsFragment : Fragment() {
     ): View? {
 
         binding = FragmentPostsBinding.inflate(inflater, container, false)
-        initObserver()
-        initUI()
 
+        initUI()
+        initObserver()
         userViewModel.getLoggedInUser()
         return binding.root
 
@@ -55,6 +55,7 @@ class PostsFragment : Fragment() {
 
         }, postList)
         binding.recyclerView.adapter = postAdapter
+        binding.recyclerView.itemAnimator = null;
     }
 
     fun initObserver() {
