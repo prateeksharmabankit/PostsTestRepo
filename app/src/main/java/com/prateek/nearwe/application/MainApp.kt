@@ -10,6 +10,8 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 
 class MainApp : Application() {
+      lateinit var  Latitude:String
+    lateinit var  Longitude:String
     companion object {
         lateinit var instance: MainApp
             private set

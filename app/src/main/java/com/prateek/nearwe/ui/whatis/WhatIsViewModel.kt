@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostResponse
+import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -71,10 +72,10 @@ class WhatIsViewModel(
     }
 
 
-    fun loadFoo(UserId: Int?, Latitude: String, Longitude: String) {
+    fun loadWhatIsPosts(UserId: Int?) {
         viewModelScope.launch {
             // Trigger the flow and consume its elements using collect
-            postsServerRepository.getFoo(UserId, Latitude, Longitude).onEach {
+            postsServerRepository.getFoo(UserId, MainApp.instance.Latitude, MainApp.instance.Longitude).onEach {
                 postList.postValue(it)
             }.collect()
 

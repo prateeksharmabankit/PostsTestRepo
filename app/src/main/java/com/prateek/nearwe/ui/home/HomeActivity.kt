@@ -48,6 +48,7 @@ import com.prateek.nearwe.api.models.SubCategory.ResultList
 import com.prateek.nearwe.api.models.SubCategory.SubCategoriesResponse
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
+import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.databinding.ActivityHomeBinding
 import com.prateek.nearwe.ui.adapters.SubCategoryAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
@@ -73,14 +74,14 @@ class HomeActivity : AppCompatActivity() {
 
     private var postCategoryId: Int = 0
     private lateinit var user: UserModel
-    var latitude: String = ""
-    var longitude: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         setSupportActionBar(binding.toolbar)
 
@@ -97,13 +98,6 @@ class HomeActivity : AppCompatActivity() {
         toggle.syncState()
 
 
-
-
-       /* appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_to_home, R.id.nav_to_home, R.id.nav_to_home
-            ), drawerLayout
-        )*/
 
          appBarConfiguration = AppBarConfiguration(navController.graph,
          binding.drawerLayout)
@@ -127,22 +121,10 @@ class HomeActivity : AppCompatActivity() {
 
 
         initObserver()
-        Locus.getCurrentLocation(applicationContext) { result ->
-            result.location?.let {
 
-                latitude = it.latitude.toString()
-                longitude = it.longitude.toString()
-                userViewModel.getLoggedInUser()
-
-            }
-            result.error?.let {
-
-
-            }
-        }
         setupWithNavController(binding.bottomNavigationView, navController)
 
-
+        userViewModel.getAddressHeader(this)
     }
 
 
@@ -227,8 +209,8 @@ class HomeActivity : AppCompatActivity() {
             when (postCategoryId) {
                 123251 -> {
 
-                    postModel.Latitude = latitude
-                    postModel.Longitude = longitude
+                    postModel.Latitude = MainApp.instance.Latitude
+                    postModel.Longitude = MainApp.instance.Longitude
 
 
 
@@ -279,8 +261,8 @@ class HomeActivity : AppCompatActivity() {
                 else -> {
 
                     var postModel = AddPostRequest()
-                    postModel.Latitude = latitude
-                    postModel.Longitude = longitude
+                    postModel.Latitude = MainApp.instance.Latitude
+                    postModel.Longitude = MainApp.instance.Longitude
 
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
@@ -360,6 +342,9 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 binding.progressBar.visibility = View.GONE
             }
+        })
+        userViewModel.addressDetails.observe(this, Observer {
+            binding.txtHeader.text = it
         })
 
     }

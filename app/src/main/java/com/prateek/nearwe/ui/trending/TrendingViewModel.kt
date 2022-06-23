@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostResponse
+import com.prateek.nearwe.application.MainApp
 
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.*
@@ -24,10 +25,10 @@ class TrendingViewModel(
     }
     val loading = MutableLiveData<Boolean>()
 
-    fun getAllTrendingPosts(userId:Int?,latitude:String,longitude:String) {
+    fun getAllTrendingPosts(userId:Int?) {
         loading.postValue(true)
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val result = postsServerRepository.GetAllTrendingPosts(userId,latitude,longitude)
+            val result = postsServerRepository.GetAllTrendingPosts(userId,MainApp.instance.Latitude,MainApp.instance.Longitude)
             withContext(Dispatchers.Main) {
                 try {
                     loading.postValue(false)

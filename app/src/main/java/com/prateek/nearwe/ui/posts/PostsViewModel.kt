@@ -8,6 +8,7 @@ import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResp
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.PostResponse
+import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.PostsRoomRepository
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.*
@@ -36,10 +37,10 @@ class PostsViewModel(
     }
     val loading = MutableLiveData<Boolean>()
 
-    fun getAllPosts(userId: Int?, latitude: String, longitude: String) {
+    fun getAllPosts(userId: Int?) {
         loading.postValue(true)
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val result = usersRepository.GetAllPosts(userId, latitude, longitude)
+            val result = usersRepository.GetAllPosts(userId, MainApp.instance.Latitude, MainApp.instance.Longitude)
             withContext(Dispatchers.Main) {
                 try {
                     loading.postValue(false)

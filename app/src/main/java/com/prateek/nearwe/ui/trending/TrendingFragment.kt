@@ -35,40 +35,10 @@ class TrendingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTrendingBinding.inflate(inflater, container, false)
-
-
-
         linearLayoutManager = LinearLayoutManager(activity)
         binding.recyclerView.layoutManager = linearLayoutManager
-
         initObserver()
-        Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
-            result.location?.let {
-
-                latitude = it.latitude.toString()
-                longitude = it.longitude.toString()
-                userViewModel.getAddressHeader(activity?.applicationContext, latitude, longitude)
-                userViewModel.getLoggedInUser()
-
-            }
-            result.error?.let {
-
-                Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
-                    result.location?.let {
-                        latitude = it.latitude.toString()
-                        longitude = it.longitude.toString()
-                        userViewModel.getAddressHeader(
-                            activity?.applicationContext,
-                            latitude,
-                            longitude
-                        )
-                        userViewModel.getLoggedInUser()
-                    }
-                    result.error?.let { /* Received error! */ }
-                }
-            }
-        }
-
+        userViewModel.getLoggedInUser()
         return binding.root
 
     }
@@ -76,22 +46,15 @@ class TrendingFragment : Fragment() {
 
     fun initObserver() {
         trendingViewModel.userList.observe(viewLifecycleOwner) {
-
             val adapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
-
-
             }, PostsAdapter.OnItemClickListener { post ->
                 val intent = Intent(activity, CommentsActivity::class.java)
                 intent.putExtra("post", post as Serializable)
-                intent.putExtra("addressDetails", binding.txtHeader.text)
                 intent.putExtra("UserId", user.UserId)
                 intent.putExtra("Name", user.Name)
-
                 intent.putExtra("latitude", latitude)
                 intent.putExtra("longitude", longitude)
-
                 startActivity(intent)
-
             }, it.result.toMutableList())
 
             binding.recyclerView.adapter = adapter
@@ -113,15 +76,7 @@ class TrendingFragment : Fragment() {
 
         userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
             user = it
-            trendingViewModel.getAllTrendingPosts(it.UserId, latitude, longitude)
-        })
-
-
-        userViewModel.addressDetails.observe(viewLifecycleOwner, Observer {
-            binding.txtHeader.text = it
-        })
-        trendingViewModel.addPostViewResponse.observe(viewLifecycleOwner, Observer {
-            trendingViewModel.getAllTrendingPosts(user.UserId, latitude, longitude)
+            trendingViewModel.getAllTrendingPosts(it.UserId)
         })
 
     }

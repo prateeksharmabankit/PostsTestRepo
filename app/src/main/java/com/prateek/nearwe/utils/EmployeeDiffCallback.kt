@@ -24,7 +24,7 @@ class EmployeeDiffCallback(oldEmployeeList: List<Result>, newEmployeeList: List<
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return mOldEmployeeList[oldItemPosition].postId == mNewEmployeeList[newItemPosition].postId
+        return mOldEmployeeList[oldItemPosition].postId == mNewEmployeeList[newItemPosition].postId&&mOldEmployeeList[oldItemPosition].postViews == mNewEmployeeList[newItemPosition].postViews
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

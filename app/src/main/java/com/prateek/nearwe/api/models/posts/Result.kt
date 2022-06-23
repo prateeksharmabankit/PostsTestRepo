@@ -26,5 +26,6 @@ data class Result(
     val postViews: Int,
     val title: String,
     val user: User,
-    val userId: Int
+    val userId: Int,
+    val nearWeCategory:Category
 ):Serializable

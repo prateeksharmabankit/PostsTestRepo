@@ -39,6 +39,7 @@ class CommentsActivity : AppCompatActivity() {
     private val commentsViewModel: CommentsViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val postsViewModel: PostsViewModel by viewModel()
+    private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var post: Result
     var latitude: String = ""
     var longitude: String = ""
@@ -51,6 +52,7 @@ class CommentsActivity : AppCompatActivity() {
 
         binding = ActivityCommentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loginViewModel.getAddressHeader(this)
         post = intent.extras!!.get("post") as Result
         val addressDetails = intent.extras!!.get("addressDetails")
         UserId = intent.extras!!.getInt("UserId")
@@ -64,7 +66,7 @@ class CommentsActivity : AppCompatActivity() {
         binding.txtTitle.text = post.title
         binding.txtDateTime.text = post.ago
         binding.txtViews.text = post.postViews.toString()
-        binding.txtLocation.text = addressDetails.toString()
+
         binding.txtLike.setOnClickListener(View.OnClickListener {
             var LikeUnlikeRequest = PostLikesRequest()
             LikeUnlikeRequest.UserId = UserId
@@ -159,5 +161,8 @@ class CommentsActivity : AppCompatActivity() {
             binding.recyclerView.adapter = adapter
         })
         commentsViewModel.getSavedAddresses(post.postId)
+        loginViewModel.addressDetails.observe(this, Observer {
+      binding.txtLocation.text=it.toString()
+        })
     }
 }

@@ -26,6 +26,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.prateek.nearwe.ui.home.HomeActivity
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.User.UserModel
+import com.prateek.nearwe.application.MainApp
 
 import com.prateek.nearwe.databinding.ActivityLoginBinding
 
@@ -36,8 +37,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
     val Req_Code: Int = 123
-    var latitude: String = ""
-    var longitude: String = ""
     private lateinit var firebaseAuth: FirebaseAuth
 
     private val loginViewModel: LoginViewModel by viewModel()
@@ -67,23 +66,14 @@ class LoginActivity : AppCompatActivity() {
         Locus.getCurrentLocation(this) { result ->
             result.location?.let {
 
-                latitude=it.latitude.toString()
-                longitude=it.longitude.toString()
+                MainApp.instance.Latitude=it.latitude.toString()
+                MainApp.instance.Longitude=it.longitude.toString()
 
                 initObserver()
             }
             result.error?.let {
 
-                Locus.getCurrentLocation(this) { result ->
-                    result.location?.let {
-                        Toast.makeText(
-                            applicationContext,
-                            "Location Recieved "+it.latitude+" "+it.longitude,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    result.error?.let { /* Received error! */ }
-                }
+              //TODO Add App Finish Code
             }
         }
 
@@ -123,8 +113,8 @@ class LoginActivity : AppCompatActivity() {
                 var user = UserModel()
                 user.Name = account.displayName
                 user.EmailAddress = account.email
-                user.Latitude = latitude
-                user.Longitude = longitude
+                user.Latitude = MainApp.instance.Latitude
+                user.Longitude = MainApp.instance.Longitude
                 loginViewModel.loginUser(user)
 
 
@@ -167,8 +157,8 @@ class LoginActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.GONE
 
             it.result.let { it1 ->
-                it1.Latitude=latitude
-                it1.Longitude=longitude
+                it1.Latitude=MainApp.instance.Latitude
+                it1.Longitude=MainApp.instance.Longitude
                 loginViewModel.saveUser(it.result)
                 startActivity(
                     Intent(

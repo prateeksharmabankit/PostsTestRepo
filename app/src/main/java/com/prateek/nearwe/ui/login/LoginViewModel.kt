@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.*
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
+import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.LoginServerRepository
 import com.prateek.nearwe.repository.PostsRoomRepository
 import com.prateek.nearwe.utils.Utils
@@ -146,9 +147,9 @@ class LoginViewModel(
     }
 
 
-    fun getAddressHeader(context: Context?, latitude: String, longitude: String) {
+    fun getAddressHeader(context: Context?) {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val result = Utils.CompanionClass.getAddressFromLatLng(context, latitude, longitude)
+            val result = Utils.CompanionClass.getAddressFromLatLng(context, MainApp.instance.Latitude, MainApp.instance.Longitude)
             withContext(Dispatchers.Main) {
                 try {
 

@@ -46,20 +46,8 @@ class WhatIsFragment : Fragment() {
         binding = FragmentWhatisBinding.inflate(inflater, container, false)
         initUI()
         initObserver()
-        Locus.getCurrentLocation(requireActivity().applicationContext) { result ->
-            result.location?.let {
+        userViewModel.getLoggedInUser()
 
-                latitude = it.latitude.toString()
-                longitude = it.longitude.toString()
-                userViewModel.getAddressHeader(activity?.applicationContext, latitude, longitude)
-                userViewModel.getLoggedInUser()
-
-            }
-            result.error?.let {
-
-
-            }
-        }
 
         return binding.root
 
@@ -74,7 +62,6 @@ class WhatIsFragment : Fragment() {
         }, PostsAdapter.OnItemClickListener { post ->
             val intent = Intent(activity, CommentsActivity::class.java)
             intent.putExtra("post", post as Serializable)
-            intent.putExtra("addressDetails", binding.txtHeader.text)
             intent.putExtra("UserId", user.UserId)
             intent.putExtra("Name", user.Name)
 
@@ -92,24 +79,13 @@ class WhatIsFragment : Fragment() {
     fun initObserver() {
         whatIsViewModel.postList.observe(viewLifecycleOwner) {
             it?.let { list ->
-                binding.progressBar.visibility=View.GONE
+                binding.progressBar.visibility = View.GONE
                 postAdapter.updateEmployeeListItems(list.result.toMutableList())
             }
-
-
         }
-
-
-
-
-
-
-
-
-
         whatIsViewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
-            binding.progressBar.visibility=View.GONE
+            binding.progressBar.visibility = View.GONE
         }
 
         whatIsViewModel.loading.observe(viewLifecycleOwner, Observer {
@@ -119,19 +95,9 @@ class WhatIsFragment : Fragment() {
                 binding.progressBar.visibility = View.GONE
             }
         })
-
-
         userViewModel.userDetails.observe(viewLifecycleOwner, Observer {
             user = it
-            whatIsViewModel.loadFoo(it.UserId, latitude, longitude)
-        })
-
-
-        userViewModel.addressDetails.observe(viewLifecycleOwner, Observer {
-            binding.txtHeader.text = it
-        })
-        whatIsViewModel.addPostViewResponse.observe(viewLifecycleOwner, Observer {
-            whatIsViewModel.loadFoo(user.UserId, latitude, longitude)
+            whatIsViewModel.loadWhatIsPosts(it.UserId)
         })
 
     }
