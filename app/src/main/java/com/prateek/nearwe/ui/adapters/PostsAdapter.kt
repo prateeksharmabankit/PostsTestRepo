@@ -6,15 +6,19 @@
 
 package com.prateek.nearwe.ui.adapters
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.Chip
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.posts.Result
 import com.prateek.nearwe.application.MainApp
@@ -77,8 +81,36 @@ class PostsAdapter(
 
         }
 
+
+        val lstValues: List<String> = post.subCategories.split(",").map { it -> it.trim() }
+        lstValues.forEach { it ->
+            val chip = Chip(ContextThemeWrapper( MainApp.instance, R.style.Theme_MaterialComponents_Light))
+            chip.text = it
+            when (post.postType) {
+                1 ->  chip.setChipBackgroundColorResource(R.color.Green)
+                2 -> chip.setChipBackgroundColorResource(R.color.Orange)
+                3 -> chip.setChipBackgroundColorResource(R.color.Red)
+
+            }
+
+
+            chip.isCloseIconVisible = false
+            chip.setTextColor(MainApp.instance.getColor(R.color.White))
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+
+            layoutParams.setMargins(10, 0, 10, 0)
+
+            holder.lvSubCategory.addView(chip,layoutParams)
+        }
+
+
+
+
+
         when (post.isAnonymous) {
-            0 -> holder.txtName.text = post.user.name
+            0 -> holder.txtName.text = post.name
 
             1 -> holder.txtName.text = MainApp.instance.getString(R.string.anonymous)
 
@@ -96,7 +128,7 @@ class PostsAdapter(
             holder.imgPost.visibility = View.VISIBLE
         }
 
-        holder.txtCategory.text = post.nearWeCategory.categoryName
+        holder.txtCategory.text = post.categoryName
 
         holder.itemView.setOnClickListener {
 
@@ -117,7 +149,7 @@ class PostsAdapter(
         val txtDateTime: TextView = itemView.findViewById(R.id.txtDateTime)
         val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
         val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
-        val txtSubCategory: TextView = itemView.findViewById(R.id.txtSubCategory)
+        val lvSubCategory: LinearLayout = itemView.findViewById(R.id.lvSubCategory)
         val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
 
 

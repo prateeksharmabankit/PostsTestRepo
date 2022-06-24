@@ -24,7 +24,10 @@ data class AddPostRequest(
     @SerializedName("Latitude") var Latitude: String? = null,
     @SerializedName("Longitude") var Longitude: String? = null,
     @SerializedName("PostType") var PostType: Int? = null,
-    @SerializedName("PostSubCategories") var PostSubCategories: String? = null,
+    @SerializedName("SubCategories") var SubCategories: String? = null,
     @SerializedName("UserId") var UserId: Int? = null,
+    @SerializedName("CategoryName") var CategoryName: String? = null,
+    @SerializedName("CategoryId") var CategoryId: Int? = null
+
 
     )

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+
     android:layout_height="wrap_content"
 
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_margin="@dimen/_10sdp"
-    android:elevation="@dimen/_10sdp"
-  >
+    android:elevation="@dimen/_10sdp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,11 +22,11 @@
             android:orientation="horizontal">
 
             <ImageView
-                app:tint="@android:color/holo_orange_dark"
                 android:id="@+id/imgpostType"
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/roundicon" />
+                android:src="@drawable/roundicon"
+                app:tint="@android:color/holo_orange_dark" />
 
             <TextView
                 android:id="@+id/txtName"
@@ -63,17 +62,18 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_14sdp" />
         </LinearLayout>
+
         <ImageView
             android:id="@+id/imgPost"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_67sdp"/>
+            android:layout_height="@dimen/_67sdp"
+            android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-
 
 
             <TextView
@@ -85,15 +85,14 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/_10sdp" />
 
-            <TextView
-                android:id="@+id/txtSubCategory"
-
+            <LinearLayout
+                android:padding="@dimen/_10sdp"
+                android:id="@+id/lvSubCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
-
-                android:textColor="@color/DeepSkyBlue"
-                android:textSize="@dimen/_10sdp" />
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:orientation="horizontal"
+ />
         </LinearLayout>
     </LinearLayout>
 

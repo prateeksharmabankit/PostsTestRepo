@@ -33,7 +33,7 @@ class PostsViewModel(
 
     val addPostViewResponse = MutableLiveData<AddPostViewsResponse>()
     val addPostLikesResponse = MutableLiveData<AddPostLikesResponse>()
-    val addPostResponse = MutableLiveData<AddPostResponse>()
+
     val postList = MutableLiveData<PostResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -137,122 +137,8 @@ class PostsViewModel(
 
     }
 
-    fun AddPost(postRequest: AddPostRequest) {
-        loading.postValue(true)
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val result = usersRepository.AddPost(postRequest)
-            withContext(Dispatchers.Main) {
-                try {
-                    loading.postValue(false)
 
 
-                    addPostResponse.postValue(result.body())
-                } catch (throwable: Throwable) {
-                    loading.postValue(false)
-                    when (throwable) {
-                        is IOException -> {
-                            onError("Network Error")
-                        }
-                        is HttpException -> {
-                            val codeError = throwable.code()
-                            val errorMessageResponse = throwable.message()
-                            onError("Error $errorMessageResponse : $codeError")
-                        }
-                        else -> {
-                            onError("UnKnown error")
-                        }
-                    }
-                }
-                loading.value = false
-            }
-        }
 
-    }
-
-    fun AddWhatsIsPost(file: File, postRequest: AddPostRequest) {
-        loading.postValue(true)
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-
-            val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
-            val body = MultipartBody.Part.createFormData(
-                "formFile",
-                file.name, reqFile
-            )
-
-
-            var title = RequestBody.create(
-                MediaType.parse("text/plain"),
-                postRequest.Title
-            );
-            var IsAnonymous = RequestBody.create(
-                MediaType.parse("text/plain"),
-                postRequest.IsAnonymous.toString()
-            );
-            var UserId = RequestBody.create(
-                MediaType.parse("text/plain"),
-                postRequest.UserId.toString()
-            );
-
-
-            var Latitude = RequestBody.create(
-                MediaType.parse("text/plain"),
-                postRequest.Latitude.toString()
-            );
-            var Longitude = RequestBody.create(
-                MediaType.parse("text/plain"),
-                postRequest.Longitude.toString()
-            );
-            var PostType = RequestBody.create(
-                MediaType.parse("text/plain"),
-                postRequest.PostType.toString()
-            );
-
-            var PostSubCategories = RequestBody.create(
-                MediaType.parse("text/plain"),
-                postRequest.PostSubCategories.toString()
-            );
-            var image = RequestBody.create(
-                MediaType.parse("text/plain"),
-                ""
-            );
-
-            val result = usersRepository.AddWhatIsPost(
-                body,
-                title,
-                IsAnonymous,
-                UserId,
-                Latitude,
-                Longitude,
-                PostType,
-                image,
-                PostSubCategories
-            )
-            withContext(Dispatchers.Main) {
-                try {
-                    loading.postValue(false)
-
-
-                    addPostResponse.postValue(result.body())
-                } catch (throwable: Throwable) {
-                    loading.postValue(false)
-                    when (throwable) {
-                        is IOException -> {
-                            onError("Network Error")
-                        }
-                        is HttpException -> {
-                            val codeError = throwable.code()
-                            val errorMessageResponse = throwable.message()
-                            onError("Error $errorMessageResponse : $codeError")
-                        }
-                        else -> {
-                            onError("UnKnown error")
-                        }
-                    }
-                }
-                loading.value = false
-            }
-        }
-
-    }
 
 }

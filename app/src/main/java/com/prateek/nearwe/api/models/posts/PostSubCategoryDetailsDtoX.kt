@@ -9,7 +9,6 @@ package com.prateek.nearwe.api.models.posts
 import java.io.Serializable
 
 data class PostSubCategoryDetailsDtoX(
-    val categoryId: Int,
-    val subCategoryId: Int,
+
     val subCategoryName: String
 ):Serializable

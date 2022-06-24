@@ -50,7 +50,9 @@ class PostsServerRepository(private val postsServices: PostsServices) {
         Longitude: RequestBody,
         PostType: RequestBody,
         ImageUrl: RequestBody,
-        PostSubCategories: RequestBody
+        PostSubCategories: RequestBody,
+        CategoryId:RequestBody,
+        CategoryName:RequestBody
     ) = postsServices.AddWhatIsPost(
         formFile,
         Title,
@@ -60,7 +62,9 @@ class PostsServerRepository(private val postsServices: PostsServices) {
         Longitude,
         PostType,
         ImageUrl,
-        PostSubCategories
+        PostSubCategories,
+        CategoryId,
+        CategoryName
     )
 
 

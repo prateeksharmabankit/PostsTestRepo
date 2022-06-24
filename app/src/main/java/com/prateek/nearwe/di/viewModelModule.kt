@@ -21,7 +21,7 @@ val viewModelModule = module {
     viewModel {  LoginViewModel(loginServerRepository = get(), postsPersistanceRepositoru = get()) }
     viewModel {  TrendingViewModel(postsServerRepository = get()) }
     viewModel {  WhatIsViewModel(postsServerRepository = get()) }
-    viewModel {  HomeViewModel(subCategoryRepository = get()) }
+    viewModel {  HomeViewModel(subCategoryRepository = get(),postsServerRepository=get()) }
 
 }
 

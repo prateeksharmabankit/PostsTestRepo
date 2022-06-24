@@ -56,7 +56,7 @@ class CommentsActivity : AppCompatActivity() {
         UserId = intent.extras!!.getInt("UserId")
         Name = intent.extras!!.getString("Name")!!
         when (post.isAnonymous) {
-            0 -> binding.txtName.text = post.user.name
+            0 -> binding.txtName.text = post.name
             1 -> binding.txtName.text = resources.getString(R.string.anonymous)
         }
 
@@ -111,10 +111,10 @@ class CommentsActivity : AppCompatActivity() {
                         commentRequest.PostId = post.postId
                         commentRequest.UserName = Name
                         commentRequest.DateTime = System.currentTimeMillis()
-                        if (post.user.userId == UserId.toString()) {
+                        if (post.userId.toString() == UserId.toString()) {
                             commentRequest.IsOwner = 1
                         } else {
-                            commentRequest.IsOwner = 1
+                            commentRequest.IsOwner = 0
                         }
 
                         commentsViewModel.addPostGroup(commentRequest)

@@ -68,7 +68,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val homeViewModel: HomeViewModel by viewModel()
-    private val postsViewModel: PostsViewModel by viewModel()
     private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var file: File
 
@@ -176,7 +175,7 @@ class HomeActivity : AppCompatActivity() {
         recylerSubCategories?.layoutManager = staggeredGridLayoutManager
         val adapter = SubCategoryAdapter(subCategoryList)
         recylerSubCategories?.adapter = adapter
-        var postModel = AddPostRequest()
+        val postModel = AddPostRequest()
         postModel.PostType = 1
         when (postCategoryId) {
             941590 -> tvTitle?.text = getString(R.string.fabtextone)
@@ -199,7 +198,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         PostNow?.setOnClickListener(View.OnClickListener {
-
+            postModel.CategoryId = postCategoryId
             when (postCategoryId) {
                 123251 -> {
 
@@ -207,6 +206,7 @@ class HomeActivity : AppCompatActivity() {
                     postModel.Longitude = MainApp.instance.Longitude
 
 
+                    postModel.CategoryName = "What is this thing?"
 
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
@@ -219,12 +219,12 @@ class HomeActivity : AppCompatActivity() {
                         }
 
 
-                    postModel.PostSubCategories =
-                        selectedEngineers.joinToString { it.subCategoryId.toString()!! }.split(",")
+                    postModel.SubCategories =
+                        selectedEngineers.joinToString { it.subCategoryName.toString()!! }.split(",")
                             .toString().drop(1)
                             .dropLast(1)
 
-                    if (postModel.PostSubCategories!!.isEmpty()) {
+                    if (postModel.SubCategories!!.isEmpty()) {
 
                         Toast.makeText(applicationContext, "Please Select Tags", Toast.LENGTH_SHORT)
                             .show()
@@ -244,7 +244,7 @@ class HomeActivity : AppCompatActivity() {
                             )
                                 .show()
                         } else {
-                            postsViewModel.AddWhatsIsPost(file, postModel)
+                            homeViewModel.AddWhatsIsPost(file, postModel)
                             bottomSheetDialog.dismiss()
                         }
 
@@ -255,7 +255,20 @@ class HomeActivity : AppCompatActivity() {
                 }
                 else -> {
 
-                    var postModel = AddPostRequest()
+
+                    when (postCategoryId) {
+
+
+                        487951 -> {
+                            postModel.CategoryName = "Hobbies & Interests"
+                        }
+
+                        941590 -> {
+                            postModel.CategoryName = "Near by"
+                        }
+                    }
+
+
                     postModel.Latitude = MainApp.instance.Latitude
                     postModel.Longitude = MainApp.instance.Longitude
 
@@ -264,11 +277,11 @@ class HomeActivity : AppCompatActivity() {
                     postModel.Title = etTitle?.text.toString().trim()
                     val selectedEngineers: List<ResultList> = subCategoryList
                         .filterIndexed { index, engineer -> engineer.isCHecked }
-                    postModel.PostSubCategories =
-                        selectedEngineers.joinToString { it.subCategoryId.toString()!! }.split(",")
+                    postModel.SubCategories =
+                        selectedEngineers.joinToString { it.subCategoryName.toString()!! }.split(",")
                             .toString().drop(1)
                             .dropLast(1)
-                    if (postModel.PostSubCategories!!.isEmpty()) {
+                    if (postModel.SubCategories!!.isEmpty()) {
 
                         Toast.makeText(applicationContext, "Please Select Tags", Toast.LENGTH_SHORT)
                             .show()
@@ -281,7 +294,7 @@ class HomeActivity : AppCompatActivity() {
                             )
                                 .show()
                         } else {
-                            postsViewModel.AddPost(postModel)
+                            homeViewModel.AddPost(postModel)
                             bottomSheetDialog.dismiss()
                         }
 
@@ -326,13 +339,13 @@ class HomeActivity : AppCompatActivity() {
             user = it
 
         })
-        postsViewModel.addPostResponse.observe(this, Observer {
+        homeViewModel.addPostResponse.observe(this, Observer {
             Toast.makeText(applicationContext, "Post Added Successfully", Toast.LENGTH_SHORT).show()
 
 
         })
 
-        postsViewModel.loading.observe(this, Observer {
+        homeViewModel.loading.observe(this, Observer {
             if (it) {
                 binding.progressBar.visibility = View.VISIBLE
             } else {

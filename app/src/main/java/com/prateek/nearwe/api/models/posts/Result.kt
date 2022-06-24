@@ -12,20 +12,25 @@ data class Result(
     val ago: String,
     val dateTimeStamp: String,
     val distance: Double,
-    val emailAddress: Any,
-    val imageUrl: Any,
+    val emailAddress: String,
+    val imageUrl: String,
     val isAnonymous: Int,
     var isLiked: Int,
     val latitude: String,
     val longitude: String,
-    val name: Any,
+    val name: String,
     val postId: Int,
-    val postSubCategories: String,
-    val postSubCategoryDetailsDtos: List<PostSubCategoryDetailsDtoX>,
+
     val postType: Int,
     val postViews: Int,
     val title: String,
-    val user: User,
     val userId: Int,
-    val nearWeCategory:Category
+    val categoryId: Int,
+
+
+    val categoryName: String,
+    val subCategories: String
+
+
+
 ):Serializable

@@ -85,7 +85,11 @@ interface PostsServices {
         @Part("PostType") PostType: RequestBody?,
         @Part("ImageUrl") ImageUrl: RequestBody?,
 
-        @Part("PostSubCategories") PostSubCategories: RequestBody?
+        @Part("SubCategories") SubCategories: RequestBody?,
+        @Part("CategoryId") CategoryId: RequestBody?,
+        @Part("CategoryName") CategoryName: RequestBody?
+
+
     ): Response<AddPostResponse>
 
     @GET("Posts/GetAllWhatisPosts/{UserId}/{Latitude}/{Longitude}")
