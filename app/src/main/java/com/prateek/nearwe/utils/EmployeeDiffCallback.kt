@@ -8,13 +8,13 @@ package com.prateek.nearwe.utils
 
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
-import com.prateek.nearwe.api.models.posts.Result
+import com.prateek.nearwe.api.models.posts.postresponse.Post
 
 
-class EmployeeDiffCallback(oldEmployeeList: List<Result>, newEmployeeList: List<Result>) :
+class EmployeeDiffCallback(oldEmployeeList: List<Post>, newEmployeeList: List<Post>) :
     DiffUtil.Callback() {
-    private val mOldEmployeeList: List<Result>
-    private val mNewEmployeeList: List<Result>
+    private val mOldEmployeeList: List<Post>
+    private val mNewEmployeeList: List<Post>
     override fun getOldListSize(): Int {
         return mOldEmployeeList.size
     }

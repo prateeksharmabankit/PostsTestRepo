@@ -12,12 +12,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.prateek.nearwe.R
-import com.prateek.nearwe.api.models.SubCategory.ResultList
+import com.prateek.nearwe.api.models.SubCategory.SubCategory
 
 
 class SubCategoryAdapter(
 
-    private val commentsModelList: List<ResultList>
+    private val commentsModelList: List<SubCategory>
 ) : RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

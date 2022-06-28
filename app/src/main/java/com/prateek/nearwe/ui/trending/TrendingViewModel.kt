@@ -4,7 +4,7 @@ package com.prateek.nearwe.ui.trending
 import androidx.lifecycle.*
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
-import com.prateek.nearwe.api.models.posts.PostResponse
+import com.prateek.nearwe.api.models.posts.postresponse.PostResponse
 import com.prateek.nearwe.application.MainApp
 
 import com.prateek.nearwe.repository.PostsServerRepository

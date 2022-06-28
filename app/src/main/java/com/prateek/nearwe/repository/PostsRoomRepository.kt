@@ -1,9 +1,7 @@
 package com.prateek.nearwe.repository
 
 import com.prateek.nearwe.api.models.User.UserModel
-import com.prateek.nearwe.api.models.posts.PostResponse
 
-import com.prateek.nearwe.room.dao.PostsDAO
 import com.prateek.nearwe.room.dao.UserDAO
 
 

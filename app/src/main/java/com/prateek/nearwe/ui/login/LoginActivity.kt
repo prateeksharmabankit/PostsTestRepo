@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.birjuvachhani.locus.Locus
@@ -43,8 +44,13 @@ class LoginActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splash= installSplashScreen()
+
+
         super.onCreate(savedInstanceState)
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
+       ;
         setContentView(binding.root)
 
 
@@ -156,10 +162,9 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResponse.observe(this) {
             binding.progressBar.visibility = View.GONE
 
-            it.result.let { it1 ->
-                it1.Latitude=MainApp.instance.Latitude
-                it1.Longitude=MainApp.instance.Longitude
-                loginViewModel.saveUser(it.result)
+            it.results.let { it1 ->
+
+                loginViewModel.saveUser(it.results.data)
                 startActivity(
                     Intent(
                         this, HomeActivity

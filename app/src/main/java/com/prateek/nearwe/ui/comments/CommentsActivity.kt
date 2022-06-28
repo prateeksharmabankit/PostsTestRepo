@@ -16,13 +16,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.birjuvachhani.locus.Locus
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
-import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
-import com.prateek.nearwe.api.models.posts.Result
-import com.prateek.nearwe.application.MainApp
+import com.prateek.nearwe.api.models.posts.postresponse.Post
 import com.prateek.nearwe.databinding.ActivityCommentsBinding
 import com.prateek.nearwe.ui.adapters.CommentsAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
@@ -40,7 +37,7 @@ class CommentsActivity : AppCompatActivity() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val postsViewModel: PostsViewModel by viewModel()
     private val loginViewModel: LoginViewModel by viewModel()
-    private lateinit var post: Result
+    private lateinit var post: Post
     var UserId: Int = 0
     var Name: String = ""
 
@@ -51,12 +48,12 @@ class CommentsActivity : AppCompatActivity() {
         binding = ActivityCommentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loginViewModel.getAddressHeader(this)
-        post = intent.extras!!.get("post") as Result
+        post = intent.extras!!.get("post") as Post
 
         UserId = intent.extras!!.getInt("UserId")
         Name = intent.extras!!.getString("Name")!!
         when (post.isAnonymous) {
-            0 -> binding.txtName.text = post.name
+            0 -> binding.txtName.text = post.users.Name
             1 -> binding.txtName.text = resources.getString(R.string.anonymous)
         }
 
@@ -111,7 +108,7 @@ class CommentsActivity : AppCompatActivity() {
                         commentRequest.PostId = post.postId
                         commentRequest.UserName = Name
                         commentRequest.DateTime = System.currentTimeMillis()
-                        if (post.userId.toString() == UserId.toString()) {
+                        if (post.users.UserId.toString() == UserId.toString()) {
                             commentRequest.IsOwner = 1
                         } else {
                             commentRequest.IsOwner = 0

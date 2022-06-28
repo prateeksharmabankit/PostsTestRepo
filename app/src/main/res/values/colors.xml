@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Created by Efendi Hariyadi on 28/06/22, 8:07 PM
+  ~ Copyright (c) 2022 . All rights reserved.
+  ~ Last modified 28/06/22, 5:03 PM
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
 <resources>
 
-    <color name="colorPrimary">#260151</color>
-    <color name="colorPrimaryDark">#260151</color>
+    <color name="colorPrimary">#381E72</color>
+    <color name="colorPrimaryDark">#492698</color>
     <color name="colorAccent">#FFA500</color>
 
         <color name="White">#FFFFFF</color>

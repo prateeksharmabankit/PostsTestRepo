@@ -1,36 +1,27 @@
 /*************************************************
- * Created by Efendi Hariyadi on 22/06/22, 1:42 PM
+ * Created by Efendi Hariyadi on 27/06/22, 11:22 PM
  * Copyright (c) 2022 . All rights reserved.
- * Last modified 22/06/22, 1:42 PM
+ * Last modified 27/06/22, 11:22 PM
  ************************************************/
 
-package com.prateek.nearwe.api.models.posts
+package com.prateek.nearwe.api.models.posts.postresponse
 
+import com.prateek.nearwe.api.models.User.UserModel
 import java.io.Serializable
 
-data class Result(
+data class Post(
     val ago: String,
+    val categoryName: String,
     val dateTimeStamp: String,
     val distance: Double,
-    val emailAddress: String,
-    val imageUrl: String,
     val isAnonymous: Int,
-    var isLiked: Int,
     val latitude: String,
     val longitude: String,
-    val name: String,
     val postId: Int,
-
     val postType: Int,
     val postViews: Int,
+    val subCategories: String,
     val title: String,
-    val userId: Int,
-    val categoryId: Int,
-
-
-    val categoryName: String,
-    val subCategories: String
-
-
-
+    val users: UserModel,
+            var isLiked:Int
 ):Serializable

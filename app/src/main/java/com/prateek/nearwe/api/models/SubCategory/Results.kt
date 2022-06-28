@@ -6,9 +6,6 @@
 
 package com.prateek.nearwe.api.models.SubCategory
 
-data class SubCategoriesResponse(
-    val code: Int,
-    val error: Boolean,
-    val message: String,
-    val results: Results
+data class Results(
+    val `data`: List<SubCategory>
 )

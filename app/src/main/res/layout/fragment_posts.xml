@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="#fafafa"
     tools:context=".ui.posts.PostsFragment">
 
@@ -17,10 +18,11 @@
 
         android:scrollbars="vertical" />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_width="match_parent"
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:indeterminate="true"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

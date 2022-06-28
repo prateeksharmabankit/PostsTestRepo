@@ -38,21 +38,18 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.birjuvachhani.locus.Locus
 
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.innfinity.permissionflow.lib.requestPermissions
 import com.prateek.nearwe.R
-import com.prateek.nearwe.api.models.SubCategory.ResultList
-import com.prateek.nearwe.api.models.SubCategory.SubCategoriesResponse
+import com.prateek.nearwe.api.models.SubCategory.SubCategory
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.databinding.ActivityHomeBinding
 import com.prateek.nearwe.ui.adapters.SubCategoryAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
-import com.prateek.nearwe.ui.posts.PostsViewModel
 import gun0912.tedbottompicker.TedBottomPicker
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.CoroutineScope
@@ -144,7 +141,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    fun openAddBottomSheet(subCategoryList: List<ResultList>) {
+    fun openAddBottomSheet(subCategoryList: List<SubCategory>) {
 
         val bottomSheetDialog = BottomSheetDialog(this, R.style.TransparentDialog)
         bottomSheetDialog.setContentView(R.layout.add_postbottomsheet)
@@ -211,7 +208,7 @@ class HomeActivity : AppCompatActivity() {
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
                     postModel.Title = etTitle?.text.toString().trim()
-                    val selectedEngineers: List<ResultList> = subCategoryList
+                    val selectedEngineers: List<SubCategory> = subCategoryList
                         .filterIndexed { index, engineer ->
                             engineer.isCHecked
 
@@ -275,7 +272,7 @@ class HomeActivity : AppCompatActivity() {
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
                     postModel.Title = etTitle?.text.toString().trim()
-                    val selectedEngineers: List<ResultList> = subCategoryList
+                    val selectedEngineers: List<SubCategory> = subCategoryList
                         .filterIndexed { index, engineer -> engineer.isCHecked }
                     postModel.SubCategories =
                         selectedEngineers.joinToString { it.subCategoryName.toString()!! }.split(",")
@@ -332,7 +329,7 @@ class HomeActivity : AppCompatActivity() {
 
     fun initObserver() {
         homeViewModel.userList.observe(this, Observer {
-            openAddBottomSheet(it.result)
+            openAddBottomSheet(it.results.data)
         })
 
         loginViewModel.userDetails.observe(this, Observer {

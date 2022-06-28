@@ -2,23 +2,16 @@ package com.prateek.nearwe.ui.whatis
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.birjuvachhani.locus.Locus
-import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.User.UserModel
-import com.prateek.nearwe.api.models.posts.Result
-import com.prateek.nearwe.databinding.FragmentTrendingBinding
+import com.prateek.nearwe.api.models.posts.postresponse.Post
 import com.prateek.nearwe.databinding.FragmentWhatisBinding
 
 import com.prateek.nearwe.ui.adapters.PostsAdapter
@@ -34,7 +27,7 @@ class WhatIsFragment : Fragment() {
     private lateinit var binding: FragmentWhatisBinding
     private lateinit var user: UserModel
 
-    private val postList = ArrayList<Result>()
+    private val postList = ArrayList<Post>()
     private lateinit var postAdapter: PostsAdapter
 
     override fun onCreateView(
@@ -76,7 +69,7 @@ class WhatIsFragment : Fragment() {
         whatIsViewModel.postList.observe(viewLifecycleOwner) {
             it?.let { list ->
                 binding.progressBar.visibility = View.GONE
-                postAdapter.updateEmployeeListItems(list.result.toMutableList())
+                postAdapter.updateEmployeeListItems(list.results.data.toMutableList())
             }
         }
         whatIsViewModel.errorMessage.observe(viewLifecycleOwner) {

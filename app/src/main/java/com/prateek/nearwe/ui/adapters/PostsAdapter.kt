@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.prateek.nearwe.R
-import com.prateek.nearwe.api.models.posts.Result
+import com.prateek.nearwe.api.models.posts.postresponse.Post
 import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.utils.EmployeeDiffCallback
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNonNull
@@ -30,7 +30,7 @@ import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
 class PostsAdapter(
     private val onCheckboxClickListener: OnClickListener,
     private val onItemClickListener: OnItemClickListener,
-    private val mList: MutableList<Result>
+    private val mList: MutableList<Post>
 
 
 ) :
@@ -45,12 +45,12 @@ class PostsAdapter(
         return ViewHolder(view)
     }
 
-    class OnClickListener(val clickListener: (meme: Result) -> Unit) {
-        fun onClick(meme: Result) = clickListener(meme)
+    class OnClickListener(val clickListener: (meme: Post) -> Unit) {
+        fun onClick(meme: Post) = clickListener(meme)
     }
 
-    class OnItemClickListener(val clickListener: (meme: Result) -> Unit) {
-        fun onClick(meme: Result) = clickListener(meme)
+    class OnItemClickListener(val clickListener: (meme: Post) -> Unit) {
+        fun onClick(meme: Post) = clickListener(meme)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -110,14 +110,14 @@ class PostsAdapter(
 
 
         when (post.isAnonymous) {
-            0 -> holder.txtName.text = post.name
+            0 -> holder.txtName.text = post.users.Name
 
             1 -> holder.txtName.text = MainApp.instance.getString(R.string.anonymous)
 
 
         }
 
-        post.imageUrl.ifNull {
+      /*  post.imageUrl.ifNull {
 
             holder.imgPost.visibility = View.GONE
         }
@@ -126,7 +126,7 @@ class PostsAdapter(
                 .load(post.imageUrl)
                 .into(holder.imgPost)
             holder.imgPost.visibility = View.VISIBLE
-        }
+        }*/
 
         holder.txtCategory.text = post.categoryName
 
@@ -155,7 +155,7 @@ class PostsAdapter(
 
     }
 
-    fun updateEmployeeListItems(employees: MutableList<Result>) {
+    fun updateEmployeeListItems(employees: MutableList<Post>) {
         val diffCallback = EmployeeDiffCallback(this.mList, employees!!)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         mList.clear()

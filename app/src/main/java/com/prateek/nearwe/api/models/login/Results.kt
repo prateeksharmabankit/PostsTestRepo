@@ -6,9 +6,8 @@
 
 package com.prateek.nearwe.api.models.login
 
-data class LoginResponse(
-    val code: Int,
-    val error: Boolean,
-    val message: String,
-    val results: Results
+import com.prateek.nearwe.api.models.User.UserModel
+
+data class Results(
+    val `data`: UserModel
 )

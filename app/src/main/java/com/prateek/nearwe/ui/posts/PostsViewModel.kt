@@ -3,12 +3,10 @@ package com.prateek.nearwe.ui.posts
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
-import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
-import com.prateek.nearwe.api.models.posts.PostResponse
+import com.prateek.nearwe.api.models.posts.postresponse.PostResponse
 import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.PostsRoomRepository
 import com.prateek.nearwe.repository.PostsServerRepository
@@ -16,11 +14,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.HttpException
-import java.io.File
 import java.io.IOException
 
 

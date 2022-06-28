@@ -55,7 +55,7 @@ class TrendingFragment : Fragment() {
                 intent.putExtra("latitude", latitude)
                 intent.putExtra("longitude", longitude)
                 startActivity(intent)
-            }, it.result.toMutableList())
+            }, it.results.data.toMutableList())
 
             binding.recyclerView.adapter = adapter
 

@@ -2,19 +2,13 @@ package com.prateek.nearwe.repository
 
 import com.prateek.nearwe.api.PostsServices
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
-import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
-import com.prateek.nearwe.api.models.posts.PostResponse
-import kotlinx.coroutines.Dispatchers
+import com.prateek.nearwe.api.models.posts.postresponse.PostResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
-import retrofit2.http.Body
-import java.io.File
 
 class PostsServerRepository(private val postsServices: PostsServices) {
     fun GetAllPosts(UserId: Int?, Latitude: String, Longitude: String): Flow<PostResponse> {

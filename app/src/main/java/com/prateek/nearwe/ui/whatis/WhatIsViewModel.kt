@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
-import com.prateek.nearwe.api.models.posts.PostResponse
+import com.prateek.nearwe.api.models.posts.postresponse.PostResponse
 import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.CoroutineExceptionHandler

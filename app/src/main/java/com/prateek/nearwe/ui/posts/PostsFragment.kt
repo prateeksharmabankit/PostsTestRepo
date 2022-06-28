@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prateek.nearwe.api.models.User.UserModel
-import com.prateek.nearwe.api.models.posts.Result
+import com.prateek.nearwe.api.models.posts.postresponse.Post
 import com.prateek.nearwe.databinding.FragmentPostsBinding
 import com.prateek.nearwe.ui.adapters.PostsAdapter
 import com.prateek.nearwe.ui.comments.CommentsActivity
@@ -25,7 +25,7 @@ class PostsFragment : Fragment() {
     private val userViewModel: LoginViewModel by viewModel()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var user: UserModel
-    private val postList = ArrayList<Result>()
+    private val postList = ArrayList<Post>()
     private lateinit var postAdapter: PostsAdapter
 
     override fun onCreateView(
@@ -62,7 +62,7 @@ class PostsFragment : Fragment() {
         postsViewModel.postList.observe(viewLifecycleOwner) {
             it?.let { list ->
                 binding.progressBar.visibility = View.GONE
-                postAdapter.updateEmployeeListItems(list.result.toMutableList())
+                postAdapter.updateEmployeeListItems(list.results.data.toMutableList())
             }
         }
         postsViewModel.errorMessage.observe(viewLifecycleOwner) {
