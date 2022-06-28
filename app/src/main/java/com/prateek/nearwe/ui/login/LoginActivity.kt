@@ -6,12 +6,17 @@
 
 package com.prateek.nearwe.ui.login
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.birjuvachhani.locus.Locus
@@ -43,14 +48,15 @@ class LoginActivity : AppCompatActivity() {
     private val loginViewModel: LoginViewModel by viewModel()
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splash= installSplashScreen()
+        val splash = installSplashScreen()
 
 
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-       ;
+
         setContentView(binding.root)
 
 
@@ -64,6 +70,9 @@ class LoginActivity : AppCompatActivity() {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         firebaseAuth = FirebaseAuth.getInstance()
+        binding.btnGoogle.setOnClickListener {
+            signInGoogle()
+        }
         binding.btnSignIn.setOnClickListener(View.OnClickListener {
 
 
@@ -72,14 +81,14 @@ class LoginActivity : AppCompatActivity() {
         Locus.getCurrentLocation(this) { result ->
             result.location?.let {
 
-                MainApp.instance.Latitude=it.latitude.toString()
-                MainApp.instance.Longitude=it.longitude.toString()
+                MainApp.instance.Latitude = it.latitude.toString()
+                MainApp.instance.Longitude = it.longitude.toString()
 
                 initObserver()
             }
             result.error?.let {
 
-              //TODO Add App Finish Code
+                //TODO Add App Finish Code
             }
         }
 
@@ -116,6 +125,7 @@ class LoginActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                binding.lvLogin.visibility = View.GONE
                 var user = UserModel()
                 user.Name = account.displayName
                 user.EmailAddress = account.email
@@ -180,4 +190,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+
+
 }

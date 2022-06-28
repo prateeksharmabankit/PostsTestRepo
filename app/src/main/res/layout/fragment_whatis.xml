@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Created by Efendi Hariyadi on 28/06/22, 11:01 PM
+  ~ Copyright (c) 2022 . All rights reserved.
+  ~ Last modified 28/06/22, 5:03 PM
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fafafa"
+    android:background="#F1F1F1"
     tools:context=".ui.posts.PostsFragment">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:scrollbars="none" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:layout_width="match_parent"

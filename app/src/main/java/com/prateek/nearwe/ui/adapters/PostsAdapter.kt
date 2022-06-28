@@ -58,6 +58,7 @@ class PostsAdapter(
         val post = mList[position]
         holder.txtTitle.text = post.title
         holder.txtDateTime.text = post.ago
+        holder.txtViews.text=post.postViews.toString()+" Views"
 
         when (post.postType) {
             1 -> holder.imgpostType.setColorFilter(
@@ -81,26 +82,21 @@ class PostsAdapter(
 
         }
 
-
+        holder.lvSubCategory.removeAllViews()
         val lstValues: List<String> = post.subCategories.split(",").map { it -> it.trim() }
         lstValues.forEach { it ->
             val chip = Chip(ContextThemeWrapper( MainApp.instance, R.style.Theme_MaterialComponents_Light))
             chip.text = it
-            when (post.postType) {
-                1 ->  chip.setChipBackgroundColorResource(R.color.Green)
-                2 -> chip.setChipBackgroundColorResource(R.color.Orange)
-                3 -> chip.setChipBackgroundColorResource(R.color.Red)
-
-            }
+            chip.setChipBackgroundColorResource(R.color.colorPrimary)
 
 
             chip.isCloseIconVisible = false
-            chip.setTextColor(MainApp.instance.getColor(R.color.White))
+            chip.setTextColor(MainApp.instance.getColor(R.color.primarytext))
             val layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
             )
 
-            layoutParams.setMargins(10, 0, 10, 0)
+            layoutParams.setMargins(0, 0, 10, 0)
 
             holder.lvSubCategory.addView(chip,layoutParams)
         }
@@ -117,7 +113,7 @@ class PostsAdapter(
 
         }
 
-      /*  post.imageUrl.ifNull {
+        post.imageUrl.ifNull {
 
             holder.imgPost.visibility = View.GONE
         }
@@ -126,9 +122,9 @@ class PostsAdapter(
                 .load(post.imageUrl)
                 .into(holder.imgPost)
             holder.imgPost.visibility = View.VISIBLE
-        }*/
+        }
 
-        holder.txtCategory.text = post.categoryName
+      //  holder.txtCategory.text = post.categoryName
 
         holder.itemView.setOnClickListener {
 
@@ -151,6 +147,8 @@ class PostsAdapter(
         val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
         val lvSubCategory: LinearLayout = itemView.findViewById(R.id.lvSubCategory)
         val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
+        val txtViews: TextView = itemView.findViewById(R.id.txtViews)
+
 
 
     }

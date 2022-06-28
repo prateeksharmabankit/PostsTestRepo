@@ -8,8 +8,10 @@
 <resources>
 
     <color name="colorPrimary">#381E72</color>
-    <color name="colorPrimaryDark">#492698</color>
-    <color name="colorAccent">#FFA500</color>
+    <color name="colorPrimaryDark">#381E72</color>
+    <color name="primarytext">#D0BCFF</color>
+    <color name="colorAccent">#FF5776</color>
+    <color name="lightgray">#D0BCFF</color>
 
         <color name="White">#FFFFFF</color>
         <color name="Ivory">#FFFFF0</color>

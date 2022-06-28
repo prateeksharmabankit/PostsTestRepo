@@ -17,6 +17,7 @@ data class Post(
     val isAnonymous: Int,
     val latitude: String,
     val longitude: String,
+    val imageUrl: String,
     val postId: Int,
     val postType: Int,
     val postViews: Int,
