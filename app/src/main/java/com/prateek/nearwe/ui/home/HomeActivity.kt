@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +42,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.innfinity.permissionflow.lib.requestPermissions
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.SubCategory.SubCategory
@@ -73,6 +75,7 @@ class HomeActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -268,7 +271,7 @@ class HomeActivity : AppCompatActivity() {
 
                     postModel.Latitude = MainApp.instance.Latitude
                     postModel.Longitude = MainApp.instance.Longitude
-
+                    postModel.imageUrl=null
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
                     postModel.Title = etTitle?.text.toString().trim()

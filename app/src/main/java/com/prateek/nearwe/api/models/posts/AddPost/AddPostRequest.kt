@@ -19,15 +19,17 @@ import com.google.gson.annotations.SerializedName
 
 data class AddPostRequest(
 
-    @SerializedName("Title") var Title: String? = null,
-    @SerializedName("IsAnonymous") var IsAnonymous: Int? = null,
-    @SerializedName("Latitude") var Latitude: String? = null,
-    @SerializedName("Longitude") var Longitude: String? = null,
-    @SerializedName("PostType") var PostType: Int? = null,
-    @SerializedName("SubCategories") var SubCategories: String? = null,
-    @SerializedName("UserId") var UserId: Int? = null,
-    @SerializedName("CategoryName") var CategoryName: String? = null,
-    @SerializedName("CategoryId") var CategoryId: Int? = null
+    @SerializedName("title") var Title: String? = null,
+    @SerializedName("isAnonymous") var IsAnonymous: Int? = null,
+    @SerializedName("latitude") var Latitude: String? = null,
+    @SerializedName("longitude") var Longitude: String? = null,
+    @SerializedName("postType") var PostType: Int? = null,
+    @SerializedName("subCategories") var SubCategories: String? = null,
+    @SerializedName("userId") var UserId: Int? = null,
+    @SerializedName("categoryName") var CategoryName: String? = null,
+    @SerializedName("categoryId") var CategoryId: Int? = null,
+    @SerializedName("imageUrl") var imageUrl: String? = null,
+
 
 
     )

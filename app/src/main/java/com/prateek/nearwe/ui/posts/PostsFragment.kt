@@ -1,11 +1,13 @@
 package com.prateek.nearwe.ui.posts
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat.makeSceneTransitionAnimation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
@@ -45,13 +47,18 @@ class PostsFragment : Fragment() {
     private fun initUI() {
         linearLayoutManager = LinearLayoutManager(activity)
         binding.recyclerView.layoutManager = linearLayoutManager
-        postAdapter = PostsAdapter(PostsAdapter.OnClickListener { post ->
-        }, PostsAdapter.OnItemClickListener { post ->
+        postAdapter = PostsAdapter( PostsAdapter.OnItemClickListener { post,view ->
             val intent = Intent(activity, CommentsActivity::class.java)
             intent.putExtra("post", post as Serializable)
             intent.putExtra("UserId", user.UserId)
             intent.putExtra("Name", user.Name)
-            startActivity(intent)
+            val options =makeSceneTransitionAnimation(
+                requireActivity(),
+                view,
+                "shared_element_container" // The transition name to be matched in Activity B.
+            )
+            startActivity(intent, options.toBundle())
+
 
         }, postList)
         binding.recyclerView.adapter = postAdapter

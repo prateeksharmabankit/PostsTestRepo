@@ -13,19 +13,27 @@ import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.postresponse.Post
+import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.databinding.ActivityCommentsBinding
 import com.prateek.nearwe.ui.adapters.CommentsAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.hideKeyboard
+import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNonNull
+import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
 import kotlinx.android.synthetic.main.activity_comments.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -44,6 +52,9 @@ class CommentsActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityCommentsBinding.inflate(layoutInflater)
@@ -59,9 +70,18 @@ class CommentsActivity : AppCompatActivity() {
             1 -> binding.txtName.text = resources.getString(R.string.anonymous)
         }
 
+        post.imageUrl.ifNonNull {
+            Glide.with(MainApp.instance)
+                .load(post.imageUrl).apply(
+                    RequestOptions().dontTransform() // this line
+                )
+                .into(binding.imgPost)
+            binding.imgPost.visibility = View.VISIBLE
+        }
+
         binding.txtTitle.text = post.title
         binding.txtDateTime.text = post.ago
-        binding.txtViews.text = post.postViews.toString()
+        binding.txtViews.text = post.postViews.toString()+" Views"
 
         binding.txtLike.setOnClickListener(View.OnClickListener {
             var LikeUnlikeRequest = PostLikesRequest()
@@ -154,10 +174,6 @@ class CommentsActivity : AppCompatActivity() {
             binding.recyclerView.adapter = adapter
         })
         commentsViewModel.getSavedAddresses(post.postId)
-        loginViewModel.addressDetails.observe(this, Observer {
-            binding.txtLocation.text = it.toString()
-        })
-
         postsViewModel.getPostLikesResponse.observe(this, Observer {
             post.isLiked = it.results.data
             if (it.results.data == 0) {

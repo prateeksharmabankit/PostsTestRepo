@@ -49,12 +49,7 @@ interface PostsServices {
         @Path("longitude") Longitude: String
     ): Response<PostResponse>
 
-    @GET("api/Posts/GetAllWhatisPosts/{userId}/{latitude}/{longitude}")
-    suspend fun GetAllWhatisPosts(
-        @Path("userId") UserId: Int?,
-        @Path("latitude") Latitude: String,
-        @Path("longitude") Longitude: String
-    ): Response<PostResponse>
+
 
 
     @Headers("Accept: application/json")
@@ -72,7 +67,7 @@ interface PostsServices {
     suspend fun getSubcategoriesByCategoryId(@Path("categoryId") categoryId: Int): Response<SubCategoriesResponse>
 
 
-    @POST("/Posts/Add")
+    @POST("/api/post")
     suspend fun AddPost(@Body postModel: AddPostRequest): Response<AddPostResponse>
 
     @Multipart

@@ -14,10 +14,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.posts.postresponse.Post
@@ -28,7 +30,7 @@ import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
 
 
 class PostsAdapter(
-    private val onCheckboxClickListener: OnClickListener,
+
     private val onItemClickListener: OnItemClickListener,
     private val mList: MutableList<Post>
 
@@ -45,12 +47,10 @@ class PostsAdapter(
         return ViewHolder(view)
     }
 
-    class OnClickListener(val clickListener: (meme: Post) -> Unit) {
-        fun onClick(meme: Post) = clickListener(meme)
-    }
 
-    class OnItemClickListener(val clickListener: (meme: Post) -> Unit) {
-        fun onClick(meme: Post) = clickListener(meme)
+
+    class OnItemClickListener(val clickListener: (meme: Post,view:View) -> Unit) {
+        fun onClick(meme: Post,view:View) = clickListener(meme,view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -120,6 +120,9 @@ class PostsAdapter(
         post.imageUrl.ifNonNull {
             Glide.with(MainApp.instance)
                 .load(post.imageUrl)
+                .apply(
+                    RequestOptions().dontTransform() // this line
+                )
                 .into(holder.imgPost)
             holder.imgPost.visibility = View.VISIBLE
         }
@@ -128,7 +131,7 @@ class PostsAdapter(
 
         holder.itemView.setOnClickListener {
 
-            onItemClickListener.onClick(post)
+            onItemClickListener.onClick(post,holder.cardView)
         }
 
 
@@ -144,7 +147,7 @@ class PostsAdapter(
         val txtName: TextView = itemView.findViewById(R.id.txtName)
         val txtDateTime: TextView = itemView.findViewById(R.id.txtDateTime)
         val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
-        val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
+        val cardView: CardView = itemView.findViewById(R.id.cardView)
         val lvSubCategory: LinearLayout = itemView.findViewById(R.id.lvSubCategory)
         val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
         val txtViews: TextView = itemView.findViewById(R.id.txtViews)
