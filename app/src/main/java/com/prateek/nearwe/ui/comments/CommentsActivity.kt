@@ -13,6 +13,7 @@ import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,6 +51,7 @@ class CommentsActivity : AppCompatActivity() {
         loginViewModel.getAddressHeader(this)
         post = intent.extras!!.get("post") as Post
 
+
         UserId = intent.extras!!.getInt("UserId")
         Name = intent.extras!!.getString("Name")!!
         when (post.isAnonymous) {
@@ -75,12 +77,7 @@ class CommentsActivity : AppCompatActivity() {
                 post.isLiked = 0
             }
         })
-        if (post.isLiked == 0) {
-            binding.txtLike.setTextColor(resources.getColor(R.color.Gray))
 
-        } else {
-            binding.txtLike.setTextColor(resources.getColor(R.color.Red))
-        }
         linearLayoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = linearLayoutManager
         binding.txtSendMessage.setOnClickListener(View.OnClickListener {
@@ -133,21 +130,23 @@ class CommentsActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
+        postsViewModel.GetPostLikes(post.postId, UserId)
 
 
     }
 
     fun initObserver() {
-        commentsViewModel.loading.observe(this, Observer {
+        postsViewModel.loading.observe(this, Observer {
             if (it) {
                 binding.progressBar.visibility = View.VISIBLE
             } else {
                 binding.progressBar.visibility = View.GONE
             }
         })
+
         postsViewModel.AddPostViews(post.postId)
         postsViewModel.addPostLikesResponse.observe(this, Observer {
-          //  postsViewModel.getAllPosts(UserId, latitude, longitude)
+            Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
         })
 
         commentsViewModel.commentsModelList.observe(this, Observer {
@@ -156,7 +155,17 @@ class CommentsActivity : AppCompatActivity() {
         })
         commentsViewModel.getSavedAddresses(post.postId)
         loginViewModel.addressDetails.observe(this, Observer {
-      binding.txtLocation.text=it.toString()
+            binding.txtLocation.text = it.toString()
+        })
+
+        postsViewModel.getPostLikesResponse.observe(this, Observer {
+            post.isLiked = it.results.data
+            if (it.results.data == 0) {
+                binding.txtLike.setTextColor(resources.getColor(R.color.Gray))
+
+            } else {
+                binding.txtLike.setTextColor(resources.getColor(R.color.Red))
+            }
         })
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
+import com.prateek.nearwe.api.models.posts.postlikedstatus.PostLikedStatus
 import com.prateek.nearwe.api.models.posts.postresponse.PostResponse
 import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.repository.PostsRoomRepository
@@ -27,7 +28,7 @@ class PostsViewModel(
 
     val addPostViewResponse = MutableLiveData<AddPostViewsResponse>()
     val addPostLikesResponse = MutableLiveData<AddPostLikesResponse>()
-
+    val getPostLikesResponse = MutableLiveData<PostLikedStatus>()
     val postList = MutableLiveData<PostResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -107,6 +108,39 @@ class PostsViewModel(
                     loading.postValue(false)
 
                     addPostLikesResponse.postValue(addPostResponse.body())
+
+
+                } catch (throwable: Throwable) {
+                    loading.postValue(false)
+                    when (throwable) {
+                        is IOException -> {
+                            onError("Network Error")
+                        }
+                        is HttpException -> {
+                            val codeError = throwable.code()
+                            val errorMessageResponse = throwable.message()
+                            onError("Error $errorMessageResponse : $codeError")
+                        }
+                        else -> {
+                            onError("UnKnown error")
+                        }
+                    }
+                }
+                loading.value = false
+            }
+        }
+
+    }
+
+    fun GetPostLikes(postId: Int,userId:Int) {
+        loading.postValue(true)
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var addPostResponse = usersRepository.GetPostsLikes(postId,userId)
+            withContext(Dispatchers.Main) {
+                try {
+                    loading.postValue(false)
+
+                    getPostLikesResponse.postValue(addPostResponse)
 
 
                 } catch (throwable: Throwable) {

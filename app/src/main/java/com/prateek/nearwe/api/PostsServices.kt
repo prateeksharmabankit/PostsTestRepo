@@ -20,6 +20,7 @@ import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
 import com.prateek.nearwe.api.models.posts.AppPostLikesResponse.AddPostLikesResponse
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
+import com.prateek.nearwe.api.models.posts.postlikedstatus.PostLikedStatus
 import com.prateek.nearwe.api.models.posts.postresponse.PostResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,6 +36,11 @@ interface PostsServices {
         @Path("latitude") Latitude: String,
         @Path("longitude") Longitude: String
     ): PostResponse
+
+    @Headers("Accept: application/json")
+    @GET("api/getPostLike/{postId}/{userId}")
+    suspend fun GetPostsLikes(
+        @Path("postId") postId: Int?,@Path("userId") userId: Int? ): PostLikedStatus
 
     @GET("api/Posts/GetAllTrendingPosts/{userId}/{latitude}/{longitude}")
     suspend fun GetAllTrendingPosts(
@@ -59,7 +65,7 @@ interface PostsServices {
     suspend fun AddPostViews(@Path("PostId") PostId: Int): Response<AddPostViewsResponse>
 
 
-    @POST("/PostLikesMapping/LikeUnlikePost")
+    @POST("api/likes/post")
     suspend fun AddPostLikesUnLike(@Body postLikesRequest: PostLikesRequest): Response<AddPostLikesResponse>
 
     @GET("api/getSubCategories/{categoryId}")

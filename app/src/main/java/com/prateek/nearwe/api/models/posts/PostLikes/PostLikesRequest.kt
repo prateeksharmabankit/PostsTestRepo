@@ -10,6 +10,6 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class PostLikesRequest(
-    @SerializedName("PostId") var PostId: Int? = null,
-    @SerializedName("UserId") var UserId: Int? = null,
+    @SerializedName("postId") var PostId: Int? = null,
+    @SerializedName("userId") var UserId: Int? = null,
 )

@@ -3,12 +3,15 @@ package com.prateek.nearwe.repository
 import com.prateek.nearwe.api.PostsServices
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
+import com.prateek.nearwe.api.models.posts.postlikedstatus.PostLikedStatus
 import com.prateek.nearwe.api.models.posts.postresponse.PostResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.http.GET
+import retrofit2.http.Path
 
 class PostsServerRepository(private val postsServices: PostsServices) {
     fun GetAllPosts(UserId: Int?, Latitude: String, Longitude: String): Flow<PostResponse> {
@@ -25,8 +28,9 @@ class PostsServerRepository(private val postsServices: PostsServices) {
     suspend fun GetAllTrendingPosts(UserId: Int?, Latitude: String, Longitude: String) =
         postsServices.GetAllTrendingPosts(UserId, Latitude, Longitude)
 
-    suspend fun GetAllWhatisPosts(UserId: Int?, Latitude: String, Longitude: String) =
-        postsServices.GetAllWhatisPosts(UserId, Latitude, Longitude)
+
+
+    suspend fun GetPostsLikes(postId: Int?,userId:Int?) =postsServices.GetPostsLikes(postId,userId)
 
     suspend fun AddPostViews(PostId: Int) = postsServices.AddPostViews(PostId)
 

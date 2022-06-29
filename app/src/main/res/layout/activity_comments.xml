@@ -59,7 +59,14 @@
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_width="match_parent"
+        android:id="@+id/progressBar"
+        android:layout_below="@+id/appBar"
+        android:visibility="gone"
 
+        android:indeterminate="true"
+        android:layout_height="wrap_content" />
     <LinearLayout
 
         android:id="@+id/lvMain"
@@ -68,6 +75,7 @@
         android:layout_below="@+id/appBar"
         android:layout_margin="@dimen/_10sdp"
         android:orientation="vertical">
+
 
         <TextView
             android:id="@+id/txtTitle"
@@ -222,11 +230,6 @@
             android:textSize="@dimen/_24sdp"
             app:solid_icon="true" />
     </LinearLayout>
-    <ProgressBar
-        android:visibility="gone"
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+
 
 </RelativeLayout>

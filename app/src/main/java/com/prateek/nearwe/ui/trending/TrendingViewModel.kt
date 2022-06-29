@@ -16,8 +16,6 @@ class TrendingViewModel(
     private val postsServerRepository: PostsServerRepository
 ) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
-    val addPostLikesResponse = MutableLiveData<AddPostLikesResponse>()
-    val addPostViewResponse = MutableLiveData<AddPostViewsResponse>()
     val userList = MutableLiveData<PostResponse>()
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
