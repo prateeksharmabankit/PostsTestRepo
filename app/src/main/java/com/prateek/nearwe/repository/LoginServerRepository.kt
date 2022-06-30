@@ -6,5 +6,5 @@ import com.prateek.nearwe.api.models.User.UserModel
 
 class LoginServerRepository(private val postsServices: PostsServices) {
     suspend fun loginUser(userModel: UserModel) = postsServices.LoginUser(userModel)
-    suspend fun UpdateToken(userId :Int,Token:String) = postsServices.UpdateNotification(userId,Token)
+    suspend fun updateToken(userId :Int?,Token:String) = postsServices.UpdateNotification(userId,Token)
 }

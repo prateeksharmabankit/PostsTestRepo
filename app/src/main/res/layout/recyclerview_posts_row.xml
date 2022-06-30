@@ -12,10 +12,10 @@
     android:id="@+id/cardView"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_5sdp"
-    android:transitionName="shared_element_container"
+
 
     app:cardCornerRadius="@dimen/_15sdp"
-    app:elevation="@dimen/_10sdp">
+    app:elevation="@dimen/_4sdp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                 android:src="@drawable/ic_user" />
 
             <TextView
-
+android:fontFamily="@font/poppinsregular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -57,6 +57,7 @@
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
+                android:fontFamily="@font/poppinsregular"
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,6 +68,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:fontFamily="@font/poppinsregular"
                 android:id="@+id/txtDateTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,6 +84,7 @@
 
         <TextView
             android:id="@+id/txtTitle"
+            android:fontFamily="@font/poppinsmedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
@@ -128,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/_5sdp"
-
+                    android:fontFamily="@font/poppinsregular"
                     android:textColor="@color/Black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -155,6 +158,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:text="Reply"
+                    android:fontFamily="@font/poppinsregular"
                     android:textColor="@color/Black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -182,6 +186,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:text="Share"
+                    android:fontFamily="@font/poppinsregular"
                     android:textColor="@color/Black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -200,6 +205,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:text="Featured Tags"
+                android:fontFamily="@font/poppinsmedium"
                 android:textColor="@color/Black"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />

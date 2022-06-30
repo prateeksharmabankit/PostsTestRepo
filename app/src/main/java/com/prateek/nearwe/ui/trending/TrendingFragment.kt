@@ -46,7 +46,7 @@ class TrendingFragment : Fragment() {
 
     fun initObserver() {
         trendingViewModel.userList.observe(viewLifecycleOwner) {
-            val adapter = PostsAdapter( PostsAdapter.OnItemClickListener { post,view ->
+            val adapter = PostsAdapter( PostsAdapter.OnItemClickListener { post ->
                 val intent = Intent(activity, CommentsActivity::class.java)
                 intent.putExtra("post", post as Serializable)
                 intent.putExtra("UserId", user.UserId)

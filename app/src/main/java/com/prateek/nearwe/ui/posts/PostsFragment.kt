@@ -47,19 +47,13 @@ class PostsFragment : Fragment() {
     private fun initUI() {
         linearLayoutManager = LinearLayoutManager(activity)
         binding.recyclerView.layoutManager = linearLayoutManager
-        postAdapter = PostsAdapter( PostsAdapter.OnItemClickListener { post,view ->
+        postAdapter = PostsAdapter( PostsAdapter.OnItemClickListener { post ->
             val intent = Intent(activity, CommentsActivity::class.java)
             intent.putExtra("post", post as Serializable)
             intent.putExtra("UserId", user.UserId)
             intent.putExtra("Name", user.Name)
-            val options =makeSceneTransitionAnimation(
-                requireActivity(),
-                view,
-                "shared_element_container" // The transition name to be matched in Activity B.
-            )
-            startActivity(intent, options.toBundle())
 
-
+            startActivity(intent)
         }, postList)
         binding.recyclerView.adapter = postAdapter
         binding.recyclerView.itemAnimator = null;

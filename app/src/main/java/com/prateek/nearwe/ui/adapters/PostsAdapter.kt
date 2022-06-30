@@ -7,19 +7,22 @@
 package com.prateek.nearwe.ui.adapters
 
 
+import android.graphics.Typeface
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.chip.Chip
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.posts.postresponse.Post
@@ -48,17 +51,17 @@ class PostsAdapter(
     }
 
 
-
-    class OnItemClickListener(val clickListener: (meme: Post,view:View) -> Unit) {
-        fun onClick(meme: Post,view:View) = clickListener(meme,view)
+    class OnItemClickListener(val clickListener: (meme: Post) -> Unit) {
+        fun onClick(meme: Post) = clickListener(meme)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val post = mList[position]
         holder.txtTitle.text = post.title
         holder.txtDateTime.text = post.ago
-        holder.txtViews.text=post.postViews.toString()+" Views"
+        holder.txtViews.text = post.postViews.toString() + " Views"
 
         when (post.postType) {
             1 -> holder.imgpostType.setColorFilter(
@@ -85,10 +88,12 @@ class PostsAdapter(
         holder.lvSubCategory.removeAllViews()
         val lstValues: List<String> = post.subCategories.split(",").map { it -> it.trim() }
         lstValues.forEach { it ->
-            val chip = Chip(ContextThemeWrapper( MainApp.instance, R.style.Theme_MaterialComponents_Light))
+            val chip =
+                Chip(ContextThemeWrapper(MainApp.instance, R.style.Theme_MaterialComponents_Light))
             chip.text = it
             chip.setChipBackgroundColorResource(R.color.colorPrimary)
-
+            val typeface: Typeface = MainApp.instance.getResources().getFont(R.font.poppinsregular)
+            chip.typeface = typeface
 
             chip.isCloseIconVisible = false
             chip.setTextColor(MainApp.instance.getColor(R.color.primarytext))
@@ -98,7 +103,7 @@ class PostsAdapter(
 
             layoutParams.setMargins(0, 0, 10, 0)
 
-            holder.lvSubCategory.addView(chip,layoutParams)
+            holder.lvSubCategory.addView(chip, layoutParams)
         }
 
 
@@ -118,20 +123,22 @@ class PostsAdapter(
             holder.imgPost.visibility = View.GONE
         }
         post.imageUrl.ifNonNull {
+
+
             Glide.with(MainApp.instance)
+
                 .load(post.imageUrl)
-                .apply(
-                    RequestOptions().dontTransform() // this line
-                )
+
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.imgPost)
             holder.imgPost.visibility = View.VISIBLE
         }
 
-      //  holder.txtCategory.text = post.categoryName
+        //  holder.txtCategory.text = post.categoryName
 
         holder.itemView.setOnClickListener {
 
-            onItemClickListener.onClick(post,holder.cardView)
+            onItemClickListener.onClick(post)
         }
 
 
@@ -151,7 +158,6 @@ class PostsAdapter(
         val lvSubCategory: LinearLayout = itemView.findViewById(R.id.lvSubCategory)
         val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
         val txtViews: TextView = itemView.findViewById(R.id.txtViews)
-
 
 
     }

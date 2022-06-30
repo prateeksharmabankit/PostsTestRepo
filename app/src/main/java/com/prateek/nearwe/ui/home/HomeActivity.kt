@@ -21,10 +21,10 @@ package com.prateek.nearwe.ui.home
 
 import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -39,10 +39,10 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
+import com.google.firebase.messaging.FirebaseMessaging
 import com.innfinity.permissionflow.lib.requestPermissions
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.SubCategory.SubCategory
@@ -54,6 +54,7 @@ import com.prateek.nearwe.ui.adapters.SubCategoryAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
 import gun0912.tedbottompicker.TedBottomPicker
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,7 +87,10 @@ class HomeActivity : AppCompatActivity() {
 
         loginViewModel.getAddressHeader(this)
         loginViewModel.getLoggedInUser();
+
+
     }
+
 
     fun initUI() {
         binding.loginViewModel = loginViewModel
@@ -220,7 +224,8 @@ class HomeActivity : AppCompatActivity() {
 
 
                     postModel.SubCategories =
-                        selectedEngineers.joinToString { it.subCategoryName.toString()!! }.split(",")
+                        selectedEngineers.joinToString { it.subCategoryName.toString()!! }
+                            .split(",")
                             .toString().drop(1)
                             .dropLast(1)
 
@@ -271,14 +276,15 @@ class HomeActivity : AppCompatActivity() {
 
                     postModel.Latitude = MainApp.instance.Latitude
                     postModel.Longitude = MainApp.instance.Longitude
-                    postModel.imageUrl=null
+                    postModel.imageUrl = null
                     postModel.IsAnonymous = if (checkPostAnonymous!!.isChecked) 1 else 0
                     postModel.UserId = user.UserId
                     postModel.Title = etTitle?.text.toString().trim()
                     val selectedEngineers: List<SubCategory> = subCategoryList
                         .filterIndexed { index, engineer -> engineer.isCHecked }
                     postModel.SubCategories =
-                        selectedEngineers.joinToString { it.subCategoryName.toString()!! }.split(",")
+                        selectedEngineers.joinToString { it.subCategoryName.toString()!! }
+                            .split(",")
                             .toString().drop(1)
                             .dropLast(1)
                     if (postModel.SubCategories!!.isEmpty()) {
@@ -337,6 +343,14 @@ class HomeActivity : AppCompatActivity() {
 
         loginViewModel.userDetails.observe(this, Observer {
             user = it
+            FirebaseMessaging.getInstance().token.addOnCompleteListener {
+                if (it.isComplete) {
+
+                    homeViewModel.updateToken(user.UserId, it.result.toString())
+
+                }
+            }
+            txtNavName.text = user.Name
 
         })
         homeViewModel.addPostResponse.observe(this, Observer {

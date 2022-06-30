@@ -24,6 +24,7 @@
             android:name=".ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,6 +40,11 @@
             android:theme="@style/AppTheme"
             android:name=".ui.comments.CommentsActivity"
             android:label="@string/title_activity_home"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:theme="@style/AppTheme"
+            android:name=".ui.PostNotification.PostNotificationActivity"
+            android:label="Post From Notification"
             android:screenOrientation="sensorPortrait" />
         <service
             android:name=".utils.MyFirebaseMessagingService"

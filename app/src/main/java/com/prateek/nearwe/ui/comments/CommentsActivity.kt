@@ -19,6 +19,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
@@ -53,8 +56,6 @@ class CommentsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityCommentsBinding.inflate(layoutInflater)
@@ -71,10 +72,10 @@ class CommentsActivity : AppCompatActivity() {
         }
 
         post.imageUrl.ifNonNull {
+
             Glide.with(MainApp.instance)
-                .load(post.imageUrl).apply(
-                    RequestOptions().dontTransform() // this line
-                )
+
+                .load(post.imageUrl).transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.imgPost)
             binding.imgPost.visibility = View.VISIBLE
         }

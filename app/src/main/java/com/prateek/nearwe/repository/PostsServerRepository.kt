@@ -77,6 +77,7 @@ class PostsServerRepository(private val postsServices: PostsServices) {
         }
         return latestNews
     }
-
+    suspend fun GetPostById(UserId: Int?, PostId: Int) =
+        postsServices.GetPostById(UserId, PostId)
 
 }

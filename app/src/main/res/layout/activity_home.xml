@@ -35,6 +35,7 @@
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 app:liftOnScroll="true"
+                android:theme="@style/AppTheme.AppBarOverlay"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +43,7 @@
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
+
                     app:titleCentered="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,9 +65,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
-                app:cardBackgroundColor="@color/colorPrimary"
+
                 app:cardCornerRadius="@dimen/_15sdp"
-                app:cardElevation="@dimen/_10sdp">
+               >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,11 +81,12 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="@dimen/_30sdp"
+                            android:layout_width="@dimen/_25sdp"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/_10sdp"
+
                             android:src="@drawable/ic_locationbg"
-                            app:tint="@color/primarytext" />
+                            app:tint="@color/colorAccent" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -95,15 +98,16 @@
                         <TextView
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_width="match_parent"
-
+                            android:fontFamily="@font/poppinsregular"
                             android:layout_height="wrap_content"
                             android:text="Current Location"
-                            android:textColor="@color/White"
+                            android:textColor="@color/Black"
                             android:textSize="@dimen/_14sdp" />
 
                         <TextView
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:id="@+id/txtHeader"
+                            android:fontFamily="@font/poppinsregular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 android:minLines="2"
@@ -114,7 +118,7 @@ android:minLines="2"
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:text="@{ loginViewModel.addressDetails }"
-                            android:textColor="@color/primarytext"
+                            android:textColor="@color/Black"
                             android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
@@ -189,8 +193,8 @@ android:minLines="2"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
 
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:efab_color="@color/colorPrimary"
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    app:efab_color="@color/colorAccent"
                     app:efab_icon="@drawable/ic_baseline_add_24"
                     app:efab_iconAnimationRotationDeg="0"
                     app:efab_orientation="portrait" />
@@ -199,7 +203,7 @@ android:minLines="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="add_whats_new_click"
-                    app:fab_color="@color/colorPrimary"
+                    app:fab_color="@color/colorAccent"
                     app:fab_icon="@drawable/ic_baseline_whtat_is_24"
                     app:fab_orientation="portrait"
                     app:label_text="Ask a Question" />
@@ -209,7 +213,7 @@ android:minLines="2"
 
                     android:layout_height="wrap_content"
                     android:onClick="add_new_post_click"
-                    app:fab_color="@color/colorPrimary"
+                    app:fab_color="@color/colorAccent"
                     app:fab_icon="@drawable/ic_baseline_settings_neame_24"
                     app:fab_orientation="portrait"
                     app:label_text="NearBy Post" />
@@ -219,7 +223,7 @@ android:minLines="2"
 
                     android:layout_height="wrap_content"
                     android:onClick="add_Interest_Hobiles_post_click"
-                    app:fab_color="@color/colorPrimary"
+                    app:fab_color="@color/colorAccent"
                     app:fab_icon="@drawable/ic_baseline_trending_24"
                     app:fab_orientation="portrait"
                     app:label_text="Interest and Hobbies" />

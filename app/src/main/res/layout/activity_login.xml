@@ -32,7 +32,7 @@
             android:orientation="horizontal">
 
             <TextView
-
+android:fontFamily="@font/poppinsmedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -44,7 +44,7 @@
                 android:textStyle="bold" />
 
             <TextView
-
+                android:fontFamily="@font/poppinsmedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -60,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
+            android:fontFamily="@font/poppinsregular"
             android:justificationMode="inter_word"
             android:text="NearWe is for our everday real life situations. Keep it handy to get help and help others. Make new connections and friends with real people in your neighborhood and city, or while you are travelling or on a vacation"
             android:textAlignment="center"
@@ -110,6 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
+            android:fontFamily="@font/poppinsregular"
             android:text="By creating an account your agree to our Terms and Conditions"
             android:textAlignment="center"
             android:textColor="@android:color/black"

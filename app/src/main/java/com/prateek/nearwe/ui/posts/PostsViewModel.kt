@@ -165,6 +165,39 @@ class PostsViewModel(
 
     }
 
+    fun getPostById(userId: Int,postId: Int) {
+        loading.postValue(true)
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var post = usersRepository.GetPostById(userId,postId)
+            withContext(Dispatchers.Main) {
+                try {
+                    loading.postValue(false)
+
+                    postList.postValue(post)
+
+
+                } catch (throwable: Throwable) {
+                    loading.postValue(false)
+                    when (throwable) {
+                        is IOException -> {
+                            onError("Network Error")
+                        }
+                        is HttpException -> {
+                            val codeError = throwable.code()
+                            val errorMessageResponse = throwable.message()
+                            onError("Error $errorMessageResponse : $codeError")
+                        }
+                        else -> {
+                            onError("UnKnown error")
+                        }
+                    }
+                }
+                loading.value = false
+            }
+        }
+
+    }
+
 
 
 

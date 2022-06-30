@@ -100,10 +100,18 @@ interface PostsServices {
     ):PostResponse
 
     @Headers("Accept: application/json")
-    @GET("/User/UpdateToken/{UserId}/{Token}")
+    @GET("api/User/UpdateToken/{UserId}/{Token}")
     suspend fun UpdateNotification(
         @Path("UserId") UserId: Int?,
         @Path("Token") Latitude: String
 
     ): Long
+
+
+    @Headers("Accept: application/json")
+    @GET("api/Posts/GetPost/{userId}/{postId}")
+    suspend fun GetPostById(
+        @Path("userId") UserId: Int?,
+        @Path("postId") postId: Int,
+    ): PostResponse
 }

@@ -48,7 +48,7 @@ class WhatIsFragment : Fragment() {
     private fun initUI() {
         linearLayoutManager = LinearLayoutManager(activity)
         binding.recyclerView.layoutManager = linearLayoutManager
-        postAdapter = PostsAdapter(PostsAdapter.OnItemClickListener { post,view ->
+        postAdapter = PostsAdapter(PostsAdapter.OnItemClickListener { post ->
             val intent = Intent(activity, CommentsActivity::class.java)
             intent.putExtra("post", post as Serializable)
             intent.putExtra("UserId", user.UserId)

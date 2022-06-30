@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.prateek.nearwe.api.models.SubCategory.SubCategoriesResponse
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
+import com.prateek.nearwe.repository.LoginServerRepository
 import com.prateek.nearwe.repository.PostsServerRepository
 
 import com.prateek.nearwe.repository.SubCategoryRepository
@@ -18,8 +19,8 @@ import java.io.IOException
 
 class HomeViewModel(
     private val subCategoryRepository: SubCategoryRepository,
-    private val postsServerRepository: PostsServerRepository
-
+    private val postsServerRepository: PostsServerRepository,
+    private val loginServerRepository: LoginServerRepository,
 
 ) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
@@ -200,6 +201,35 @@ class HomeViewModel(
                     }
                 }
                 loading.value = false
+            }
+        }
+
+    }
+    fun updateToken(userId:Int?,Token:String) {
+        loading.value = true
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            loginServerRepository.updateToken(userId,Token)
+            withContext(Dispatchers.Main) {
+                try {
+
+
+                    loading.value = false
+                } catch (throwable: Throwable) {
+                    loading.value = false
+                    when (throwable) {
+                        is IOException -> {
+                            onError("Network Error")
+                        }
+                        is HttpException -> {
+                            val codeError = throwable.code()
+                            val errorMessageResponse = throwable.message()
+                            onError("Error $errorMessageResponse : $codeError")
+                        }
+                        else -> {
+                            onError("UnKnown error")
+                        }
+                    }
+                }
             }
         }
 

@@ -16,16 +16,21 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:fontFamily="@font/poppinsmedium"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="@color/Black"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_14sdp" />
 
 
         <EditText android:layout_margin="@dimen/_10sdp"
             android:id="@+id/etTitle"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -39,12 +44,12 @@
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Uplaod Image"
+            android:text="Upload Image"
             app:icon="@drawable/ic_round_perm_media_24"
             app:iconGravity="textStart"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-
+            android:fontFamily="@font/poppinsregular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -74,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/Green"
-
+                android:fontFamily="@font/poppinsregular"
                 android:checked="true"
                 android:paddingLeft="@dimen/_10sdp"
                 android:text="@string/green_general_queried_in_your_area"
@@ -88,7 +93,7 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:buttonTint="@color/Orange"
                 android:paddingLeft="@dimen/_10sdp"
-
+                android:fontFamily="@font/poppinsregular"
                 android:text="@string/favours_like_finding_a_lost_pet_buy_or_sell_something"
                 android:textSize="@dimen/_12sdp" />
 
@@ -98,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/Red"
                 android:paddingLeft="@dimen/_10sdp"
-
+                android:fontFamily="@font/poppinsregular"
                 android:text="@string/alert_people_in_a_location_traffic_updates_or_heavy_rain"
                 android:textSize="@dimen/_12sdp" />
 
@@ -111,6 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 android:layout_margin="@dimen/_15sdp"
+            android:fontFamily="@font/poppinsregular"
             android:text="@string/post_anonymously"
             android:textColor="@color/Red"
             android:textSize="@dimen/_12sdp" />
@@ -123,6 +129,7 @@ android:layout_margin="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_50sdp"
             android:background="@color/colorPrimary"
             android:elevation="@dimen/_3sdp"
+            android:fontFamily="@font/poppinsregular"
             android:text="Post Now"
             android:textColor="@color/White"
 

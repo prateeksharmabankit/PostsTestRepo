@@ -35,6 +35,8 @@ import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.application.MainApp
 
 import com.prateek.nearwe.databinding.ActivityLoginBinding
+import com.prateek.nearwe.ui.PostNotification.PostNotificationActivity
+import com.prateek.nearwe.ui.comments.CommentsActivity
 
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,10 +49,10 @@ class LoginActivity : AppCompatActivity() {
 
     private val loginViewModel: LoginViewModel by viewModel()
 
-
+    var postId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splash = installSplashScreen()
+        installSplashScreen()
 
 
         super.onCreate(savedInstanceState)
@@ -58,7 +60,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
 
         //   initObserver()
         FirebaseApp.initializeApp(this)
@@ -143,13 +144,26 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginStatus.observe(this) {
 
             if (it) {
-                startActivity(
-                    Intent(
-                        this, HomeActivity
-                        ::class.java
+                if(postId==0){
+                    startActivity(
+                        Intent(
+                            this, HomeActivity
+                            ::class.java
+                        )
                     )
-                )
-                finish()
+                    finish()
+                }
+                else
+                {
+                    val intent = Intent(this, PostNotificationActivity::class.java)
+                    intent.putExtra("postId", postId.toInt());
+                    startActivity(
+                        intent
+                    )
+                    finish()
+                }
+
+
             } else {
                 binding.lvLogin.visibility = View.VISIBLE
 
@@ -189,6 +203,19 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+    }
+    override fun onResume(){
+        super.onResume()
+        val bundle : Bundle? = intent.extras
+        if (bundle != null){
+            postId = intent.getIntExtra("postId",0)
+
+        }
+    }
+    override fun onNewIntent(intent : Intent){
+
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 
 
