@@ -27,10 +27,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val data = remoteMessage.data
         val postId = data["postId"]
+        val title = data["title"]
+        val desc = data["desc"]
 
 
         if (postId != null) {
-            sendNotification("Title","Title", postId.toInt())}
+            sendNotification(title.toString(),desc.toString(), postId.toInt())}
 
     }
 
@@ -59,8 +61,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_baseline_trending_24)
-            .setContentTitle("asas")
-            .setContentText("dsds")
+            .setContentTitle(title)
+            .setContentText(des)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
