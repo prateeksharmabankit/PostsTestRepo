@@ -21,7 +21,7 @@ import java.io.IOException
 
 class PostsViewModel(
     private val usersRepository: PostsServerRepository,
-    private val postsPersistanceRepositoru: PostsRoomRepository
+    private val postlocalRepositoru: PostsRoomRepository
 
 ) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
@@ -174,6 +174,39 @@ class PostsViewModel(
                     loading.postValue(false)
 
                     postList.postValue(post)
+
+
+                } catch (throwable: Throwable) {
+                    loading.postValue(false)
+                    when (throwable) {
+                        is IOException -> {
+                            onError("Network Error")
+                        }
+                        is HttpException -> {
+                            val codeError = throwable.code()
+                            val errorMessageResponse = throwable.message()
+                            onError("Error $errorMessageResponse : $codeError")
+                        }
+                        else -> {
+                            onError("UnKnown error")
+                        }
+                    }
+                }
+                loading.value = false
+            }
+        }
+
+    }
+
+    fun deleteUser() {
+        loading.postValue(true)
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+           postlocalRepositoru.deleteUser()
+            withContext(Dispatchers.Main) {
+                try {
+                    loading.postValue(false)
+
+
 
 
                 } catch (throwable: Throwable) {

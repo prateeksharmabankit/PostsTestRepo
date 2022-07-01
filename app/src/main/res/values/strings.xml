@@ -36,4 +36,5 @@
     <string name="fabtexttwo">Create Interest and Hobby Based Post</string>
     <string name="fabtextthree">Ask for the identification of mysterious objects</string>
     <string name="anonymous">Anonymous</string>
+    <string name="logout">Logout</string>
 </resources>

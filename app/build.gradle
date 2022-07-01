@@ -132,7 +132,7 @@ dependencies {
     implementation("com.robertlevonyan.components:PermissionsFlow:1.2.5")
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 
-
+    implementation 'com.github.Drjacky:ImagePicker:2.1.16'
     implementation("androidx.core:core-splashscreen:1.0.0-rc01")
 
 

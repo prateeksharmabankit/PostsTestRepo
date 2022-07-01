@@ -152,5 +152,10 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+    <color name="ucrop_color_toolbar">@color/LightCyan</color>
+    <color name="ucrop_color_statusbar">@color/LightCyan</color>
+    <color name="ucrop_color_widget_active">@color/LightCyan</color>
+    <color name="dialog_choose_icon_color">@color/colorPrimary</color>
+
 
 </resources>

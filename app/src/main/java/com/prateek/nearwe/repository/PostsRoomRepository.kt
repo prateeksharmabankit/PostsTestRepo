@@ -14,4 +14,5 @@ class PostsRoomRepository(private val userDAO: UserDAO) {
     suspend fun getFavouritePosts(boolean: Boolean) =birdsDAO.getFavouritePosts(boolean)*/
     suspend fun checkisUserLoggedIn()=userDAO.getUsers();
    suspend fun AddUser(userModel: UserModel?)=userDAO.AddUser(userModel)
+    suspend fun deleteUser()=userDAO.delete()
 }

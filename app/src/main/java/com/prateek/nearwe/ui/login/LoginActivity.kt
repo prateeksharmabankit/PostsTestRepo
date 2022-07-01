@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
     var postId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splash= installSplashScreen()
 
 
         super.onCreate(savedInstanceState)
@@ -132,6 +132,8 @@ class LoginActivity : AppCompatActivity() {
                 user.EmailAddress = account.email
                 user.Latitude = MainApp.instance.Latitude
                 user.Longitude = MainApp.instance.Longitude
+
+                user.Image=account.photoUrl?.toString()
                 loginViewModel.loginUser(user)
 
 

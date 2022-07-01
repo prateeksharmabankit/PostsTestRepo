@@ -25,7 +25,7 @@ data class UserModel(
     @SerializedName("emailAddress") var EmailAddress: String? = null,
     @SerializedName("name") var Name: String? = null,
     @SerializedName("latitude") var Latitude: String? = null,
-    @SerializedName("longitude") var Longitude: String? = null
-
+    @SerializedName("longitude") var Longitude: String? = null,
+    @SerializedName("image") var Image: String? = null
 
     ):Serializable

@@ -16,7 +16,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 
-    viewModel {  PostsViewModel(usersRepository = get(), postsPersistanceRepositoru = get()) }
+    viewModel {  PostsViewModel(usersRepository = get(),  get()) }
     viewModel {  CommentsViewModel(firestoreRepository = get()) }
     viewModel {  LoginViewModel(loginServerRepository = get(), postsPersistanceRepositoru = get()) }
     viewModel {  TrendingViewModel(postsServerRepository = get()) }

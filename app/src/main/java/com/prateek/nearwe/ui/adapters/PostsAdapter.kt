@@ -134,7 +134,13 @@ class PostsAdapter(
             holder.imgPost.visibility = View.VISIBLE
         }
 
-        //  holder.txtCategory.text = post.categoryName
+
+        Glide.with(MainApp.instance)
+
+            .load(post.users.Image).placeholder(MainApp.instance.resources.getDrawable(R.drawable.ic_user))
+            .circleCrop()
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(holder.imgUser)
 
         holder.itemView.setOnClickListener {
 
@@ -158,6 +164,8 @@ class PostsAdapter(
         val lvSubCategory: LinearLayout = itemView.findViewById(R.id.lvSubCategory)
         val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
         val txtViews: TextView = itemView.findViewById(R.id.txtViews)
+        val imgUser: ImageView = itemView.findViewById(R.id.imgUser)
+
 
 
     }

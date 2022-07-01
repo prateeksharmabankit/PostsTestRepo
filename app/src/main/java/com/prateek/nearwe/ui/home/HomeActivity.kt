@@ -20,17 +20,22 @@ package com.prateek.nearwe.ui.home
 
 
 import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.net.toFile
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -39,9 +44,13 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.gms.tasks.OnSuccessListener
+import com.github.drjacky.imagepicker.ImagePicker
+import com.github.drjacky.imagepicker.constant.ImageProvider
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import com.innfinity.permissionflow.lib.requestPermissions
 import com.prateek.nearwe.R
@@ -51,7 +60,9 @@ import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.databinding.ActivityHomeBinding
 import com.prateek.nearwe.ui.adapters.SubCategoryAdapter
+import com.prateek.nearwe.ui.login.LoginActivity
 import com.prateek.nearwe.ui.login.LoginViewModel
+import com.prateek.nearwe.ui.posts.PostsViewModel
 import gun0912.tedbottompicker.TedBottomPicker
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -69,6 +80,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val homeViewModel: HomeViewModel by viewModel()
     private val loginViewModel: LoginViewModel by viewModel()
+    private val postsViewModel: PostsViewModel by viewModel()
     private lateinit var file: File
 
     private var postCategoryId: Int = 0
@@ -84,6 +96,7 @@ class HomeActivity : AppCompatActivity() {
         initObserver()
 
         setupWithNavController(binding.bottomNavigationView, navController)
+
 
         loginViewModel.getAddressHeader(this)
         loginViewModel.getLoggedInUser();
@@ -117,10 +130,57 @@ class HomeActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
+            ).collect { permissions ->
+                // here you get the result of the requests, permissions holds a list of Permission requests and you can check if all of them have been granted:
+                val allGranted = permissions.find { !it.isGranted } == null
+                // or iterate over the permissions and check them one by one
+                permissions.forEach {
+                    val granted = it.isGranted
+                    // ...
+                }
+            }
 
 
         }
+        nav_view.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { menuItem ->
+            val id = menuItem.itemId
+            if (id == R.id.logout) {
+
+                val dialogBuilder = AlertDialog.Builder(this)
+                dialogBuilder
+                    .setTitle("Logout!")
+                    .setMessage("Are you sure you want to  logout?")
+                    .setPositiveButton(android.R.string.yes,
+                        DialogInterface.OnClickListener { dialog, which ->
+                            CoroutineScope(Dispatchers.IO).launch {
+
+                                GoogleSignIn.getClient(
+                                    applicationContext,
+                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                                ).signOut()
+                                postsViewModel.deleteUser()
+                                startActivity(
+                                    Intent(
+                                        applicationContext, LoginActivity
+                                        ::class.java
+                                    )
+                                )
+                                finish()
+
+                            }
+                        })
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show()
+
+
+            }
+
+            NavigationUI.onNavDestinationSelected(menuItem, navController)
+            val drawer = findViewById<View>(R.id.drawerLayout) as DrawerLayout
+            drawer.closeDrawer(GravityCompat.START)
+             true
+        })
 
 
     }
@@ -167,11 +227,11 @@ class HomeActivity : AppCompatActivity() {
         val imgUploadButton = bottomSheetDialog.findViewById<MaterialButton>(R.id.imgUploadButton)
         imgUploadButton?.setOnClickListener(View.OnClickListener {
 
-            TedBottomPicker.with(this@HomeActivity)
-                .show {
-                    file = it.toFile()
 
-                }
+            ImagePicker.with(this)
+
+                .provider(ImageProvider.BOTH).crop(16f, 9f) //Or bothCameraGallery()
+                .createIntentFromDialog { launcher.launch(it) }
 
 
         })
@@ -367,6 +427,14 @@ class HomeActivity : AppCompatActivity() {
             }
         })
     }
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val uri = it.data?.data!!
+
+            file = uri.toFile()
+        }
+    }
+
 
 
 }
