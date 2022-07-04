@@ -54,7 +54,7 @@ class PostsFragment : Fragment() {
             intent.putExtra("Name", user.Name)
 
             startActivity(intent)
-        }, postList)
+        }, postList,requireActivity())
         binding.recyclerView.adapter = postAdapter
         binding.recyclerView.itemAnimator = null;
     }

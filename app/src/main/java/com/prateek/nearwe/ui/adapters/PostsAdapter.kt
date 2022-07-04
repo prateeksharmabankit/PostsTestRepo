@@ -7,6 +7,7 @@
 package com.prateek.nearwe.ui.adapters
 
 
+import android.app.Activity
 import android.graphics.Typeface
 import android.os.Build
 import android.util.Log
@@ -19,6 +20,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.cardview.widget.CardView
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -39,11 +41,7 @@ import io.branch.referral.util.LinkProperties
 
 class PostsAdapter(
 
-    private val onItemClickListener: OnItemClickListener,
-    private val mList: MutableList<Post>
-
-
-) :
+    private val onItemClickListener: OnItemClickListener, private val mList: MutableList<Post>,private val activity: Activity) :
     RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
 
 
@@ -148,7 +146,12 @@ class PostsAdapter(
             buo.generateShortUrl(MainApp.instance, lp,
                 BranchLinkCreateListener { url, error ->
                     if (error == null) {
-                        Log.i("MyApp", "got my Branch link to share: $url")
+                        ShareCompat.IntentBuilder(activity)
+                            .setType("text/plain")
+                            .setChooserTitle(post.title)
+                            .setText("Reply, Comment at "+url)
+                            .startChooser();
+
                     }
                 })
         }
