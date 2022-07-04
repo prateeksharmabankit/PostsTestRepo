@@ -5,6 +5,7 @@ import android.app.Application
 import com.prateek.nearwe.BuildConfig
 
 import com.prateek.nearwe.di.*
+import io.branch.referral.Branch
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -34,5 +35,10 @@ class MainApp : Application() {
 
         }
         instance = this
+        Branch.enableLogging();
+
+        // Branch object initialization
+        Branch.getAutoInstance(this);
+
     }
 }

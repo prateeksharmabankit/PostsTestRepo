@@ -9,6 +9,7 @@ package com.prateek.nearwe.ui.adapters
 
 import android.graphics.Typeface
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,10 @@ import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.utils.EmployeeDiffCallback
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNonNull
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
+import io.branch.indexing.BranchUniversalObject
+import io.branch.referral.Branch.BranchLinkCreateListener
+import io.branch.referral.BranchError
+import io.branch.referral.util.LinkProperties
 
 
 class PostsAdapter(
@@ -133,11 +138,25 @@ class PostsAdapter(
                 .into(holder.imgPost)
             holder.imgPost.visibility = View.VISIBLE
         }
+        holder.lvShare.setOnClickListener {
+            val buo = BranchUniversalObject()
+            val lp = LinkProperties()
 
+                .setCampaign(post.postId.toString())
+                .setStage("sign up")
+
+            buo.generateShortUrl(MainApp.instance, lp,
+                BranchLinkCreateListener { url, error ->
+                    if (error == null) {
+                        Log.i("MyApp", "got my Branch link to share: $url")
+                    }
+                })
+        }
 
         Glide.with(MainApp.instance)
 
-            .load(post.users.Image).placeholder(MainApp.instance.resources.getDrawable(R.drawable.ic_user))
+            .load(post.users.Image)
+            .placeholder(MainApp.instance.resources.getDrawable(R.drawable.ic_user))
             .circleCrop()
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.imgUser)
@@ -165,7 +184,7 @@ class PostsAdapter(
         val imgPost: ImageView = itemView.findViewById(R.id.imgPost)
         val txtViews: TextView = itemView.findViewById(R.id.txtViews)
         val imgUser: ImageView = itemView.findViewById(R.id.imgUser)
-
+        val lvShare: LinearLayout = itemView.findViewById(R.id.lvShare)
 
 
     }

@@ -6,17 +6,14 @@
 
 package com.prateek.nearwe.ui.login
 
-import android.content.Context
+import android.Manifest
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.birjuvachhani.locus.Locus
@@ -29,15 +26,18 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.prateek.nearwe.ui.home.HomeActivity
+import com.innfinity.permissionflow.lib.requestPermissions
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.application.MainApp
-
 import com.prateek.nearwe.databinding.ActivityLoginBinding
 import com.prateek.nearwe.ui.PostNotification.PostNotificationActivity
-import com.prateek.nearwe.ui.comments.CommentsActivity
-
+import com.prateek.nearwe.ui.home.HomeActivity
+import io.branch.referral.Branch
+import io.branch.referral.Branch.BranchReferralInitListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
     var postId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splash= installSplashScreen()
+        val splash = installSplashScreen()
 
 
         super.onCreate(savedInstanceState)
@@ -60,6 +60,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
 
         //   initObserver()
         FirebaseApp.initializeApp(this)
@@ -84,7 +85,6 @@ class LoginActivity : AppCompatActivity() {
 
                 MainApp.instance.Latitude = it.latitude.toString()
                 MainApp.instance.Longitude = it.longitude.toString()
-
                 initObserver()
             }
             result.error?.let {
@@ -100,8 +100,6 @@ class LoginActivity : AppCompatActivity() {
         startActivityForResult(signInIntent, Req_Code)
     }
 
-    // onActivityResult() function : this is where
-    // we provide the task and data for the Google Account
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Req_Code) {
@@ -132,21 +130,19 @@ class LoginActivity : AppCompatActivity() {
                 user.EmailAddress = account.email
                 user.Latitude = MainApp.instance.Latitude
                 user.Longitude = MainApp.instance.Longitude
-
-                user.Image=account.photoUrl?.toString()
+                user.Image = account.photoUrl?.toString()
                 loginViewModel.loginUser(user)
-
-
             }
         }
     }
 
 
     private fun initObserver() {
+
         loginViewModel.loginStatus.observe(this) {
 
             if (it) {
-                if(postId==0){
+                if (postId == 0) {
                     startActivity(
                         Intent(
                             this, HomeActivity
@@ -154,9 +150,7 @@ class LoginActivity : AppCompatActivity() {
                         )
                     )
                     finish()
-                }
-                else
-                {
+                } else {
                     val intent = Intent(this, PostNotificationActivity::class.java)
                     intent.putExtra("postId", postId.toInt());
                     startActivity(
@@ -206,19 +200,50 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
-    override fun onResume(){
-        super.onResume()
-        val bundle : Bundle? = intent.extras
-        if (bundle != null){
-            postId = intent.getIntExtra("postId",0)
 
+    override fun onResume() {
+        super.onResume()
+        val bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            postId = intent.getIntExtra("postId", 0)
         }
     }
-    override fun onNewIntent(intent : Intent){
 
-        super.onNewIntent(intent)
-        setIntent(intent)
+
+    override fun onStart() {
+        super.onStart()
+        Branch.sessionBuilder(this).withCallback(branchReferralInitListener)
+            .withData(if (intent != null) intent.data else null).init()
     }
 
+    private val branchReferralInitListener =
+        BranchReferralInitListener { linkProperties, error ->
+            val sessionParams = Branch.getInstance().latestReferringParams
+            postId = sessionParams.optInt("~campaign", 0)
+
+            if (postId != 0) {
+                val intent = Intent(this, PostNotificationActivity::class.java)
+                intent.putExtra("postId", postId.toInt());
+                startActivity(
+                    intent
+                )
+                finish()
+            }
+
+
+        }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        // if activity is in foreground (or in backstack but partially visible) launching the same
+        // activity will skip onStart, handle this case with reInitSession
+        if (intent != null &&
+            intent.hasExtra("branch_force_new_session") &&
+            intent.getBooleanExtra("branch_force_new_session", false)
+        ) {
+            Branch.sessionBuilder(this).withCallback(branchReferralInitListener).reInit()
+        }
+    }
 
 }
