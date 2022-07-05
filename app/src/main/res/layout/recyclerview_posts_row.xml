@@ -8,8 +8,8 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     android:id="@+id/cardView"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_5sdp"
 
@@ -26,16 +26,8 @@
 
         android:padding="@dimen/_8sdp">
 
-        <ImageView
-            android:id="@+id/imgpostType"
-            android:layout_width="@dimen/_13sdp"
-            android:layout_height="@dimen/_13sdp"
-            android:layout_gravity="right"
-            android:src="@drawable/roundicon"
-            app:tint="@android:color/holo_orange_dark" />
 
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -43,45 +35,62 @@
 
             <ImageView
                 android:id="@+id/imgUser"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_width="@dimen/_28sdp"
+                android:layout_height="@dimen/_28sdp"
                 android:src="@drawable/ic_user" />
 
 
-
-            <TextView
-                android:fontFamily="@font/poppinsregular"
-                android:id="@+id/txtName"
+            <LinearLayout
+                android:layout_toRightOf="@+id/imgUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:capitalize="words"
-                android:textColor="@color/Black"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-            <TextView
-                android:fontFamily="@font/poppinsregular"
-                android:id="@+id/txtDateTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/poppinsregular"
+
+                    android:includeFontPadding="false"
+                    android:textColor="@color/Black"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/poppinsregular"
+                    android:gravity="right"
+                    android:includeFontPadding="false"
+                    android:text="sqssss"
+
+                    android:textColor="@color/Black"
+                    android:textSize="@dimen/_10sdp" />
+            </LinearLayout>
+
+            <ImageView
+android:layout_alignParentRight="true"
+                android:id="@+id/imgpostType"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_13sdp"
                 android:gravity="right"
-                android:text="sqssss"
-
-                android:textColor="@color/Black"
-                android:textSize="@dimen/_10sdp" />
+                android:src="@drawable/roundicon"
+                app:tint="@android:color/holo_orange_dark" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/txtTitle"
-            android:fontFamily="@font/poppinsmedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/poppinsmedium"
 
             android:textColor="@color/Black"
             android:textSize="@dimen/_12sdp" />
@@ -112,7 +121,7 @@
                 <info.androidhive.fontawesome.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
+
                     android:text="@string/fa_eye"
                     android:textColor="@color/DarkOrange"
 
@@ -150,8 +159,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:text="Reply"
                     android:fontFamily="@font/poppinsregular"
+                    android:text="Reply"
                     android:textColor="@color/Black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -179,8 +188,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:text="Share"
                     android:fontFamily="@font/poppinsregular"
+                    android:text="Share"
                     android:textColor="@color/Black"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -191,7 +200,6 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical">
-
 
 
             <LinearLayout

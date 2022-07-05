@@ -71,23 +71,23 @@ interface PostsServices {
     suspend fun AddPost(@Body postModel: AddPostRequest): Response<AddPostResponse>
 
     @Multipart
-    @POST("/Posts/AddWhatIsPost")
+    @POST("/api/AddWhatIsPost")
     suspend fun AddWhatIsPost(
 
         @Part formFile: MultipartBody.Part ,
-        @Part("Title") Title: RequestBody?,
-        @Part("IsAnonymous") IsAnonymous: RequestBody?,
+        @Part("title") Title: RequestBody?,
+        @Part("isAnonymous") IsAnonymous: RequestBody?,
 
-        @Part("UserId") UserId: RequestBody?,
-        @Part("Latitude") Latitude: RequestBody?,
+        @Part("userId") UserId: RequestBody?,
+        @Part("latitude") Latitude: RequestBody?,
 
-        @Part("Longitude") Longitude: RequestBody?,
-        @Part("PostType") PostType: RequestBody?,
-        @Part("ImageUrl") ImageUrl: RequestBody?,
+        @Part("longitude") Longitude: RequestBody?,
+        @Part("postType") PostType: RequestBody?,
+        @Part("imageUrl") ImageUrl: RequestBody?,
 
-        @Part("SubCategories") SubCategories: RequestBody?,
-        @Part("CategoryId") CategoryId: RequestBody?,
-        @Part("CategoryName") CategoryName: RequestBody?
+        @Part("subCategories") SubCategories: RequestBody?,
+        @Part("categoryId") CategoryId: RequestBody?,
+        @Part("categoryName") CategoryName: RequestBody?
 
 
     ): Response<AddPostResponse>

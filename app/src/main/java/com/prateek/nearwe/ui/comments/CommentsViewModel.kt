@@ -25,32 +25,31 @@ class CommentsViewModel(
 
     fun getSavedAddresses(PostId: Int) {
 
-var commentList=ArrayList<CommentRequest>()
-        job = CoroutineScope(Dispatchers.Main + exceptionHandler).launch {
+        var commentList = ArrayList<CommentRequest>()
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var scan =
+                firestoreRepository.firestoreDB.collection(PostId.toString()).orderBy("dateTime")
+
 
             withContext(Dispatchers.Main) {
 
+                scan.addSnapshotListener { snapshots, e ->
+                    commentList.clear()
+                    if (e != null) {
 
-                firestoreRepository.firestoreDB.collection(PostId.toString())
-
-                    .addSnapshotListener { snapshots, e ->
-                        commentList.clear()
-                        if (e != null) {
-
-                            return@addSnapshotListener
-                        }
+                        return@addSnapshotListener
+                    }
 
 
-                        for (dc in snapshots!!) {
-                            var gson = Gson()
-                            val json = Gson().toJson(dc.data)
-                            var data = gson?.fromJson(json, CommentRequest::class.java)
-                            commentList.add(data)
+                    for (dc in snapshots!!) {
+                        var gson = Gson()
+                        val json = Gson().toJson(dc.data)
+                        var data = gson?.fromJson(json, CommentRequest::class.java)
+                        commentList.add(data)
 
 
-                        }
-                        commentsModelList.postValue(commentList)
-
+                    }
+                    commentsModelList.postValue(commentList)
 
 
                 }

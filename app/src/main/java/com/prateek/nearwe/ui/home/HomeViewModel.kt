@@ -115,7 +115,7 @@ class HomeViewModel(
 
             val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
             val body = MultipartBody.Part.createFormData(
-                "formFile",
+                "file",
                 file.name, reqFile
             )
 

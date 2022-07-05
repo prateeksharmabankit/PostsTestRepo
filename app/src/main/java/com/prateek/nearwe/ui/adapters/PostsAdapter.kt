@@ -25,7 +25,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.posts.postresponse.Post
@@ -131,7 +133,7 @@ class PostsAdapter(
             Glide.with(MainApp.instance)
 
                 .load(post.imageUrl)
-
+                .apply(RequestOptions.bitmapTransform( RoundedCorners(15)))
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.imgPost)
             holder.imgPost.visibility = View.VISIBLE
