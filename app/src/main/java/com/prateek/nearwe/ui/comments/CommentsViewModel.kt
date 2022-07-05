@@ -82,7 +82,7 @@ class CommentsViewModel(
 
                 firestoreRepository.firestoreDB.collection(commentRequest.PostId.toString())
                     .document(Utils.CompanionClass.getRandomString(20))
-                    .set(commentRequest, SetOptions.merge())
+                    .set(commentRequest)
 
             }
         }

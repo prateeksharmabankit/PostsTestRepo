@@ -39,6 +39,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -126,7 +127,7 @@ class LoginActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 binding.lvLogin.visibility = View.GONE
                 var user = UserModel()
-                user.Name = account.displayName
+                user.Name = account.displayName.toString().uppercase(Locale.ROOT)
                 user.EmailAddress = account.email
                 user.Latitude = MainApp.instance.Latitude
                 user.Longitude = MainApp.instance.Longitude

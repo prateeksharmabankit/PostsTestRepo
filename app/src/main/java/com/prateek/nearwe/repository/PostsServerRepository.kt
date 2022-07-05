@@ -26,8 +26,18 @@ class PostsServerRepository(private val postsServices: PostsServices) {
         }
         return latestNews
     }
-    suspend fun GetAllTrendingPosts(UserId: Int?, Latitude: String, Longitude: String) =
-        postsServices.GetAllTrendingPosts(UserId, Latitude, Longitude)
+
+    fun GetAllTrendingPosts(UserId: Int?, Latitude: String, Longitude: String): Flow<PostResponse> {
+
+        val latestNews: Flow<PostResponse> = flow {
+            while (true) {
+                val latestNews = postsServices.GetAllTrendingPosts(UserId, Latitude, Longitude)
+                emit(latestNews) // Emits the result of the request to the flow
+                delay(5000) // Suspends the coroutine for some time
+            }
+        }
+        return latestNews
+    }
 
 
 

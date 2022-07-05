@@ -12,6 +12,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.birjuvachhani.locus.Locus
 import com.prateek.nearwe.api.models.User.UserModel
+import com.prateek.nearwe.api.models.posts.postresponse.Post
 import com.prateek.nearwe.databinding.FragmentTrendingBinding
 import com.prateek.nearwe.ui.adapters.PostsAdapter
 import com.prateek.nearwe.ui.comments.CommentsActivity
@@ -29,35 +30,42 @@ class TrendingFragment : Fragment() {
 
     var latitude: String = ""
     var longitude: String = ""
+    private val postList = ArrayList<Post>()
+    private lateinit var postAdapter: PostsAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTrendingBinding.inflate(inflater, container, false)
-        linearLayoutManager = LinearLayoutManager(activity)
-        binding.recyclerView.layoutManager = linearLayoutManager
+        initUI()
         initObserver()
         userViewModel.getLoggedInUser()
         return binding.root
 
     }
 
+    private fun initUI() {
+        linearLayoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.layoutManager = linearLayoutManager
+        postAdapter = PostsAdapter(PostsAdapter.OnItemClickListener { post ->
+            val intent = Intent(activity, CommentsActivity::class.java)
+            intent.putExtra("post", post as Serializable)
+            intent.putExtra("UserId", user.UserId)
+            intent.putExtra("Name", user.Name)
+            startActivity(intent)
 
+        }, postList,requireActivity())
+
+        binding.recyclerView.adapter = postAdapter
+        binding.recyclerView.itemAnimator = null;
+    }
     fun initObserver() {
         trendingViewModel.userList.observe(viewLifecycleOwner) {
-            val adapter = PostsAdapter( PostsAdapter.OnItemClickListener { post ->
-                val intent = Intent(activity, CommentsActivity::class.java)
-                intent.putExtra("post", post as Serializable)
-                intent.putExtra("UserId", user.UserId)
-                intent.putExtra("Name", user.Name)
-                intent.putExtra("latitude", latitude)
-                intent.putExtra("longitude", longitude)
-                startActivity(intent)
-            }, it.results.data.toMutableList(),requireActivity())
-
-            binding.recyclerView.adapter = adapter
-
+            it?.let { list ->
+                binding.progressBar.visibility = View.GONE
+                postAdapter.updateEmployeeListItems(list.results.data.toMutableList())
+            }
         }
 
         trendingViewModel.errorMessage.observe(viewLifecycleOwner) {

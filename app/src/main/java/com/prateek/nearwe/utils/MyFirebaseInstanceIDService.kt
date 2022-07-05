@@ -38,7 +38,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         else{
             if (type != null&&postId!=null&&type.toInt()==123251) {
-                val imageUrl = data["imageUrl"]
+                val imageUrl = data["imgUrl"]
                 sendNotificationwithimage(title.toString(),desc.toString(), postId.toInt(),imageUrl.toString())
             }
 

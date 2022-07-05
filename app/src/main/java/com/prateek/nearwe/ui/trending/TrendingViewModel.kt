@@ -9,6 +9,9 @@ import com.prateek.nearwe.application.MainApp
 
 import com.prateek.nearwe.repository.PostsServerRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -23,38 +26,24 @@ class TrendingViewModel(
     }
     val loading = MutableLiveData<Boolean>()
 
-    fun getAllTrendingPosts(userId:Int?) {
+
+    fun getAllTrendingPosts(UserId: Int?) {
         loading.postValue(true)
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val result = postsServerRepository.GetAllTrendingPosts(userId,MainApp.instance.Latitude,MainApp.instance.Longitude)
-            withContext(Dispatchers.Main) {
-                try {
-                    loading.postValue(false)
+        viewModelScope.launch {
+            // Trigger the flow and consume its elements using collect
+            postsServerRepository.GetAllTrendingPosts(UserId, MainApp.instance.Latitude, MainApp.instance.Longitude).catch { e ->
+                onError(e.message.toString())
+
+            }.onEach {
+                userList.postValue(it)
+                loading.postValue(false)
+            }.collect()
 
 
-                    userList.postValue(result.body())
-                } catch (throwable: Throwable) {
-                    loading.postValue(false)
-                    when (throwable) {
-                        is IOException -> {
-                            onError("Network Error")
-                        }
-                        is HttpException -> {
-                            val codeError = throwable.code()
-                            val errorMessageResponse = throwable.message()
-                            onError("Error $errorMessageResponse : $codeError")
-                        }
-                        else -> {
-                            onError("UnKnown error")
-                        }
-                    }
-                }
-                loading.value = false
-            }
+
         }
 
     }
-
     private fun onError(message: String) {
         errorMessage.value = message
         loading.value = false

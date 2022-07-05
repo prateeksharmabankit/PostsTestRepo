@@ -44,7 +44,7 @@ class CommentsActivity : AppCompatActivity() {
 
     var Name: String = ""
     private val commentList = ArrayList<CommentRequest>()
-    private lateinit var  adapter:CommentsAdapter
+    private lateinit var adapter: CommentsAdapter
     private lateinit var user: UserModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,86 +53,86 @@ class CommentsActivity : AppCompatActivity() {
 
         binding = ActivityCommentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-       loginViewModel.getAddressHeader(this)
-           post = intent.extras!!.get("post") as Post
+        loginViewModel.getAddressHeader(this)
+        post = intent.extras!!.get("post") as Post
 
 
 
 
 
-          binding.txtLike.setOnClickListener(View.OnClickListener {
-              var LikeUnlikeRequest = PostLikesRequest()
-              LikeUnlikeRequest.UserId = user.UserId
-              LikeUnlikeRequest.PostId = post.postId
-              postsViewModel.LikeUnlikePost(LikeUnlikeRequest)
-              if (post.isLiked == 0) {
-                  binding.txtLike.setTextColor(resources.getColor(R.color.Red))
-                  post.isLiked = 1
+        binding.txtLike.setOnClickListener(View.OnClickListener {
+            var LikeUnlikeRequest = PostLikesRequest()
+            LikeUnlikeRequest.UserId = user.UserId
+            LikeUnlikeRequest.PostId = post.postId
+            postsViewModel.LikeUnlikePost(LikeUnlikeRequest)
+            if (post.isLiked == 0) {
+                binding.txtLike.setTextColor(resources.getColor(R.color.Red))
+                post.isLiked = 1
 
-              } else {
-                  binding.txtLike.setTextColor(resources.getColor(R.color.Gray))
-                  post.isLiked = 0
-              }
-          })
+            } else {
+                binding.txtLike.setTextColor(resources.getColor(R.color.Gray))
+                post.isLiked = 0
+            }
+        })
 
-          linearLayoutManager = LinearLayoutManager(this)
-          binding.recyclerView.layoutManager = linearLayoutManager
-          linearLayoutManager.stackFromEnd=true
-          binding.recyclerView.itemAnimator = null;
-           adapter = CommentsAdapter(applicationContext,commentList)
-          binding.recyclerView.adapter = adapter
-          binding.txtSendMessage.setOnClickListener(View.OnClickListener {
-              if (binding.etMessage.text.isNullOrBlank()) {
-                  return@OnClickListener
-              } else {
+        linearLayoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = linearLayoutManager
+        linearLayoutManager.stackFromEnd = true
+        binding.recyclerView.itemAnimator = null;
+        adapter = CommentsAdapter(applicationContext, commentList)
+        binding.recyclerView.adapter = adapter
+        binding.txtSendMessage.setOnClickListener(View.OnClickListener {
+            if (binding.etMessage.text.isNullOrBlank()) {
+                return@OnClickListener
+            } else {
 
-                  val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
-                      txtSendMessage,
-                      PropertyValuesHolder.ofFloat("scaleX", 0.5f),
-                      PropertyValuesHolder.ofFloat("scaleY", 0.5f)
-                  )
-                  scaleDown.duration = 200
-                  scaleDown.repeatMode = ValueAnimator.REVERSE
-                  scaleDown.repeatCount = 1
-                  scaleDown.start()
-                  scaleDown.addListener(object : Animator.AnimatorListener {
-                      override fun onAnimationStart(animator: Animator) {}
-                      override fun onAnimationEnd(animator: Animator) {
-
-
-                          var commentRequest = CommentRequest()
-                          commentRequest.CommentContent = binding.etMessage.text!!.trim().toString()
-                          commentRequest.UserId = user.UserId
-                          commentRequest.PostId = post.postId
-                          commentRequest.UserName = user.Name
-                          commentRequest.DateTime = System.currentTimeMillis()
-                          if (post.users.UserId.toString() == user.UserId.toString()) {
-                              commentRequest.IsOwner = 1
-                          } else {
-                              commentRequest.IsOwner = 0
-                          }
-
-                          commentsViewModel.addPostGroup(commentRequest)
-                          binding.etMessage.text!!.clear()
-
-                      }
-
-                      override fun onAnimationCancel(animator: Animator) {}
-                      override fun onAnimationRepeat(animator: Animator) {}
-                  })
+                val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                    txtSendMessage,
+                    PropertyValuesHolder.ofFloat("scaleX", 0.5f),
+                    PropertyValuesHolder.ofFloat("scaleY", 0.5f)
+                )
+                scaleDown.duration = 200
+                scaleDown.repeatMode = ValueAnimator.REVERSE
+                scaleDown.repeatCount = 1
+                scaleDown.start()
+                scaleDown.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animator: Animator) {}
+                    override fun onAnimationEnd(animator: Animator) {
 
 
-              }
+                        var commentRequest = CommentRequest()
+                        commentRequest.CommentContent = binding.etMessage.text!!.trim().toString()
+                        commentRequest.UserId = user.UserId
+                        commentRequest.PostId = post.postId
+                        commentRequest.UserName = user.Name
+                        commentRequest.image=user.Image
+                        commentRequest.DateTime = System.currentTimeMillis()
+                        if (post.users.UserId.toString() == user.UserId.toString()) {
+                            commentRequest.IsOwner = 1
+                        } else {
+                            commentRequest.IsOwner = 0
+                        }
 
-          })
+                        commentsViewModel.addPostGroup(commentRequest)
+                        binding.etMessage.text!!.clear()
+
+                    }
+
+                    override fun onAnimationCancel(animator: Animator) {}
+                    override fun onAnimationRepeat(animator: Animator) {}
+                })
 
 
-          initObserver()
-          setSupportActionBar(binding.toolbar)
-          supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-          binding.toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
+            }
+
+        })
+
+
+        initObserver()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
         loginViewModel.getLoggedInUser();
-
 
 
     }
@@ -157,6 +157,13 @@ class CommentsActivity : AppCompatActivity() {
         })
 
         commentsViewModel.commentsModelList.observe(this, Observer {
+            if (it.isEmpty()) {
+                binding.txtNoComment.visibility = View.VISIBLE
+            } else {
+
+                binding.txtNoComment.visibility = View.GONE
+
+            }
             adapter.updateEmployeeListItems(it.toMutableList())
             binding.recyclerView.smoothScrollToPosition(it.size);
         })

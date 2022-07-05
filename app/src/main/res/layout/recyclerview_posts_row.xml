@@ -41,9 +41,9 @@
 
 
             <LinearLayout
-                android:layout_toRightOf="@+id/imgUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imgUser"
                 android:orientation="vertical">
 
                 <TextView
@@ -93,7 +93,7 @@ android:layout_alignParentRight="true"
             android:fontFamily="@font/poppinsmedium"
 
             android:textColor="@color/Black"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_13sdp" />
 
         <ImageView
             android:id="@+id/imgPost"

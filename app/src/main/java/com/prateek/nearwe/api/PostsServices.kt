@@ -47,7 +47,7 @@ interface PostsServices {
         @Path("userId") UserId: Int?,
         @Path("latitude") Latitude: String,
         @Path("longitude") Longitude: String
-    ): Response<PostResponse>
+    ): PostResponse
 
 
 
