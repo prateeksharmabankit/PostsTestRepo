@@ -18,5 +18,7 @@ data class CommentRequest(
     @SerializedName("dateTime") var DateTime: Long? = null,
     @SerializedName("isOwner") var IsOwner: Int? = null,
     @SerializedName("image") var image: String? = null,
+    @SerializedName("type") var type: Int? = null,
+    @SerializedName("commentImage") var commentImage: String? = null,
     )
 

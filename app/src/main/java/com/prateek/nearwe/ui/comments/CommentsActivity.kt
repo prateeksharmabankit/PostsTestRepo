@@ -11,12 +11,22 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toFile
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.drjacky.imagepicker.ImagePicker
+import com.github.drjacky.imagepicker.constant.ImageProvider
+import com.google.android.gms.tasks.RuntimeExecutionException
+import com.google.android.play.core.review.ReviewException
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.model.ReviewErrorCode
 import com.google.firebase.messaging.FirebaseMessaging
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
@@ -30,6 +40,7 @@ import com.prateek.nearwe.ui.posts.PostsViewModel
 import kotlinx.android.synthetic.main.activity_comments.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 import java.util.*
 
 
@@ -41,11 +52,12 @@ class CommentsActivity : AppCompatActivity() {
     private val postsViewModel: PostsViewModel by viewModel()
     private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var post: Post
-
+    private lateinit var file: File
     var Name: String = ""
     private val commentList = ArrayList<CommentRequest>()
     private lateinit var adapter: CommentsAdapter
     private lateinit var user: UserModel
+    private lateinit var reviewInfo: ReviewInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -55,6 +67,26 @@ class CommentsActivity : AppCompatActivity() {
         setContentView(binding.root)
         loginViewModel.getAddressHeader(this)
         post = intent.extras!!.get("post") as Post
+        val manager = ReviewManagerFactory.create(applicationContext)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+
+                val reviewInfo = task.result
+            } else {
+                val errorCode = when (val exception = task.exception) {
+                    is ReviewException -> {
+                        exception.errorCode
+                    }
+                    is RuntimeExecutionException -> {
+                        exception.message
+                    }
+                    else -> {
+                        9999
+                    }
+                }
+            }
+        }
 
 
 
@@ -105,7 +137,9 @@ class CommentsActivity : AppCompatActivity() {
                         commentRequest.UserId = user.UserId
                         commentRequest.PostId = post.postId
                         commentRequest.UserName = user.Name
-                        commentRequest.image=user.Image
+                        commentRequest.image = user.Image
+                        commentRequest.type = 1
+                        commentRequest.commentImage = null
                         commentRequest.DateTime = System.currentTimeMillis()
                         if (post.users.UserId.toString() == user.UserId.toString()) {
                             commentRequest.IsOwner = 1
@@ -126,12 +160,27 @@ class CommentsActivity : AppCompatActivity() {
             }
 
         })
+        binding.txtSendImage.setOnClickListener(View.OnClickListener {
+
+            ImagePicker.with(this)
+
+                .provider(ImageProvider.BOTH).crop(16f, 9f)
+                .createIntentFromDialog { launcher.launch(it) }
+
+        })
 
 
         initObserver()
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.setNavigationOnClickListener(View.OnClickListener { onBackPressed() })
+        binding.toolbar.setNavigationOnClickListener(View.OnClickListener {
+            val flow = manager.launchReviewFlow(this, reviewInfo)
+            flow.addOnCompleteListener { _ ->
+              onBackPressed()
+            }
+
+
+        })
         loginViewModel.getLoggedInUser();
 
 
@@ -177,6 +226,43 @@ class CommentsActivity : AppCompatActivity() {
                 binding.txtLike.setTextColor(resources.getColor(R.color.Red))
             }
         })
+        commentsViewModel.commentImageUploadResponse.observe(this, Observer {
+
+            if (it?.message == "Image Uploaded") {
+
+                var commentRequest = CommentRequest()
+                commentRequest.CommentContent = binding.etMessage.text!!.trim().toString()
+                commentRequest.UserId = user.UserId
+                commentRequest.PostId = post.postId
+                commentRequest.UserName = user.Name
+                commentRequest.image = user.Image
+                commentRequest.DateTime = System.currentTimeMillis()
+                if (post.users.UserId.toString() == user.UserId.toString()) {
+                    commentRequest.IsOwner = 1
+                } else {
+                    commentRequest.IsOwner = 0
+                }
+                commentRequest.type = 2
+                commentRequest.commentImage = it.results.data
+
+                commentsViewModel.addPostGroup(commentRequest)
+                binding.etMessage.text!!.clear()
+
+            } else {
+
+            }
+        })
 
     }
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val uri = it.data?.data!!
+
+                file = uri.toFile()
+                commentsViewModel.AddCommentImage(file)
+
+            }
+        }
 }

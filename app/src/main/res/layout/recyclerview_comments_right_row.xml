@@ -38,6 +38,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="#FF5776"
                 android:textSize="@dimen/_12sdp"  />
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:id="@+id/imgComment"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                />
             <TextView
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"

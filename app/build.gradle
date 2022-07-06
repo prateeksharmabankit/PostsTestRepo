@@ -14,8 +14,8 @@ android {
         applicationId "com.prateek.nearwe"
         minSdkVersion 23
         targetSdkVersion 32
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "BASE_URL", "\"https://nearwenode.azurewebsites.net\""
@@ -29,7 +29,7 @@ android {
         }
         debug {
             minifyEnabled false
-            applicationIdSuffix ".debug"
+
             debuggable true
         }
     }
@@ -139,6 +139,11 @@ dependencies {
     implementation 'io.branch.sdk.android:library:5.+'
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
     implementation 'androidx.browser:browser:1.4.0'
+    implementation("com.google.android.play:review:2.0.0")
+
+    implementation("com.google.android.play:review:2.0.0")
+    implementation("com.google.android.play:review-ktx:2.0.0")
+
 
 
 

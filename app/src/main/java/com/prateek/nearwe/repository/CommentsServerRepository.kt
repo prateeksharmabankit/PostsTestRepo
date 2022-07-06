@@ -2,9 +2,10 @@
 package com.prateek.nearwe.repository
 
 import com.prateek.nearwe.api.PostsServices
+import okhttp3.MultipartBody
 
 
 class CommentsServerRepository(private val postsServices: PostsServices) {
-   // suspend fun getCommentsByPostId(id :Int )= postsServices.getCommentsByPostId(id)
+    suspend fun AddCommentImage(formFile: MultipartBody.Part )= postsServices.AddCommentImage(formFile)
 
 }

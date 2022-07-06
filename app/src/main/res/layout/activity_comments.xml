@@ -101,6 +101,18 @@ android:background="@drawable/bgcom"
             android:layout_height="match_parent"/>
         <info.androidhive.fontawesome.FontTextView
             android:layout_width="0dp"
+            android:id="@+id/txtSendImage"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="0.1"
+            android:text="@string/fa_image_solid"
+            android:textColor="@color/colorPrimary"
+
+            android:textSize="@dimen/_24sdp"
+            app:solid_icon="true" />
+        <info.androidhive.fontawesome.FontTextView
+            android:layout_width="0dp"
             android:id="@+id/txtSendMessage"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_height="wrap_content"

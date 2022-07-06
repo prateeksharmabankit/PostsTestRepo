@@ -23,6 +23,8 @@ import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.application.MainApp
 import com.prateek.nearwe.utils.CommentsDiffCallback
 import com.prateek.nearwe.utils.Utils
+import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNonNull
+import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
 
 
 class CommentsAdapter(
@@ -41,7 +43,7 @@ class CommentsAdapter(
         val txtname: TextView = itemView.findViewById(R.id.txtname)
         val txtTime: TextView = itemView.findViewById(R.id.txtTime)
         val imgUser: ImageView = itemView.findViewById(R.id.imgUser)
-
+        val imgComment: ImageView = itemView.findViewById(R.id.imgComment)
         fun bind(position: Int) {
             val comment = commentsModelList.get(position)
             if (comment.IsOwner == 0) {
@@ -52,12 +54,28 @@ class CommentsAdapter(
             }
             txtComment.text = comment.CommentContent
             txtTime.text = Utils.CompanionClass.ConvertTimeStampintoAgo(comment.DateTime)
+
             Glide.with(MainApp.instance)
 
                 .load(comment.image).placeholder(MainApp.instance.resources.getDrawable(R.drawable.ic_user))
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(25)))
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imgUser)
+            comment.commentImage.ifNull {
+
+                imgComment.visibility = View.GONE
+            }
+            comment.commentImage.ifNonNull {
+
+
+                Glide.with(MainApp.instance)
+
+                    .load(comment.commentImage)
+                    .apply(RequestOptions.bitmapTransform( RoundedCorners(15)))
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(imgComment)
+                imgComment.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -68,6 +86,7 @@ class CommentsAdapter(
         val txtTime: TextView = itemView.findViewById(R.id.txtTime)
 
         val imgUser: ImageView = itemView.findViewById(R.id.imgUser)
+        val imgComment: ImageView = itemView.findViewById(R.id.imgComment)
 
         fun bind(position: Int) {
             val comment = commentsModelList.get(position)
@@ -85,6 +104,22 @@ class CommentsAdapter(
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(25)))
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imgUser)
+
+            comment.commentImage.ifNull {
+
+                imgComment.visibility = View.GONE
+            }
+            comment.commentImage.ifNonNull {
+
+
+                Glide.with(MainApp.instance)
+
+                    .load(comment.commentImage)
+                    .apply(RequestOptions.bitmapTransform( RoundedCorners(15)))
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(imgComment)
+                imgComment.visibility = View.VISIBLE
+            }
         }
     }
 

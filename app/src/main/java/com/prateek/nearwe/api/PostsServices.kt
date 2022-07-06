@@ -12,6 +12,7 @@
 
 package com.prateek.nearwe.api
 
+import com.prateek.nearwe.api.models.Comments.CommentRequest.commentimage.CommentImageUploadResponse
 import com.prateek.nearwe.api.models.SubCategory.SubCategoriesResponse
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.login.LoginResponse
@@ -91,6 +92,17 @@ interface PostsServices {
 
 
     ): Response<AddPostResponse>
+
+
+    @Multipart
+    @POST("/api/AddCommentImage")
+    suspend fun AddCommentImage(
+
+        @Part formFile: MultipartBody.Part ,
+    ): Response<CommentImageUploadResponse>
+
+
+
 
     @GET("api/Posts/GetAllWhatisPosts/{UserId}/{Latitude}/{Longitude}")
     suspend fun GetAllWhatisPost(
