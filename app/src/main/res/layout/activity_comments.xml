@@ -17,7 +17,7 @@ android:background="@drawable/bgcom"
     android:visibility="gone"
     android:textStyle="bold"
     android:textSize="@dimen/_16sdp"
-    android:textColor="@color/colorPrimary"
+    android:textColor="?attr/colorOnPrimary"
     android:fontFamily="@font/poppinsmedium"
     android:layout_height="wrap_content"/>
 
@@ -35,7 +35,7 @@ android:background="@drawable/bgcom"
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             app:titleCentered="true"
-
+            app:titleTextColor="?attr/colorOnPrimary"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@ android:background="@drawable/bgcom"
 
             android:layout_weight="0.1"
             android:text="@string/fa_image_solid"
-            android:textColor="@color/colorPrimary"
+            android:textColor="?attr/colorPrimary"
 
             android:textSize="@dimen/_24sdp"
             app:solid_icon="true" />
@@ -119,7 +119,7 @@ android:background="@drawable/bgcom"
 
             android:layout_weight="0.1"
             android:text="@string/fa_paper_plane"
-            android:textColor="@color/colorPrimary"
+            android:textColor="?attr/colorPrimary"
 
             android:textSize="@dimen/_24sdp"
             app:solid_icon="true" />

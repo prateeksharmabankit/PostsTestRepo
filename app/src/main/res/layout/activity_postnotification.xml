@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
 
     android:layout_height="match_parent"
-    android:background="#F1F1F1"
+
     android:orientation="vertical"
     tools:context=".ui.comments.CommentsActivity">
 
@@ -31,6 +31,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="Featured Post"
+            app:titleTextColor="?attr/colorOnSurface"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
 
@@ -96,7 +97,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:text="Posted By: "
 
-                    android:textColor="@color/Black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
@@ -106,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:capitalize="words"
-                    android:textColor="@color/Black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
@@ -119,7 +120,7 @@
                     android:gravity="right"
                     android:text="sqssss"
 
-                    android:textColor="@color/Black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -175,7 +176,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:fontFamily="@font/poppinsregular"
-                        android:textColor="@color/Black"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
 
@@ -202,7 +203,7 @@
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:text="Reply"
                         android:fontFamily="@font/poppinsregular"
-                        android:textColor="@color/Black"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
 
@@ -230,7 +231,7 @@
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:text="Share"
                         android:fontFamily="@font/poppinsregular"
-                        android:textColor="@color/Black"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
             </RelativeLayout>
@@ -251,6 +252,7 @@
                     android:fontFamily="@font/poppinsmedium"
                     android:textColor="@color/Black"
                     android:textSize="@dimen/_12sdp"
+                    android:visibility="gone"
                     android:textStyle="bold" />
 
                 <LinearLayout

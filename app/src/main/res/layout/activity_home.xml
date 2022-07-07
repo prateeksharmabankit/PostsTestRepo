@@ -25,33 +25,33 @@
         tools:openDrawer="end">
 
         <RelativeLayout
-            android:background="@color/White"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:orientation="vertical">
 
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
-                app:liftOnScroll="true"
-                android:theme="@style/AppTheme.AppBarOverlay"
                 android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:liftOnScroll="true">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
-
-                    app:titleCentered="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
                     android:background="?attr/colorPrimary"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="?attr/actionBarTheme"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
                     app:title="@string/featured_posts"
+                    app:titleCentered="true"
+                    app:titleTextColor="?attr/colorOnPrimary"
 
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="0dp" />
@@ -60,14 +60,13 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.cardview.widget.CardView
-                android:layout_below="@+id/appBar"
                 android:id="@+id/cardLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/appBar"
                 android:layout_margin="@dimen/_10sdp"
 
-                app:cardCornerRadius="@dimen/_15sdp"
-               >
+                app:cardCornerRadius="@dimen/_15sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -86,7 +85,7 @@
                             android:layout_margin="@dimen/_10sdp"
 
                             android:src="@drawable/ic_locationbg"
-                            app:tint="@color/colorAccent" />
+                            app:tint="?attr/colorSecondary" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -96,29 +95,29 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_marginTop="@dimen/_5sdp"
                             android:layout_width="match_parent"
-                            android:fontFamily="@font/poppinsregular"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/poppinsregular"
                             android:text="Current Location"
-                            android:textColor="@color/Black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="@dimen/_14sdp" />
 
                         <TextView
-                            android:layout_marginBottom="@dimen/_5sdp"
                             android:id="@+id/txtHeader"
-                            android:fontFamily="@font/poppinsregular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-android:minLines="2"
                             android:layout_centerHorizontal="true"
-
-
                             android:layout_marginRight="@dimen/_16sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
                             android:ellipsize="end"
+
+
+                            android:fontFamily="@font/poppinsregular"
                             android:maxLines="2"
+                            android:minLines="2"
                             android:text="@{ loginViewModel.addressDetails }"
-                            android:textColor="@color/Black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
@@ -194,7 +193,7 @@ android:minLines="2"
                     android:layout_marginRight="@dimen/_10sdp"
 
                     android:layout_marginBottom="@dimen/_25sdp"
-                    app:efab_color="@color/colorAccent"
+                    app:efab_color="?attr/colorSecondary"
                     app:efab_icon="@drawable/ic_baseline_add_24"
                     app:efab_iconAnimationRotationDeg="0"
                     app:efab_orientation="portrait" />
@@ -203,7 +202,7 @@ android:minLines="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="add_whats_new_click"
-                    app:fab_color="@color/colorAccent"
+                    app:fab_color="?attr/colorSecondary"
                     app:fab_icon="@drawable/ic_baseline_whtat_is_24"
                     app:fab_orientation="portrait"
                     app:label_text="Ask a Question" />
@@ -213,17 +212,18 @@ android:minLines="2"
 
                     android:layout_height="wrap_content"
                     android:onClick="add_new_post_click"
-                    app:fab_color="@color/colorAccent"
+                    app:fab_color="?attr/colorSecondary"
                     app:fab_icon="@drawable/ic_baseline_settings_neame_24"
                     app:fab_orientation="portrait"
-                    app:label_text="NearBy Post" />
+                    app:label_text="NearBy Post"
+                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
                 <com.nambimobile.widgets.efab.FabOption
                     android:layout_width="wrap_content"
 
                     android:layout_height="wrap_content"
                     android:onClick="add_Interest_Hobiles_post_click"
-                    app:fab_color="@color/colorAccent"
+                    app:fab_color="?attr/colorSecondary"
                     app:fab_icon="@drawable/ic_baseline_trending_24"
                     app:fab_orientation="portrait"
                     app:label_text="Interest and Hobbies" />

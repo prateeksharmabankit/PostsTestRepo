@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
@@ -11,51 +12,54 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/White"
+
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvTitle"
-            android:fontFamily="@font/poppinsmedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginLeft="@dimen/_8sdp"
-            android:layout_marginRight="@dimen/_8sdp"
-
             android:layout_marginTop="@dimen/_10sdp"
-            android:textColor="@color/Black"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:fontFamily="@font/poppinsmedium"
+
+            android:gravity="center"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/_14sdp" />
 
 
-        <EditText android:layout_margin="@dimen/_10sdp"
+        <EditText
             android:id="@+id/etTitle"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:hint="Add Post Description Here"
+            android:textColor="?attr/colorOnSurface"
+            android:textColorHint="?attr/colorOnSurface" />
 
-            android:hint="Add Post Description Here" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/imgUploadButton"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:textAllCaps="false"
-            app:backgroundTint="@color/colorPrimary"
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Upload Image"
-            app:icon="@drawable/ic_round_perm_media_24"
-            app:iconGravity="textStart"/>
+            android:textAllCaps="false"
+            android:visibility="gone"
+            app:backgroundTint="?attr/colorPrimary"
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:fontFamily="@font/poppinsregular"
+            app:icon="@drawable/ic_round_perm_media_24"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/poppinsregular"
 
             android:text="Add Upto 5 Tags"
-            android:textColor="@color/Black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
 
@@ -65,60 +69,62 @@
             android:layout_height="@dimen/_150sdp" />
 
 
-
         <RadioGroup
             android:id="@+id/radioGroup1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_15sdp"
-            android:background="#024CAF50">
+            android:layout_marginRight="@dimen/_15sdp">
 
-            <RadioButton
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/postRadioOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/Green"
-                android:fontFamily="@font/poppinsregular"
                 android:checked="true"
+                android:fontFamily="@font/poppinsregular"
                 android:paddingLeft="@dimen/_10sdp"
                 android:text="@string/green_general_queried_in_your_area"
-                android:textSize="@dimen/_12sdp" />
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="TouchTargetSizeCheck" />
 
-            <RadioButton
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/postRadioTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:buttonTint="@color/Orange"
-                android:paddingLeft="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsregular"
+                android:paddingLeft="@dimen/_10sdp"
                 android:text="@string/favours_like_finding_a_lost_pet_buy_or_sell_something"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/_12sdp" />
 
-            <RadioButton
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/postRadioThree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/Red"
-                android:paddingLeft="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsregular"
+                android:paddingLeft="@dimen/_10sdp"
                 android:text="@string/alert_people_in_a_location_traffic_updates_or_heavy_rain"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/_12sdp" />
 
 
         </RadioGroup>
 
-        <CheckBox
+        <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkPostAnonymous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-android:layout_margin="@dimen/_15sdp"
+            android:layout_margin="@dimen/_15sdp"
             android:fontFamily="@font/poppinsregular"
             android:text="@string/post_anonymously"
-            android:textColor="@color/Red"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/_12sdp" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -126,15 +132,17 @@ android:layout_margin="@dimen/_15sdp"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+
             android:layout_marginBottom="@dimen/_50sdp"
             android:background="@color/colorPrimary"
             android:elevation="@dimen/_3sdp"
             android:fontFamily="@font/poppinsregular"
             android:text="Post Now"
-            android:textColor="@color/White"
+            android:textColor="?attr/colorOnPrimary"
+
 
 
             />
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

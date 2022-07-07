@@ -32,11 +32,14 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.net.toFile
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.*
@@ -63,7 +66,7 @@ import com.prateek.nearwe.ui.adapters.SubCategoryAdapter
 import com.prateek.nearwe.ui.login.LoginActivity
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
-import gun0912.tedbottompicker.TedBottomPicker
+import com.prateek.nearwe.utils.DataStoreManager
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.CoroutineScope
@@ -86,12 +89,12 @@ class HomeActivity : AppCompatActivity() {
     private var postCategoryId: Int = 0
     private lateinit var user: UserModel
 
-
+    private lateinit var dataStoreManager: DataStoreManager
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        dataStoreManager = DataStoreManager(this)
         initUI()
         initObserver()
 
@@ -100,6 +103,18 @@ class HomeActivity : AppCompatActivity() {
 
         loginViewModel.getAddressHeader(this)
         loginViewModel.getLoggedInUser();
+        val menuItem = nav_view.menu.findItem(R.id.darkModeMenu)
+        val switch_id = menuItem.actionView as SwitchCompat
+
+        lifecycleScope.launch {
+            dataStoreManager.getTheme.collect { counter ->
+                switch_id.isChecked = counter
+            }
+
+        }
+        switch_id.setOnClickListener(View.OnClickListener {
+            changeTheme(switch_id.isChecked)
+        })
 
 
     }
@@ -156,7 +171,8 @@ class HomeActivity : AppCompatActivity() {
 
                                 GoogleSignIn.getClient(
                                     applicationContext,
-                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                        .build()
                                 ).signOut()
                                 postsViewModel.deleteUser()
                                 startActivity(
@@ -179,8 +195,34 @@ class HomeActivity : AppCompatActivity() {
             NavigationUI.onNavDestinationSelected(menuItem, navController)
             val drawer = findViewById<View>(R.id.drawerLayout) as DrawerLayout
             drawer.closeDrawer(GravityCompat.START)
-             true
+            true
         })
+
+
+    }
+
+    fun changeTheme(ischeched: Boolean) {
+        MainApp.instance.isNightModeEnabled = ischeched
+        if (ischeched) {
+            lifecycleScope.launch {
+                dataStoreManager.setTheme(true)
+            }
+            AppCompatDelegate
+                .setDefaultNightMode(
+                    AppCompatDelegate
+                        .MODE_NIGHT_YES
+                );
+
+        } else {
+            lifecycleScope.launch {
+                dataStoreManager.setTheme(false)
+            }
+            AppCompatDelegate
+                .setDefaultNightMode(
+                    AppCompatDelegate
+                        .MODE_NIGHT_NO
+                );
+        }
 
 
     }
@@ -410,7 +452,13 @@ class HomeActivity : AppCompatActivity() {
 
                 }
             }
-            txtNavName.text = user.Name
+
+            try {
+                val headerLayout: View = nav_view.getHeaderView(0)
+                var userName = headerLayout.findViewById<TextView>(R.id.txtNavName)
+                userName.text = user.Name
+            } catch (e: Exception) {
+            }
 
         })
         homeViewModel.addPostResponse.observe(this, Observer {
@@ -427,14 +475,15 @@ class HomeActivity : AppCompatActivity() {
             }
         })
     }
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            val uri = it.data?.data!!
 
-            file = uri.toFile()
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val uri = it.data?.data!!
+
+                file = uri.toFile()
+            }
         }
-    }
-
 
 
 }
