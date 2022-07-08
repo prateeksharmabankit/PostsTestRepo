@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.prateek.nearwe.api.models.posts.postresponse.Post
 
 
-class EmployeeDiffCallback(oldEmployeeList: List<Post>, newEmployeeList: List<Post>) :
+class PostsDiffCallback(oldEmployeeList: List<Post>, newEmployeeList: List<Post>) :
     DiffUtil.Callback() {
     private val mOldEmployeeList: List<Post>
     private val mNewEmployeeList: List<Post>

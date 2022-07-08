@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 
 class DataStoreManager(private val context: Context) {
 
-//TODO here 0 is light, 1 is dark
+//TODO here false is light, true is dark
 
     suspend fun setTheme(type: Boolean){
         context.dataStore.edit { preferences ->

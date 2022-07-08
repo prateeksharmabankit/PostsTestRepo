@@ -31,7 +31,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="Featured Post"
-            app:titleTextColor="?attr/colorOnSurface"
+            app:titleTextColor="?attr/colorOnPrimary"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
 

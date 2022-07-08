@@ -10,7 +10,6 @@ package com.prateek.nearwe.ui.adapters
 import android.app.Activity
 import android.graphics.Typeface
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,12 +31,11 @@ import com.google.android.material.chip.Chip
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.posts.postresponse.Post
 import com.prateek.nearwe.application.MainApp
-import com.prateek.nearwe.utils.EmployeeDiffCallback
+import com.prateek.nearwe.utils.PostsDiffCallback
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNonNull
 import com.prateek.nearwe.utils.Utils.CompanionClass.Companion.ifNull
 import io.branch.indexing.BranchUniversalObject
 import io.branch.referral.Branch.BranchLinkCreateListener
-import io.branch.referral.BranchError
 import io.branch.referral.util.LinkProperties
 
 
@@ -195,7 +193,7 @@ class PostsAdapter(
     }
 
     fun updateEmployeeListItems(employees: MutableList<Post>) {
-        val diffCallback = EmployeeDiffCallback(this.mList, employees!!)
+        val diffCallback = PostsDiffCallback(this.mList, employees!!)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         mList.clear()
         mList.addAll(employees)

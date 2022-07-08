@@ -47,6 +47,10 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.github.drjacky.imagepicker.ImagePicker
 import com.github.drjacky.imagepicker.constant.ImageProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -456,7 +460,15 @@ class HomeActivity : AppCompatActivity() {
             try {
                 val headerLayout: View = nav_view.getHeaderView(0)
                 var userName = headerLayout.findViewById<TextView>(R.id.txtNavName)
+                var userImage = headerLayout.findViewById<ImageView>(R.id.userImage)
                 userName.text = user.Name
+
+                Glide.with(MainApp.instance)
+
+                    .load(user.Image).placeholder(resources.getDrawable(R.drawable.ic_user))
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(25)))
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(userImage)
             } catch (e: Exception) {
             }
 
