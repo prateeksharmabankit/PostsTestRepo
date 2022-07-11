@@ -19,4 +19,8 @@
         android:id="@+id/WhatISFragment"
         android:icon="@drawable/ic_baseline_whtat_is_24"
         android:title="What is" />
+    <item
+        android:id="@+id/ChatroomFragment"
+        android:icon="@drawable/ic_baseline_chat_24"
+        android:title="Chats" />
 </menu>

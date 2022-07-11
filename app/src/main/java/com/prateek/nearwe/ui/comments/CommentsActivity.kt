@@ -12,7 +12,9 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,16 +33,19 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.prateek.nearwe.R
 import com.prateek.nearwe.api.models.Comments.CommentRequest.CommentRequest
 import com.prateek.nearwe.api.models.User.UserModel
+import com.prateek.nearwe.api.models.chatrooms.AddchatRoom.AddChatroomRequest
 import com.prateek.nearwe.api.models.posts.PostLikes.PostLikesRequest
 import com.prateek.nearwe.api.models.posts.postresponse.Post
 import com.prateek.nearwe.databinding.ActivityCommentsBinding
 import com.prateek.nearwe.ui.adapters.CommentsAdapter
+import com.prateek.nearwe.ui.chatrooms.ChatroomViewModel
+import com.prateek.nearwe.ui.directchat.DirectChatActivity
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
 import kotlinx.android.synthetic.main.activity_comments.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import java.io.Serializable
 import java.util.*
 
 
@@ -57,7 +62,8 @@ class CommentsActivity : AppCompatActivity() {
     private val commentList = ArrayList<CommentRequest>()
     private lateinit var adapter: CommentsAdapter
     private lateinit var user: UserModel
-    private lateinit var reviewInfo: ReviewInfo
+   /* private lateinit var reviewInfo: ReviewInfo*/
+    private val chatroomViewModel: ChatroomViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -67,7 +73,7 @@ class CommentsActivity : AppCompatActivity() {
         setContentView(binding.root)
         loginViewModel.getAddressHeader(this)
         post = intent.extras!!.get("post") as Post
-        val manager = ReviewManagerFactory.create(applicationContext)
+       /* val manager = ReviewManagerFactory.create(applicationContext)
         val request = manager.requestReviewFlow()
         request.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -86,14 +92,14 @@ class CommentsActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
+        }*/
 
 
 
 
 
         binding.txtLike.setOnClickListener(View.OnClickListener {
-            var LikeUnlikeRequest = PostLikesRequest()
+            val LikeUnlikeRequest = PostLikesRequest()
             LikeUnlikeRequest.UserId = user.UserId
             LikeUnlikeRequest.PostId = post.postId
             postsViewModel.LikeUnlikePost(LikeUnlikeRequest)
@@ -173,14 +179,31 @@ class CommentsActivity : AppCompatActivity() {
         initObserver()
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.setNavigationOnClickListener(View.OnClickListener {
+
+      /*  binding.toolbar.setNavigationOnClickListener(View.OnClickListener {
             val flow = manager.launchReviewFlow(this, reviewInfo)
             flow.addOnCompleteListener { _ ->
-              onBackPressed()
+                onBackPressed()
             }
 
 
-        })
+        })*/
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_directMessage -> {
+
+                    val addChatroomRequest = AddChatroomRequest()
+                    addChatroomRequest.PostId = post.postId
+                    addChatroomRequest.Reciever = post.users.UserId
+                    addChatroomRequest.Sender = user.UserId
+                    chatroomViewModel.CreateChatRoom(addChatroomRequest)
+
+                    true
+                }
+
+                else -> false
+            }
+        }
         loginViewModel.getLoggedInUser();
 
 
@@ -253,6 +276,27 @@ class CommentsActivity : AppCompatActivity() {
             }
         })
 
+        chatroomViewModel.chatRoomCreateResponse.observe(this, Observer {
+            val intent = Intent(this, DirectChatActivity::class.java)
+
+
+
+
+            intent.putExtra("chatId", it.results.data._id)
+            intent.putExtra("postId", it.results.data.postId)
+            intent.putExtra("reciever",post.users.UserId)
+            intent.putExtra("sender", user.UserId)
+
+            startActivity(intent)
+        })
+        chatroomViewModel.loading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+
     }
 
     private val launcher =
@@ -265,4 +309,10 @@ class CommentsActivity : AppCompatActivity() {
 
             }
         }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
 }

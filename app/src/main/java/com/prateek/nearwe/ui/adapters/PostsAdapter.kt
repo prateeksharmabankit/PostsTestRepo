@@ -137,7 +137,7 @@ class PostsAdapter(
             holder.imgPost.visibility = View.VISIBLE
         }
         holder.lvShare.setOnClickListener {
-            val buo = BranchUniversalObject()
+            /*val buo = BranchUniversalObject()
             val lp = LinkProperties()
 
                 .setCampaign(post.postId.toString())
@@ -153,7 +153,9 @@ class PostsAdapter(
                             .startChooser();
 
                     }
-                })
+                })*/
+
+
         }
 
         Glide.with(MainApp.instance)

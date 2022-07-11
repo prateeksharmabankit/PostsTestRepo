@@ -67,6 +67,14 @@
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.directchat.DirectChatActivity"
+            android:label="Direct Chat"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme" />
+
+
+
+        <activity
             android:name=".ui.PostNotification.PostNotificationActivity"
             android:label="Post From Notification"
             android:screenOrientation="sensorPortrait"

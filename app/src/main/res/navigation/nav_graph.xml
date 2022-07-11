@@ -25,6 +25,13 @@
         android:name="com.prateek.nearwe.ui.whatis.WhatIsFragment"
         android:label="What is This Thing?"
         tools:layout="@layout/fragment_whatis" />
+    <fragment
+        android:id="@+id/ChatroomFragment"
+        android:name="com.prateek.nearwe.ui.chatrooms.ChatroomFragment"
+        android:label="Chats"
+        tools:layout="@layout/fragment_chatroom"
+
+        />
 
 
 </navigation>

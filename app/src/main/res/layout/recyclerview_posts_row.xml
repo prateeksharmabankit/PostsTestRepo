@@ -82,6 +82,7 @@
                 app:tint="@android:color/holo_orange_dark" />
 
 
+
         </RelativeLayout>
 
         <TextView
@@ -139,6 +140,7 @@
             </LinearLayout>
 
             <LinearLayout
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -160,7 +162,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/poppinsregular"
-                    android:text="Reply"
+                    android:text="Direct Message"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>

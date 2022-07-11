@@ -13,4 +13,6 @@ val repositoryModule = module {
     single { LoginServerRepository(get()) }
     single { FirestoreRepository(get(),get()) }
     single { SubCategoryRepository(postsServices =  get()) }
+    single { ChatroomServerRepository(postsServices =  get()) }
+
 }

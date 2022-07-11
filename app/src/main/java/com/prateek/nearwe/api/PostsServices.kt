@@ -15,6 +15,11 @@ package com.prateek.nearwe.api
 import com.prateek.nearwe.api.models.Comments.CommentRequest.commentimage.CommentImageUploadResponse
 import com.prateek.nearwe.api.models.SubCategory.SubCategoriesResponse
 import com.prateek.nearwe.api.models.User.UserModel
+import com.prateek.nearwe.api.models.chatrooms.AddchatRoom.AddChatroomResponse
+import com.prateek.nearwe.api.models.chatrooms.AddchatRoom.AddChatroomRequest
+import com.prateek.nearwe.api.models.chatrooms.addchatcontent.AddChatcontentRequest
+import com.prateek.nearwe.api.models.chatrooms.chatcontent.ChatContentResponse
+import com.prateek.nearwe.api.models.chatrooms.chatroomresponses.ChatroomResponse
 import com.prateek.nearwe.api.models.login.LoginResponse
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
@@ -41,7 +46,8 @@ interface PostsServices {
     @Headers("Accept: application/json")
     @GET("api/getPostLike/{postId}/{userId}")
     suspend fun GetPostsLikes(
-        @Path("postId") postId: Int?,@Path("userId") userId: Int? ): PostLikedStatus
+        @Path("postId") postId: Int?, @Path("userId") userId: Int?
+    ): PostLikedStatus
 
     @GET("api/Posts/GetAllTrendingPosts/{userId}/{latitude}/{longitude}")
     suspend fun GetAllTrendingPosts(
@@ -49,8 +55,6 @@ interface PostsServices {
         @Path("latitude") Latitude: String,
         @Path("longitude") Longitude: String
     ): PostResponse
-
-
 
 
     @Headers("Accept: application/json")
@@ -75,7 +79,7 @@ interface PostsServices {
     @POST("/api/AddWhatIsPost")
     suspend fun AddWhatIsPost(
 
-        @Part formFile: MultipartBody.Part ,
+        @Part formFile: MultipartBody.Part,
         @Part("title") Title: RequestBody?,
         @Part("isAnonymous") IsAnonymous: RequestBody?,
 
@@ -98,10 +102,8 @@ interface PostsServices {
     @POST("/api/AddCommentImage")
     suspend fun AddCommentImage(
 
-        @Part formFile: MultipartBody.Part ,
+        @Part formFile: MultipartBody.Part,
     ): Response<CommentImageUploadResponse>
-
-
 
 
     @GET("api/Posts/GetAllWhatisPosts/{UserId}/{Latitude}/{Longitude}")
@@ -109,7 +111,7 @@ interface PostsServices {
         @Path("UserId") UserId: Int?,
         @Path("Latitude") Latitude: String,
         @Path("Longitude") Longitude: String
-    ):PostResponse
+    ): PostResponse
 
     @Headers("Accept: application/json")
     @GET("api/User/UpdateToken/{UserId}/{Token}")
@@ -126,4 +128,22 @@ interface PostsServices {
         @Path("userId") UserId: Int?,
         @Path("postId") postId: Int,
     ): PostResponse
+
+
+    @GET("api/chats/getMyChats/{userId}")
+    suspend fun getMyChats(
+        @Path("userId") userId: Int?): ChatroomResponse
+
+    @POST("/api/chats/post")
+    suspend fun CreateChatRoom(@Body addChatroomRequest: AddChatroomRequest): Response<AddChatroomResponse>
+
+    @POST("/api/chatcontent/post")
+    suspend fun AddChatConent(@Body addChatroomRequest: AddChatcontentRequest): Response<AddChatcontentRequest>
+
+
+
+    @GET("api/chats/getMyChatContent/{chatId}")
+    suspend fun getMyChatContent(
+        @Path("chatId") chatId: String?,
+    ): ChatContentResponse
 }
