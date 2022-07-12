@@ -62,7 +62,8 @@ class CommentsActivity : AppCompatActivity() {
     private val commentList = ArrayList<CommentRequest>()
     private lateinit var adapter: CommentsAdapter
     private lateinit var user: UserModel
-   /* private lateinit var reviewInfo: ReviewInfo*/
+
+    private lateinit var reviewInfo: ReviewInfo
     private val chatroomViewModel: ChatroomViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,26 +74,26 @@ class CommentsActivity : AppCompatActivity() {
         setContentView(binding.root)
         loginViewModel.getAddressHeader(this)
         post = intent.extras!!.get("post") as Post
-       /* val manager = ReviewManagerFactory.create(applicationContext)
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
+         val manager = ReviewManagerFactory.create(applicationContext)
+         val request = manager.requestReviewFlow()
+         request.addOnCompleteListener { task ->
+             if (task.isSuccessful) {
 
-                val reviewInfo = task.result
-            } else {
-                val errorCode = when (val exception = task.exception) {
-                    is ReviewException -> {
-                        exception.errorCode
-                    }
-                    is RuntimeExecutionException -> {
-                        exception.message
-                    }
-                    else -> {
-                        9999
-                    }
-                }
-            }
-        }*/
+                  reviewInfo = task.result
+             } else {
+                 val errorCode = when (val exception = task.exception) {
+                     is ReviewException -> {
+                         exception.errorCode
+                     }
+                     is RuntimeExecutionException -> {
+                         exception.message
+                     }
+                     else -> {
+                         9999
+                     }
+                 }
+             }
+         }
 
 
 
@@ -180,23 +181,26 @@ class CommentsActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-      /*  binding.toolbar.setNavigationOnClickListener(View.OnClickListener {
+       binding.toolbar.setNavigationOnClickListener(View.OnClickListener {
             val flow = manager.launchReviewFlow(this, reviewInfo)
             flow.addOnCompleteListener { _ ->
                 onBackPressed()
-            }
+            }})
 
-
-        })*/
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_directMessage -> {
 
-                    val addChatroomRequest = AddChatroomRequest()
-                    addChatroomRequest.PostId = post.postId
-                    addChatroomRequest.Reciever = post.users.UserId
-                    addChatroomRequest.Sender = user.UserId
-                    chatroomViewModel.CreateChatRoom(addChatroomRequest)
+                    if (user.UserId != post.users.UserId) {
+                        val addChatroomRequest = AddChatroomRequest()
+                        addChatroomRequest.PostId = post.postId
+                        addChatroomRequest.Reciever = post.users.UserId
+                        addChatroomRequest.Sender = user.UserId
+                        chatroomViewModel.CreateChatRoom(addChatroomRequest)
+                    }
+                    else{
+                        Toast.makeText(applicationContext,"You cannot chat with own",Toast.LENGTH_SHORT).show()
+                    }
 
                     true
                 }
@@ -277,6 +281,7 @@ class CommentsActivity : AppCompatActivity() {
         })
 
         chatroomViewModel.chatRoomCreateResponse.observe(this, Observer {
+
             val intent = Intent(this, DirectChatActivity::class.java)
 
 
@@ -284,8 +289,8 @@ class CommentsActivity : AppCompatActivity() {
 
             intent.putExtra("chatId", it.results.data._id)
             intent.putExtra("postId", it.results.data.postId)
-            intent.putExtra("reciever",it.results.data.reciever)
-            intent.putExtra("sender",it.results.data.sender)
+            intent.putExtra("reciever", it.results.data.reciever)
+            intent.putExtra("sender", it.results.data.sender)
 
             startActivity(intent)
         })
