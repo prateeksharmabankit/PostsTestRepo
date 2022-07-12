@@ -284,8 +284,8 @@ class CommentsActivity : AppCompatActivity() {
 
             intent.putExtra("chatId", it.results.data._id)
             intent.putExtra("postId", it.results.data.postId)
-            intent.putExtra("reciever",post.users.UserId)
-            intent.putExtra("sender", user.UserId)
+            intent.putExtra("reciever",it.results.data.reciever)
+            intent.putExtra("sender",it.results.data.sender)
 
             startActivity(intent)
         })

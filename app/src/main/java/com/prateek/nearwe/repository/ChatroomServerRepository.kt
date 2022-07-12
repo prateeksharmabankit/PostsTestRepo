@@ -43,7 +43,7 @@ class ChatroomServerRepository(private val postsServices: PostsServices) {
             while (true) {
                 val latestNews = postsServices.getMyChatContent(chatId)
                 emit(latestNews) // Emits the result of the request to the flow
-                delay(2000) // Suspends the coroutine for some time
+                delay(6000) // Suspends the coroutine for some time
             }
         }
         return latestNews

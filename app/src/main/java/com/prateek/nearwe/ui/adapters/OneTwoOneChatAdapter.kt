@@ -53,17 +53,18 @@ class OneTwoOneChatAdapter(
         val imgUser: ImageView = itemView.findViewById(R.id.imgUser)
         val imgComment: ImageView = itemView.findViewById(R.id.imgComment)
         fun bind(position: Int) {
-            val comment = commentsModelList.get(position)
-            txtname.text=comment.recieveruser.name
+            val comment = commentsModelList[position]
+
             txtComment.text = comment.message
             txtTime.text = comment.ago
 
-            Glide.with(MainApp.instance)
 
-                 .load(comment.recieveruser.image).placeholder(MainApp.instance.resources.getDrawable(R.drawable.ic_user))
-                 .apply(RequestOptions.bitmapTransform(RoundedCorners(25)))
-                 .transition(DrawableTransitionOptions.withCrossFade())
-                 .into(imgUser)
+            txtname.text=comment.senderuser.name
+            Glide.with(MainApp.instance)
+                .load(comment.senderuser.image).placeholder(MainApp.instance.resources.getDrawable(R.drawable.ic_user))
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(25)))
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imgUser)
 
 
 
@@ -80,9 +81,10 @@ class OneTwoOneChatAdapter(
         val imgComment: ImageView = itemView.findViewById(R.id.imgComment)
 
         fun bind(position: Int) {
-            val comment = commentsModelList.get(position)
-            txtname.text=comment.senderuser.name
+            val comment = commentsModelList[position]
+
             txtComment.text = comment.message
+            txtname.text=comment.senderuser.name
             Glide.with(MainApp.instance)
 
                 .load(comment.senderuser.image).placeholder(MainApp.instance.resources.getDrawable(R.drawable.ic_user))
@@ -96,7 +98,7 @@ class OneTwoOneChatAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == VIEW_TYPE_ONE) {
+        if (viewType == CommentsAdapter.VIEW_TYPE_ONE) {
             return View1ViewHolder(
                 LayoutInflater.from(context)
                     .inflate(R.layout.recyclerview_comments_row, parent, false)
@@ -113,7 +115,7 @@ class OneTwoOneChatAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (commentsModelList[position].sender == userId) {
+        if (commentsModelList[position].sender != userId) {
             (holder as View1ViewHolder).bind(position)
         } else {
             (holder as View2ViewHolder).bind(position)
@@ -122,7 +124,7 @@ class OneTwoOneChatAdapter(
 
     override fun getItemViewType(position: Int): Int {
 
-        return if(commentsModelList[position].sender==userId) {
+        return if(commentsModelList[position].sender!=userId) {
             VIEW_TYPE_ONE
         } else {
             VIEW_TYPE_TWO

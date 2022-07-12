@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.prateek.nearwe.api.models.User.UserModel
 import com.prateek.nearwe.api.models.chatrooms.addchatcontent.AddChatcontentRequest
 import com.prateek.nearwe.api.models.chatrooms.chatcontent.Data
+import com.prateek.nearwe.api.models.posts.postresponse.Post
 import com.prateek.nearwe.databinding.ActivityDirectchatBinding
 import com.prateek.nearwe.ui.adapters.OneTwoOneChatAdapter
 import com.prateek.nearwe.ui.login.LoginViewModel
@@ -37,10 +38,12 @@ class DirectChatActivity : AppCompatActivity() {
 
     private lateinit var file: File
     var Name: String = ""
-    var userId: Int = 0
+    var userId: Int? = 0
     var chatId: String? = ""
     var postId: Int = 0
     var reciever: Int = 0
+    var sender: Int = 0
+
 
     private val commentList = ArrayList<Data>()
     private lateinit var adapter: OneTwoOneChatAdapter
@@ -54,20 +57,26 @@ class DirectChatActivity : AppCompatActivity() {
 
         binding = ActivityDirectchatBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        loginViewModel.getAddressHeader(this)
+        sender = intent.extras!!.getInt("sender")
+        reciever= intent.extras!!.getInt("reciever")
+        initUI()
+        initObserver()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.setNavigationOnClickListener(View.OnClickListener {
+            onBackPressed()
+        })
+        loginViewModel.getLoggedInUser();
+    }
 
-
-
-
-
-
+    private fun initUI() {
         linearLayoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = linearLayoutManager
         linearLayoutManager.stackFromEnd = true
         binding.recyclerView.itemAnimator = null;
 
-        userId=intent.extras!!.getInt("sender")
-        adapter = OneTwoOneChatAdapter(applicationContext, commentList,userId)
+
+        adapter = OneTwoOneChatAdapter(applicationContext, commentList, userId)
         binding.recyclerView.adapter = adapter
         binding.txtSendMessage.setOnClickListener(View.OnClickListener {
             if (binding.etMessage.text.isNullOrBlank()) {
@@ -90,10 +99,21 @@ class DirectChatActivity : AppCompatActivity() {
 
                         val commentRequest = AddChatcontentRequest()
                         commentRequest.Message = binding.etMessage.text!!.trim().toString()
-                        commentRequest.Sender = user.UserId
+
                         commentRequest.PostId = postId
                         commentRequest.chatId = chatId.toString()
-                        commentRequest.Reciever=reciever
+                        commentRequest.Sender = user.UserId
+
+                        if(sender==user.UserId)
+                        {
+                            commentRequest.Reciever=reciever
+                        }
+                        else{
+
+                            commentRequest.Reciever=sender
+                        }
+
+
                         commentsViewModel.AddChatConent(commentRequest)
 
                         binding.etMessage.text!!.clear()
@@ -109,23 +129,15 @@ class DirectChatActivity : AppCompatActivity() {
 
         })
 
-
-        initObserver()
-        setSupportActionBar(binding.toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-        binding.toolbar.setNavigationOnClickListener(View.OnClickListener {
-            onBackPressed()
-        })
-        loginViewModel.getLoggedInUser();
     }
 
     fun initObserver() {
         loginViewModel.userDetails.observe(this, Observer {
             user = it
-            chatId=intent.extras!!.getString("chatId")
-            postId=intent.extras!!.getInt("postId")
-            reciever=intent.extras!!.getInt("reciever")
+            userId=user.UserId
+            chatId = intent.extras!!.getString("chatId")
+            postId = intent.extras!!.getInt("postId")
+
             commentsViewModel.getMyChatContent(chatId)
 
         })
@@ -140,12 +152,9 @@ class DirectChatActivity : AppCompatActivity() {
                 binding.txtNoComment.visibility = View.GONE
 
             }
-            adapter.updateEmployeeListItems(it.results.data.toMutableList(),user.UserId)
+            adapter.updateEmployeeListItems(it.results.data.toMutableList(), user.UserId)
             binding.recyclerView.smoothScrollToPosition(it.results.data.size);
         })
-
-
-
 
 
     }

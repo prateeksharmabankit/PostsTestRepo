@@ -56,9 +56,8 @@ class ChatroomFragment : Fragment() {
             val intent = Intent(activity, DirectChatActivity::class.java)
             intent.putExtra("chatId",posts._id)
             intent.putExtra("postId", posts.postId)
-            intent.putExtra("sender", user.UserId)
+            intent.putExtra("sender", posts.sender)
             intent.putExtra("reciever", posts.reciever)
-
             startActivity(intent)
 
 
