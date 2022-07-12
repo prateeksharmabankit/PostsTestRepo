@@ -101,6 +101,7 @@ android:background="@drawable/bgcom"
             android:layout_height="match_parent"/>
         <info.androidhive.fontawesome.FontTextView
             android:layout_width="0dp"
+            android:visibility="gone"
             android:id="@+id/txtSendImage"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_height="wrap_content"
@@ -125,18 +126,6 @@ android:background="@drawable/bgcom"
             app:solid_icon="true" />
     </LinearLayout>
 
-    <info.androidhive.fontawesome.FontTextView
-        android:id="@+id/txtLike"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_60sdp"
-        android:text="@string/fa_heart"
-        android:textColor="@color/Gray"
-        android:textSize="@dimen/_30sdp"
-        app:solid_icon="true" />
+
 
 </RelativeLayout>
