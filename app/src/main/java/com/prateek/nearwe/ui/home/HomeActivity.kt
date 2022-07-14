@@ -70,6 +70,7 @@ import com.prateek.nearwe.ui.adapters.SubCategoryAdapter
 import com.prateek.nearwe.ui.login.LoginActivity
 import com.prateek.nearwe.ui.login.LoginViewModel
 import com.prateek.nearwe.ui.posts.PostsViewModel
+import com.prateek.nearwe.ui.updateprofile.UpdateProfileActivity
 import com.prateek.nearwe.utils.DataStoreManager
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -106,7 +107,7 @@ class HomeActivity : AppCompatActivity() {
 
 
         loginViewModel.getAddressHeader(this)
-        loginViewModel.getLoggedInUser();
+        loginViewModel.checkLoggedInUserFlow();
         val menuItem = nav_view.menu.findItem(R.id.darkModeMenu)
         val switch_id = menuItem.actionView as SwitchCompat
 
@@ -133,6 +134,7 @@ class HomeActivity : AppCompatActivity() {
             this, binding.drawerLayout, toolbar, R.string.drawer_open,
             R.string.drawer_close
         )
+
 
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -195,7 +197,16 @@ class HomeActivity : AppCompatActivity() {
 
 
             }
+            if (id == R.id.updateProfile) {
 
+                startActivity(
+                    Intent(
+                        this, UpdateProfileActivity
+                        ::class.java
+                    )
+                )
+
+            }
             NavigationUI.onNavDestinationSelected(menuItem, navController)
             val drawer = findViewById<View>(R.id.drawerLayout) as DrawerLayout
             drawer.closeDrawer(GravityCompat.START)
@@ -230,8 +241,6 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
-
-
 
 
     override fun onOptionsItemSelected(item: MenuItem) =
@@ -462,7 +471,7 @@ class HomeActivity : AppCompatActivity() {
                 Glide.with(MainApp.instance)
 
                     .load(user.Image).placeholder(resources.getDrawable(R.drawable.ic_user))
-                    .apply(RequestOptions.bitmapTransform(RoundedCorners(25)))
+                    .circleCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(userImage)
             } catch (e: Exception) {
@@ -482,6 +491,8 @@ class HomeActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
             }
         })
+
+
     }
 
     private val launcher =

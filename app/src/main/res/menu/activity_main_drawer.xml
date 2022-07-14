@@ -16,12 +16,17 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/updateProfile"
+            android:icon="@drawable/ic_baseline_edit_note_24"
+            android:title="Update Profile" />
+        <item
             android:id="@+id/darkModeMenu"
             android:title="Dark Mode"
             android:checked="false"
             android:icon="@drawable/ic_baseline_light_mode_24"
             app:actionViewClass="androidx.appcompat.widget.SwitchCompat"
-            ></item>
+            />
+
         <item
             android:id="@+id/logout"
             android:icon="@android:drawable/ic_lock_lock"

@@ -3,23 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-android:background="@color/White"
     android:layout_height="match_parent"
+
 
     android:orientation="vertical"
     tools:context=".ui.comments.CommentsActivity">
-
-<TextView
-    android:id="@+id/txtNoComment"
-    android:text="Be the first one to comment this post"
-    android:layout_centerInParent="true"
-    android:layout_width="wrap_content"
-    android:visibility="gone"
-    android:textStyle="bold"
-    android:textSize="@dimen/_16sdp"
-    android:textColor="@color/colorPrimary"
-    android:fontFamily="@font/poppinsmedium"
-    android:layout_height="wrap_content"/>
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -34,37 +22,97 @@ android:background="@color/White"
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            app:titleCentered="true"
-
-
             android:layout_width="match_parent"
+
+
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="@string/updateprofiletitle"
+            app:titleCentered="true"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
-
 
 
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
     <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:layout_width="match_parent"
         android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/appBar"
-        android:visibility="gone"
 
         android:indeterminate="true"
-        android:layout_height="wrap_content" />
-    <com.google.android.material.card.MaterialCardView
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_30sdp">
+
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:contentDescription="@string/nav_header_desc"
+            android:padding="@dimen/_5sdp"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:src="@drawable/ic_user" />
+
+        <ImageView
+android:id="@+id/imgUpload"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+
+            android:layout_gravity="bottom|right"
+            android:contentDescription="@string/nav_header_desc"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:src="@drawable/cameraedit" />
+
+    </FrameLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etNameLayout"
+        android:layout_margin="@dimen/_10sdp"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_300sdp"></com.google.android.material.card.MaterialCardView>
+        android:layout_height="wrap_content"
+app:errorEnabled="true"
+        android:layout_below="@+id/frame"
+        app:counterEnabled="true"
+        app:counterMaxLength="80"
+        app:helperTextEnabled="true"
+        app:helperText="That User Name will be visible to all appusers"
+        android:hint="User name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/UpdateNow"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:background="@color/colorPrimary"
+            android:elevation="@dimen/_3sdp"
+            android:fontFamily="@font/poppinsregular"
+            android:text="Update"
+            android:textColor="?attr/colorOnPrimary"
 
 
 
+            />
 
+    </com.google.android.material.textfield.TextInputLayout>
 
 </RelativeLayout>

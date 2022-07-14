@@ -21,6 +21,8 @@ import com.prateek.nearwe.api.models.chatrooms.addchatcontent.AddChatcontentRequ
 import com.prateek.nearwe.api.models.chatrooms.chatcontent.ChatContentResponse
 import com.prateek.nearwe.api.models.chatrooms.chatroomresponses.ChatroomResponse
 import com.prateek.nearwe.api.models.login.LoginResponse
+import com.prateek.nearwe.api.models.login.profile.UpdateProfileRequest
+import com.prateek.nearwe.api.models.login.profile.UpdateProfileResponse
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostRequest
 import com.prateek.nearwe.api.models.posts.AddPost.AddPostResponse
 import com.prateek.nearwe.api.models.posts.AddPostViewsResponse.AddPostViewsResponse
@@ -146,4 +148,8 @@ interface PostsServices {
     suspend fun getMyChatContent(
         @Path("chatId") chatId: String?,
     ): ChatContentResponse
+
+
+    @POST("/api/User/UpdateProfile")
+    suspend fun UpdateProfile(@Body updateProfileRequest: UpdateProfileRequest): Response<UpdateProfileResponse>
 }

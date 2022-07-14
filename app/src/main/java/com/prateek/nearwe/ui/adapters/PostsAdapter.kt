@@ -137,7 +137,7 @@ class PostsAdapter(
             holder.imgPost.visibility = View.VISIBLE
         }
         holder.lvShare.setOnClickListener {
-            /*val buo = BranchUniversalObject()
+            val buo = BranchUniversalObject()
             val lp = LinkProperties()
 
                 .setCampaign(post.postId.toString())
@@ -148,12 +148,12 @@ class PostsAdapter(
                     if (error == null) {
                         ShareCompat.IntentBuilder(activity)
                             .setType("text/plain")
-                            .setChooserTitle(post.title)
-                            .setText("Reply, Comment at "+url)
+                            .setChooserTitle("Share / Reply /  Comment / Chat")
+                            .setText(post.title+" Reply, Comment at "+url)
                             .startChooser();
 
                     }
-                })*/
+                })
 
 
         }

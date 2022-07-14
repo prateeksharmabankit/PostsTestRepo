@@ -66,6 +66,13 @@
             android:label="@string/title_activity_home"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".ui.updateprofile.UpdateProfileActivity"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".ui.directchat.DirectChatActivity"
             android:label="Direct Chat"
